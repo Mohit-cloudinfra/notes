@@ -1,5 +1,5 @@
 Computer can be in many forms like mobile, Laptop, Washing machine, Server, AC ,Desktop
-
+---
 ##### So what does it mean to be a computer it should have the following:
 - RAM
 - ROM
@@ -7,7 +7,7 @@ Computer can be in many forms like mobile, Laptop, Washing machine, Server, AC ,
 - OS
 - Processor
 - **it should be a ip enabled device**
-
+---
 ##### Servers use linux over windows or macos because:
 - secure -SSH
 - No graphics
@@ -20,23 +20,23 @@ Computer can be in many forms like mobile, Laptop, Washing machine, Server, AC ,
 - opensource
 
 > in general terms we call linux with different terms like BOX or NODE or SERVER all mean the same
-
+---
 #### CLIENT SERVER ARCHITECTURE
 - if we use mobile to access the laptop or control laptop then mobile is client and laptop is server
 
 - if we use laptop to access the mobile or control mobile then laptop is client and mobile is server
 
 - if i access facebook.com then
-
+---
 #### AUTHENTICATION MECHANISMS
 - What you remember *(like password or security questions etc..)*
 - What you have *(RSA tokens, OTP, Authentications)*
 - What you are *(Fingerprints, Retina, Palm)*
-
+---
 #### PUBLIC KEY AND PRIVATE KEY MECHANISMS
 - SSH keys creation we use `ssh-keygen -f filename` this give two files filename and filename.pub
 - filename.pub has public key its safe to share it but the private key is secret and should not be shared
-
+---
 #### FIREWALL
 - this controls the incoming traffic and outgoing traffic
 - the incoming traffic will be checked definetely
