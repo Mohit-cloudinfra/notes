@@ -23,10 +23,11 @@ Computer can be in many forms like mobile, Laptop, Washing machine, Server, AC ,
 ---
 #### CLIENT SERVER ARCHITECTURE
 - if we use mobile to access the laptop or control laptop then mobile is client and laptop is server
-
+![example 1](../Pictures/Linux%20Administration/clientserver1.png)
 - if we use laptop to access the mobile or control mobile then laptop is client and mobile is server
-
+![example 2](../Pictures/Linux%20Administration/clientserver2.png)
 - if i access facebook.com then
+![example 3](../Pictures/Linux%20Administration/clientserver3.png)
 ---
 #### AUTHENTICATION MECHANISMS
 - What you remember *(like password or security questions etc..)*
