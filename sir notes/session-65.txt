@@ -1,0 +1,54 @@
+Helm Charts
+============
+1. package manager for k8s
+2. templatise manifest files
+
+1. build image
+2. run image -> what are the resources and configs
+
+Chart.yaml -> chart information. name, api version, version, app version, description, etc -> metadata about the chart
+templates/ -> manifest files with placeholders
+values.yaml -> placeholder actual values here
+values-dev.yaml, values-prod.yaml -> env specific values
+
+helm upgrade --install <chart-name> --set key=value .
+helm uninstall <chart-name>
+helm history <chart-name>
+helm rollback <chart-name>
+helm rollback <chart-name> <revision> 
+
+RBAC
+=====
+K8s is platform as a service -> it has its own authentication and authorisation mechanism. but we can integrate this with IAM for authentication and authorisation can be managed in EKS
+
+api-groups -> resources -> actions
+
+1. create user and assign cluster describe policy
+arn:aws:iam::160885265516:user/suresh
+2. create role and rolebinding
+3. map IAM user to k8s user
+
+trainee == pod-reader
+juniors == deployer -> create, read
+senior == checker -> create, update, read
+admin == admin -> create, read, update, delete
+
+service account
+==============
+1. create sa
+2. create IAM role and attach permission
+3. run pod with sa
+
+OIDC provider
+eksctl utils associate-iam-oidc-provider --cluster roboshop --approve
+
+eksctl create iamserviceaccount \
+  --name roboshop-secret-reader \
+  --namespace roboshop \
+  --cluster roboshop \
+  --attach-policy-arn arn:aws:iam::160885265516:policy/RoboshopMySQLSecretReader1 \
+  --approve
+
+aws secretsmanager get-secret-value --secret-id roboshop/dev/mysql_root_password
+
+

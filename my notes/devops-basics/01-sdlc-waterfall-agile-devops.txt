@@ -1,0 +1,219 @@
+========================================================================
+  DEVOPS BASICS  >  SDLC, WATERFALL, AGILE, DEVOPS
+========================================================================
+
+  IN ONE LINE
+  DevOps is the process of building, deploying and testing
+  applications continuously, so feedback comes the same day instead
+  of months later.
+
+  MY OWN TAKEAWAY
+  DevOps is continuously automating, to cut the time and friction
+  needed to coordinate between development and testing.
+
+
+  1. SDLC  (Software Development Life Cycle)
+  ----------------------------------------------------------------------
+
+      Requirements gathering      <- Business Analyst
+      Analyse
+      Design the system
+      Development
+      Testing
+      Deployment
+      Maintenance and Monitoring
+
+      Older wording of the same thing:
+      Requirements > Planning > Analyse > Construction > Testing >
+      Handover > Maintenance
+
+      WHY BUSINESS SPENDS ON TECHNOLOGY
+      reduce cost, stability, reliability, increase business
+
+
+  2. STAKEHOLDERS  =  who is part of the system
+  ----------------------------------------------------------------------
+
+      School   parents, students, teachers, management, non-teaching
+               staff, investors, government
+
+      Project  RBI, government, banking management, investors, board,
+               developers, testing, admin, devops and cloud, support,
+               reports, monitoring
+
+
+  3. THE THREE MODELS IN ONE PICTURE
+  ----------------------------------------------------------------------
+
+      Yearly health check     max 50% chance to catch it   WATERFALL
+      Monthly health check    80% chance to prevent        AGILE
+      Apple Watch             continuous feedback          DEVOPS
+
+
+  4. SIR'S EXAM STORY  (why more tests = better result)
+  ----------------------------------------------------------------------
+
+      50 YEARS BACK: ONE FINAL EXAM
+        parents worry daily, teachers wake up 3 months before,
+        students 60 days before
+        result: 30-40% pass
+
+      PROCESS CHANGE: UNIT TESTS
+        Unit test I, II, III, IV, V, quarterly, half yearly,
+        pre-final, final
+
+        Unit test I    teachers must finish syllabus,
+                       students start 1 week before      30% pass
+        Unit test II   students start 2 weeks before     40% pass
+                       parents-teachers meeting
+        ...
+        Final                                            80-90% pass
+
+      DAILY SLIP TESTS
+        200 exams = 200 feedbacks, student works from DAY 1
+        result: 99.9% pass
+
+      THE RULE
+        Test a system 1 time    -> you find 10 defects
+        Test a system 100 times -> you find at least 11
+
+
+  5. WATERFALL
+  ----------------------------------------------------------------------
+
+      A 3 year, 30 crore project. Clients on one side, tech team on
+      the other.
+
+      6-7 months of development.
+        Meanwhile testing, operations, build and release sit free.
+      Then testing starts.
+        Now developers sit free.
+
+      Testing raises 100 defects.
+        Analysis shows 40 are invalid defects.
+        The classic line: "working in DEV, not working in PROD".
+
+
+  6. AGILE
+  ----------------------------------------------------------------------
+
+      Split the product into modules:
+        user, cart, catalogue, shipping, payment, order management,
+        reviews, delivery ...
+
+      SPRINT = 1 month
+        Sprint 1: user module (login, signup, forgot password, OTPs)
+        15 days development, 15 days deployment and testing
+
+        developers work from day 1, testing joins around day 10
+        10 defects raised, 3 invalid
+        end of the month: show something working
+        2 defects left over
+
+      SPRINT 2
+        2 defects carried as backlog
+        catalogue module completion
+
+      DAILY STAND-UP  (DM, CSM ask)
+        What did you do yesterday?
+        What are you doing today?
+        Is anything blocking you?
+
+
+  7. DEVOPS  (digital revolution / transformation)
+  ----------------------------------------------------------------------
+
+      Daily tests.
+
+      TEST CASES
+        success (+ve) case   right input,  but result fails  = failure
+        failure (-ve) case   wrong input,  but result passes = failure
+
+        10 test cases -> fewer chances of invalid defects (2 invalid)
+        gain: productivity, co-ordination, cooperation
+
+      THREE KINDS OF ERRORS
+        build errors
+        functionality / development errors
+        deployment errors
+
+      BUSINESS EXAMPLE
+        IDBI, 5% market share, 100 crore revenue.
+        Invest some amount in technology, reduce cost by moving from
+        waterfall to DevOps and cloud.
+
+      SIR'S DEFINITION
+        DevOps is the process of building, deploying and testing the
+        applications continuously. If we can deploy and test the code
+        on the same day, we get maximum feedback cycles to improve
+        our product. We use multiple tools to make this smooth.
+        Continuous development, integration, deployment, delivery,
+        testing, monitoring and application security are all part
+        of DevOps.
+
+
+  8. SIR'S ADVICE: BUSINESS FIRST, TECHNOLOGY SECOND
+  ----------------------------------------------------------------------
+
+      Banking, insurance, pharma and government do not adopt new
+      technology fast. They do not implement something just because
+      it is trending.
+
+      New joiners complain: "it's not updated, not enough automation".
+
+      Sir's point:
+        Your previous project or company does not matter here.
+        Business is first, technology is second.
+        The end user does not care which technologies you use. They
+        only see whether their work got done.
+        Before pushing a new technology, ask: is it needed for our
+        level of business? There are many things to consider.
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is DevOps?
+
+          SAY THIS: "It is the practice of building, testing and
+          deploying software continuously, with as much of it
+          automated as possible, so the team gets feedback the same
+          day instead of months later. It removes the waiting between
+          development, testing and operations."
+
+          Do not answer with a list of tools. Tools are how, not what.
+
+
+  [+] Q2. What is the difference between Waterfall and Agile?
+
+          Waterfall: one long cycle. Develop everything, then test
+          everything, then release. Defects are found late and are
+          costly to fix.
+
+          Agile: short cycles called sprints. A small piece is
+          developed, tested and shown every few weeks, so defects
+          are found early.
+
+
+  [+] Q3. What problem does DevOps solve that Agile did not?
+
+          Agile made development fast, but deployment and testing
+          were still slow and manual, and done by a different team.
+          That is where "works in DEV, not in PROD" comes from.
+          DevOps automates build, deploy and test so every change
+          can go through all of them the same day.
+
+
+  [+] Q4. What happens in a daily stand-up?
+
+          Three questions, a few minutes each person:
+          What did you do yesterday? What are you doing today?
+          Is anything blocking you?
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Waterfall = one big test at the end      -> late, costly defects
+      Agile     = test every sprint            -> fewer invalid defects
+      DevOps    = build, deploy, test same day -> maximum feedback
+========================================================================

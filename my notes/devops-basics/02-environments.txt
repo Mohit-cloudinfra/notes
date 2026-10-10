@@ -1,0 +1,66 @@
+========================================================================
+  DEVOPS BASICS  >  ENVIRONMENTS
+========================================================================
+
+  IN ONE LINE
+  The same application is deployed to a chain of environments, each
+  with a wider audience, before the public ever sees it.
+
+
+  1. THE CHAIN
+  ----------------------------------------------------------------------
+
+      DEV  >  QA  >  SIT  >  UAT  >  PERF  >  PRE-PROD  >  PROD
+
+
+  2. SIR'S DRINK STORY
+  ----------------------------------------------------------------------
+
+      You invent a new drink.
+
+      You taste the formula yourself                     DEV
+      Employees taste it, you take feedback              QA
+      Friends and family taste it, you take feedback     SIT
+      A random group tastes it, you take feedback        UAT
+      FSSAI certification                                client approval
+      Release to the public market                       PROD
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What environments does an application go through?
+
+          DEV, QA, SIT, UAT, PERF, PRE-PROD, PROD. The same build
+          moves through each one, tested by a wider group each time,
+          and reaches PROD only after the client approves in UAT.
+
+
+  [+] Q2. What is the difference between SIT and UAT?
+
+          SIT   System Integration Testing. The testing team checks
+                that all the components work TOGETHER.
+          UAT   User Acceptance Testing. The business or the client
+                checks that it does what THEY asked for.
+
+          SIT asks "does it work?". UAT asks "is it what we wanted?".
+
+
+  [+] Q3. Why have a PRE-PROD when you already tested everywhere?
+
+          PRE-PROD is kept as close to PROD as possible: same
+          configuration, similar data and size. It catches the
+          problems that only appear in production-like conditions,
+          before real users see them.
+
+
+  [+] Q4. Which environments have you worked with?
+
+          BE HONEST: my lab has a single environment. Say that, then
+          explain the chain above and why each step exists.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Each step = more people, more feedback, less risk at PROD.
+========================================================================

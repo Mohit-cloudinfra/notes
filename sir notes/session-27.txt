@@ -1,0 +1,40 @@
+code and configuration
+1. not confidential -> URL, variables
+2. confidential -> username, passwords
+
+mongodb-dev.daws88s.online
+
+DRY
+
+Ansible Roles
+===============
+Ansible role is property directory structure of creating, managing and reusing playbooks. we can breakdown playbooks into multiple components like tasks, handlers, vars, meta, templates, files, etc. by default ansible loads main.yaml in these directories
+
+ansible configuration
+================
+1. ANSIBLE_CONFIG
+2. PWD ansible.cfg
+3. user home directory .ansible.cfg
+4. /etc/ansible/ansible.cfg
+
+/home/ec2-user/ansible-roboshop-roles/roles/mongodb/files/mongo.repo
+/home/ec2-user/ansible-roboshop-roles/roles/mongodb/mongo.repo
+/home/ec2-user/ansible-roboshop-roles/roles/mongodb/tasks/files/mongo.repo
+/home/ec2-user/ansible-roboshop-roles/roles/mongodb/tasks/mongo.repo
+/home/ec2-user/ansible-roboshop-roles/files/mongo.repo
+/home/ec2-user/ansible-roboshop-roles/mongo.repo
+
+nodejs_setup -> enable install nodejs install dependencies
+app_setup -> create directory, create system user, download code, unarchieve code
+system_setup
+
+
+1. load catalogue role
+2. ansible finds meta directory and main.yaml
+3. it depends on common role
+4. ansible executes main.yaml in common/tasks folder
+5. now ansible starts executing catalogue/tasks/main.yaml
+6. we extracted common code into common/app-setup.yaml
+7. ansible imports this into catalogue/tasks/main
+
+

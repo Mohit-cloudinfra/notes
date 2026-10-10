@@ -1,0 +1,197 @@
+========================================================================
+  LINUX  >  BASIC COMMANDS
+========================================================================
+
+  IN ONE LINE
+  Every command has the same shape:
+
+      command-name   <options>   <inputs>
+
+  Options and inputs are optional or mandatory depending on the
+  command.
+
+
+  1. WHERE AM I, WHO AM I
+  ----------------------------------------------------------------------
+
+      pwd                 present working directory
+      cd <folder>         change directory
+      cd ..               one step back
+      cd                  straight to home directory, from anywhere
+      clear               clean the screen
+
+      THE PROMPT TELLS YOU WHO YOU ARE
+          $     normal user       home = /home/<user-name>
+                                  e.g.   /home/ec2-user
+          #     super user        home = /root
+
+      BECOMING ROOT
+          sudo su         root access
+          sudo su -       root access AND lands you in /root
+          exit            come back to the normal user
+
+
+  2. ABSOLUTE vs RELATIVE PATH
+  ----------------------------------------------------------------------
+
+      /c/devops/daws-88s/daws-88s      absolute  (starts from the top)
+      daws-88s/daws-88s                relative  (from where I am now)
+
+      WINDOWS vs LINUX FORMAT
+          C:\Users\siva       back slash      Windows
+          /c/Users/siva       forward slash   Linux (what pwd shows
+                                              in git bash)
+
+      "file or directory not found" almost always means the path is
+      wrong. Refer to it by a correct absolute or relative path.
+
+
+  3. GETTING HELP
+  ----------------------------------------------------------------------
+
+      uname               print OS / kernel information
+      uname --help        options of a command
+      man uname           the manual
+
+
+  4. LISTING
+  ----------------------------------------------------------------------
+
+      ls                  list
+      ls -l               long format, alphabetical. Shows file or
+                          folder, who owns it, size, timestamp
+      ls -lr              reverse alphabetical
+      ls -lt              by time, latest files on TOP
+      ls -ltr             by time, latest files at the BOTTOM
+      ls -a               hidden files too
+      ls -la              long format + hidden
+      ls -lart            all of it together
+
+      Hidden files and folders start with a dot  (.)
+
+      FIRST CHARACTER OF ls -l
+          d rwx r-x r-x       directory
+          - rwx r-x r-x       file
+
+
+  5. CRUD ON FILES   (Create, Read, Update, Delete)
+  ----------------------------------------------------------------------
+
+      CREATE
+          touch a.txt             creates an empty file
+          mkdir a                 creates a folder
+
+      WRITE
+          cat > a.txt             type your text, then press
+                                  Enter and Ctrl+d to save
+              Hi, I am Mo
+
+          >       redirection. OVERWRITES the previous text
+          >>      APPENDS to the previous text
+
+      READ
+          cat a.txt               read the content
+
+      DELETE
+          rm a.txt                removes the file
+          rmdir a/                removes the directory
+
+
+  6. COPY AND MOVE
+  ----------------------------------------------------------------------
+
+      cp <source> <destination>
+
+      cp a.txt a/                 copies a.txt into folder a
+      mv a.txt a/                 cuts (moves) a.txt into folder a
+      mv a/a.txt b.txt            renames
+
+      mv does both jobs: move and rename.
+
+
+  7. DOWNLOADING:  wget  and  curl
+  ----------------------------------------------------------------------
+
+      wget <link>                 downloads the file
+      curl <link>                 shows the output on screen, does
+                                  not download by default
+      curl -o /tmp/x.zip <link>   saves it to that file
+                                  (small o, then the file name)
+
+      wget  -> used for downloading packages
+      curl  -> used to hit API URLs
+
+
+  8. FINDING OLD COMMANDS
+  ----------------------------------------------------------------------
+
+      history             everything you typed
+      Ctrl + r            start typing, it finds the command you used
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between an absolute and a relative
+          path?
+
+          Absolute starts from / and works from anywhere:
+              /etc/nginx/nginx.conf
+          Relative starts from where you are now:
+              nginx/nginx.conf
+
+          FROM MY OWN RUN: I typed  cd app  instead of  cd /app  and
+          got "No such file or directory", because there was no app
+          folder inside the folder I was standing in.
+
+
+  [+] Q2. What is the difference between > and >> ?
+
+          >    overwrites the file. Old content is gone.
+          >>   appends to the end. Old content stays.
+
+          Using > on a log or config file by mistake wipes it.
+
+
+  [+] Q3. What is the difference between  sudo su  and  sudo su -  ?
+
+          Both make you root.
+          sudo su     keeps you in the same folder with your old
+                      environment.
+          sudo su -   starts a fresh login as root: lands in /root
+                      and loads root's own environment and PATH.
+
+          Use  sudo su -  so commands behave as they would for root.
+
+
+  [+] Q4. How do you find the most recently changed file in a
+          folder?
+
+              ls -ltr
+
+          Sorted by time, newest at the bottom, so it is the last
+          line. This is the first thing to run in a log folder.
+
+
+  [+] Q5. What is the difference between wget and curl?
+
+          wget downloads a file and saves it.
+          curl sends a request and prints the response. It is used to
+          test URLs and APIs:  curl http://localhost:8080/health
+          curl can also save with  -o <file>.
+
+
+  [+] Q6. How do you see hidden files?
+
+              ls -la
+
+          Hidden files start with a dot, like .ssh and .bashrc.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      $ normal user     # root
+      >  overwrites     >> appends
+      ls -ltr = latest at the bottom  (the one you use on logs)
+      wget downloads, curl shows
+========================================================================

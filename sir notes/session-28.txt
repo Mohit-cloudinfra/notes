@@ -1,0 +1,48 @@
+ANSIBLE_CONFIG
+pwd
+user home directory .ansible.cfg
+/etc/ansible/ansible.cfg
+
+handlers
+=========
+handlers are notifiers, you can call task-b when task-a changes. for example when a configuration changes you can restart the application using handlers.
+
+tags
+=====
+if you want a specific tag to run inside playbook, tag it and call it
+
+deployment
+===========
+1. remove old code
+2. copy new code
+3. install dependencies
+4. restart the server
+
+include_role vs import_rule
+=======
+way of calling other roles.
+
+import_role respects the tags. if you apply tags to import_role those will be automatically applied to all the tasks inside that role...
+
+include_role does not respect tags
+
+* include_role vs import_role
+* dynamic inventory
+* ansible vault and secrets manager
+* ansible forks(how to connect multiple servers at a time)
+
+Terraform
+
+4 servers -> catalogue
+
+5th server -> new catalogue app runs
+delete one old server
+
+6th server -> new catalogue app runs
+delete 2nd old server
+
+blue-green
+======
+create another 4 servers -> deployment new catalogue
+route traffic to new servers
+

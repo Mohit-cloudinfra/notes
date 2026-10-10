@@ -1,0 +1,43 @@
+4 golden rules of monitoring
+1. traffic
+2. errors
+3. latency
+4. saturation
+
+resource metrics -> prometheus
+
+TSD -> time series database
+
+money, timestamp, category, description
+15sec metrics collection
+
+dynamic scrapping
+==================
+
+alert is created
+it should be managed
+
+upjtfvxlmzfyozba
+
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-bundle.crt
+logfile        /var/log/msmtp.log
+
+account        gmail
+host           smtp.gmail.com
+port           587
+from           m.sivakmrreddy@gmail.com
+user           m.sivakmrreddy@gmail.com
+password       upjtfvxlmzfyozba
+
+account default : gmail
+
+{
+echo "To: info@joindevops.com"
+echo "Subject: Testing prometheus alerts"
+echo "Content-Type: text/html"
+echo ""
+echo "Hello"
+} | msmtp "info@joindevops.com"

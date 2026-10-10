@@ -1,0 +1,23 @@
+1. Launch catalogue instance
+2. Configure using terraform_data and remote-exec provisioner
+3. Stop instance before taking AMI
+	aws_instance creates first
+	terraform_data and aws_ec2_instance_state both are dependent on aws_instance
+	when instance created, terraform immidiately triggers both terraform_data and aws_ec2_instance_state parellely
+
+4. create target group 
+5. create launch template
+5. input to autoscaling group
+6. ask autoscaling to launch instances into target group
+7. create a rule in listener for catalogue
+8. delete  instance used for ami
+
+1a instance 1b instance
+
+Min -> at any point of time how many instances you want
+Desired -> How many you want right now.
+Max -> Maximum instances autoscaling group can create
+
+Min = 2
+Desired = 4
+Max = 10

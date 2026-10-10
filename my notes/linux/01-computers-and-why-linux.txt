@@ -1,0 +1,126 @@
+========================================================================
+  LINUX  >  COMPUTERS AND WHY SERVERS USE LINUX
+========================================================================
+
+  IN ONE LINE
+  A server is just another computer, and almost all of them run
+  Linux because it is secure, light, free and runs for years.
+
+
+  1. WHAT COUNTS AS A COMPUTER
+  ----------------------------------------------------------------------
+
+      Mobile = Laptop = Desktop = Server = Washing machine = AC
+
+      If it has these, it is a computer:
+
+          CPU
+          RAM
+          ROM           ====>   IP ENABLED DEVICE
+          OS
+          Processor
+
+      SAME THING, THREE NAMES
+          box  =  server  =  node
+
+
+  2. WINDOWS  vs  MAC  vs  LINUX
+  ----------------------------------------------------------------------
+
+      Servers use Linux because:
+
+      ->  Secure                 login over SSH
+      ->  No graphics            so: low power, low bandwidth,
+                                 low RAM, fast
+      ->  Heavy performance
+      ->  Free
+      ->  Runs for years         no restart needed
+                                 (unlike Windows, which hangs)
+      ->  Antivirus not required
+      ->  Open source
+      ->  Hardware and software are NOT tightly coupled
+                                 (in Mac and Unix they are)
+
+
+  3. LINUX IS CASE SENSITIVE
+  ----------------------------------------------------------------------
+
+      Windows     Hello == hello      case insensitive
+      Linux       Hello != hello      case sensitive
+
+
+  4. EVERYTHING IS COMMAND AND TEXT
+  ----------------------------------------------------------------------
+
+      In Linux everything is a command and text. No clicking.
+
+
+  5. WHERE LINUX CAME FROM
+  ----------------------------------------------------------------------
+
+      Linus Torvalds wrote the Linux kernel from scratch in C.
+      He also invented Git.
+
+
+  6. FLAVOURS  (DISTRIBUTIONS)
+  ----------------------------------------------------------------------
+
+      Kernel + commands + apps = a flavour / distribution
+
+      Redhat family    Redhat = CentOS = Fedora = AWS Linux
+      Ubuntu
+      Oracle
+      Suse
+      IBM
+
+      TWO EDITIONS
+          Community edition     free
+          Enterprise edition    paid, comes with support (Redhat)
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. Why is Linux used for servers?
+
+          Pick four and say them cleanly:
+          - secure, managed over SSH
+          - no graphics, so it uses little RAM and CPU
+          - free and open source
+          - stable, runs for years without a restart
+
+
+  [+] Q2. What is the difference between the kernel and a
+          distribution?
+
+          The kernel is the core that talks to the hardware: CPU,
+          memory, disk, network.
+
+          A distribution is the kernel PLUS the commands, tools and
+          a package manager, bundled so you can actually use it.
+          Redhat, Ubuntu and Suse all use the same Linux kernel.
+
+
+  [+] Q3. Which Linux have you worked on?
+
+          SAY THIS: "RHEL 9 on AWS EC2, so the package manager was
+          dnf and services were managed with systemctl."
+
+
+  [+] Q4. What is the difference between the Redhat family and the
+          Ubuntu family?
+
+          Mainly the package manager.
+              Redhat family    dnf / yum     packages are .rpm
+              Ubuntu family    apt           packages are .deb
+
+          The everyday commands (ls, cd, grep, systemctl) are the
+          same on both.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      box = server = node
+      No graphics is the reason Linux is light and fast.
+      We work on the Redhat family, so the package manager is dnf.
+========================================================================

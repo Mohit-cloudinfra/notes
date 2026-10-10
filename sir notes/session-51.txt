@@ -1,0 +1,87 @@
+1. Build the image -> Bare min OS + System packages + App run time + Code + dependencies
+2. Run the image -> port, name, background, other component urls, etc.
+
+docker ps -> running containers
+docker ps -a -> all containers
+docker images -> show the images in server
+docker pull image-name:version
+docker create image-name:version
+docker start container-id
+docker run image-name:version = pull + create + start
+docker rm container-id -> remove the container
+
+docker run -d
+docker run -p host-port:container-port
+docker run --name <container-name>
+docker stats -> show the resources consumed by containers
+docker inspect container-id
+
+Dockerfile -> declarative way of creating custom images by using docker instructions
+
+FROM -> should be 1st instruction, to refer base OS
+RUN -> used to configure image install packages, create users, etc. used at the time of building the image
+
+docker build -t url/username/image-name:version .
+docker login
+docker tag image-name:version username/image-name:version
+docker push username/image-name:version
+
+CMD
+====
+used to run the container. executed at the time of running the container. it will not execute at the time of building..
+
+we can have multiple RUN instructions inside dockerfile. but only one CMD instruction
+
+["executable","param1","param2"]
+
+systemctl start nginx -> won't work inside images, systemctl is kernel level process
+
+your command inside dockerfile should run in foreground, but you can take it into background
+
+LABEL
+=====
+adds the metadata to the image, used for filteration
+
+EXPOSE
+=====
+useful to display the port information of container. it will not really open the port but provides information only to the users
+
+80
+8080 -> can't open
+
+ENV
+====
+to provide env variables to the container. app code can access these env variables and use them
+
+COPY
+====
+used to copy the files from local to image
+
+ADD
+===
+used to copy the files from local to image, but it has 2 extra capabilities
+1. It can fetch the content directly from internet
+2. It can untar the content directly in the image
+
+ENTRYPOINT
+===========
+ENTRYPOINT is used to provide the command executed by the container when it is started.
+
+ping google.com ping facebook.com
+
+CMD vs ENTRYPOINT
+=========
+We can override the command inside CMD instruction at run time... We can't override ENTRYPOINT command if you try to do so it will go and append.. for best results we can always use both CMD and ENTRYPOINT
+
+CMD can be used to provide the default args/inputs to ENTRYPOINT.. if we want our own args we can always override CMD at runtime
+
+never run container with root access..
+
+ENV vs ARG
+==========
+ENV -> provide variables to container
+ARG -> provide variables to image
+
+ARG variables can't be accessed inside container, they are accessible only at the of image building. ENV variables can be accessed in container
+
+ARG can be first instruction in a special case to supply the version to base image

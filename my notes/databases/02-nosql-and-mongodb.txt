@@ -1,0 +1,172 @@
+========================================================================
+  DATABASES  >  NOSQL AND MONGODB
+========================================================================
+
+  IN ONE LINE
+  NoSQL stores data as flexible documents instead of fixed tables,
+  which suits huge data that does not have one fixed shape.
+
+
+  1. WHAT MAKES IT DIFFERENT
+  ----------------------------------------------------------------------
+
+      - data is unstructured
+      - useful when there are huge amounts of data
+      - data is stored as documents
+      - generally used for product catalogues, real-time analytics,
+        but NOT for transactions
+
+      Two products in the same collection can have different fields:
+
+          {
+              "name": "mouse",
+              "vendor": "amazon"
+          }
+
+          {
+              "name": "mouse",
+              "vendor": "amazon",
+              "faq": ""
+          }
+
+      THE RULE
+          proper data structure              -> SQL
+          no proper structure, huge data     -> NoSQL
+
+
+  2. SQL vs NOSQL (MONGODB)
+  ----------------------------------------------------------------------
+
+                        SQL                    MongoDB
+                        -------------------    ----------------------
+      Data structure    tables, rows,          collections with
+                        columns                JSON-like documents
+      Schema            rigid, columns must    dynamic, flexible
+                        be defined
+      Query language    SQL                    MQL (JavaScript style)
+      Best for          banking, ERP, CRM      real-time analytics,
+                                               IoT, content, apps
+      Examples          MySQL, PostgreSQL,     MongoDB, CouchDB,
+                        Oracle, SQL Server     Amazon DocumentDB
+
+      A document:
+          {
+            "_id": "6638fa12345abc",
+            "name": "Alice",
+            "age": 30,
+            "skills": ["Java", "DevOps"],
+            "address": { "city": "Hyderabad", "zip": "500001" }
+          }
+
+
+  3. INSTALLING MONGODB
+  ----------------------------------------------------------------------
+
+      The developer shares the version: MongoDB 7.x
+
+      MongoDB is not in the default repos, so add the repo first:
+
+      vim /etc/yum.repos.d/mongo.repo
+
+          [mongodb-org-7.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/x86_64/
+          enabled=1
+          gpgcheck=0
+
+      dnf install mongodb-org -y
+      systemctl enable mongod
+      systemctl start mongod
+      systemctl status mongod
+
+      ps -ef | grep mongo
+      netstat -lntp
+
+      port    27017
+      (Sir said to run the status, ps and netstat checks every time.
+      Don't think about it, just type them.)
+
+
+  4. ALLOWING OTHER SERVERS TO CONNECT
+  ----------------------------------------------------------------------
+
+      MongoDB opens its port only to localhost (127.0.0.1).
+
+      vim /etc/mongod.conf
+          change the bind address  127.0.0.1  ->  0.0.0.0
+
+      systemctl restart mongod
+      netstat -lntp                  confirm it now shows 0.0.0.0
+
+
+  5. THE CLIENT:  mongosh
+  ----------------------------------------------------------------------
+
+      On the server that needs to connect, add the same mongo.repo
+      file, then:
+
+      dnf install mongodb-mongosh -y
+
+      LOAD DATA FROM A FILE
+          mongosh --host <mongodb-host> </app/db/master-data.js
+
+      CONNECT AND LOOK
+          mongosh --host <mongodb-host>
+
+          show dbs
+          use catalogue
+          show collections
+          db.products.find()
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. When would you choose MongoDB over MySQL?
+
+          When the data does not have one fixed shape, or there is a
+          huge amount of it. A product catalogue is the classic case:
+          a phone and a shirt have completely different attributes.
+
+          Not for money. Payments and orders need the strict
+          structure and exactness of SQL.
+
+
+  [+] Q2. What are the MongoDB words for table and row?
+
+              SQL          MongoDB
+              database     database
+              table        collection
+              row          document
+              column       field
+
+
+  [+] Q3. Why did you change the bind address to 0.0.0.0? Is that
+          safe?
+
+          By default MongoDB listens only on 127.0.0.1, so only the
+          same server can connect. Catalogue and user run on other
+          servers, so MongoDB had to listen on all interfaces.
+
+          It is safe only if the firewall limits who can reach the
+          port. BE HONEST: "In my lab the security group allowed
+          all. In a real setup the database sits on a private
+          network and its security group allows port 27017 only
+          from the application servers."
+
+
+  [+] Q4. How do you check that data was loaded?
+
+              mongosh --host <mongodb-host>
+              show dbs
+              use catalogue
+              show collections
+              db.products.find()
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      mongodb-org = server       mongodb-mongosh = client
+      Service name is mongod, port 27017
+      Change 127.0.0.1 to 0.0.0.0 or nobody else can connect.
+========================================================================

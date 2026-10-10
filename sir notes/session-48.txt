@@ -1,0 +1,44 @@
+CISCO VPN
+
+OpenVPN Access Server Community Image-8fbe3379-63b6-43e8-87bd-0e93fd7be8f3
+ami-03ea534e3e9b6f519
+
+ssh access username: openvpnas
+admin UI username: openvpn
+
+manually in console
+
+import existing infra into terraform
+
+resource definition -> infra
+
+infra -> resource
+
+reverse engineering
+
+1. terraform import is the option
+2. create skelton syntax for all the resources and provider file
+3. run import command to get the details from terraform state
+4. we get full details, we can pick and place them into resource definition
+
+
+terraform import aws_instance.web i-12345678
+
+R53 -> frontend ALB -> frontend -> backend alb -> components -> db
+
+create infra parellelly
+
+stateless vs stateful
+======================
+stateful -> state(data) is important. databases are stateful applications
+stateless -> backend and frontend applications created using programming languages are called stateless applications, we can easily even they crash
+
+dummy R53 -> new frontend ALB -> new frontend -> new backend alb -> components -> db
+
+R53 -> new frontend ALB
+
+terraform target -> you can target specific resource for creation or deletion
+
+terraform taint ->
+
+taint -> paint/pollute/corrupt

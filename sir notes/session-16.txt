@@ -1,0 +1,63 @@
+$0
+$$
+$!
+$@
+$*
+$?
+
+functions/methods
+===================
+functions are intended to complete specific task, it takes input and does the job
+
+FUNC_NAME(){
+	$1, $2
+	code
+}
+
+FUNC_NAME parameter-1 parameter-2
+
+redirections
+=============
+ls -l > output.txt
+1 -> success
+2 -> failure
+
+loops
+=======
+for (int i=0;i<10;i++){
+	print i;
+}
+
+'\e[31m'
+R -> 31
+G -> 32
+Y -> 33
+B -> 34
+
+error handling
+==============
+
+trap 'command(s)_to_run' ERR
+
+SDK -> Software Development Kit
+
+
+aws ec2 run-instances \
+    --image-id ami-xxxxxxxxxxxxxxxxx \
+    --instance-type t2.micro \
+    --key-name MyKeyPairName \
+    --security-group-ids sg-xxxxxxxxxxxxxxxxx \
+    --subnet-id subnet-xxxxxxxxxxxxxxxxx \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyDemoInstance}]'
+	
+get the output, get public ip
+
+run another command to update r53 records
+
+ec2 instance
+r53 records
+
+roboshop.sh mongodb redis catalogue
+
+create mongodb instance
+update mongodb record

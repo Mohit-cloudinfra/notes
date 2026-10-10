@@ -1,0 +1,40 @@
+1. S3 access, state file retrieval, creation, update
+2. Ec2 creation access
+3. R53 entries creation, deletion, update
+
+1. connect to the instance and configure it
+2. update r53 record
+
+null resource -> earlier
+terraform_data -> follows standard resource lifecycle, but it will not create any resources. we use this to configure instance using local-exec, remote-exec. we have one arguement trigger_replace. we can decicde which one to trigger the configuration again
+
+
+bastion -> creates ec2 instance
+
+connecting to mongodb
+
+install ansible inside bastion -> mongodb
+
+install ansible inside mongodb
+configure it as localhost
+
+bootstrap.sh
+============
+install ansible
+configure it using playbooks
+
+copy this script to mongodb
+execute through remote-exec
+
+user-data
+==========
+1. once the system is provisioned, AWS executes the commands inside user_data script
+2. if user_data script is failed, terraform is not aware. terraform is still success
+3. since AWS runs user_data we cant get immidiate log
+4. useful for simple installations
+
+provisioner
+==========
+1. It is terraform resource
+2. if remote-exec is failed, terraform is also failed.
+3. we can get immidiate log on the console about what is going on

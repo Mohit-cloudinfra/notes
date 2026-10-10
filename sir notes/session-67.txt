@@ -1,0 +1,13 @@
+ingress controller(old ingress api/resources) -> load balancer controller(new ingress api/resources) -> gateway api(new gateway resources)
+
+api -> controller
+
+
+1. target group type only instance.. we must attach all the eks nodes to targetgroup and a nodeport must be opened
+2. no grouping of load balancers, every app needs its own load balancer, too much cost and every load balancer should have all the worker nodes attached
+
+RoboShop#123
+
+db subnet group -> what are the subnets available for databases
+
+ecr repos

@@ -1,0 +1,591 @@
+========================================================================
+  PROJECTS  >  ROBOSHOP   (microservices, manual setup)
+========================================================================
+
+  IN ONE LINE
+  An e-commerce site made of eleven separate components, each on its
+  own server, talking to each other by DNS name.
+
+  Diagram:      sir documents/roboshop-documentation-main/roboshop.jpg
+  Full steps:   sir documents/roboshop-documentation-main/*.MD
+  My run logs:  my documents/roboshoop practicals/*.txt
+
+
+  1. THE MAP
+  ----------------------------------------------------------------------
+
+      COMPONENT   WHAT IT IS      PORT    NEEDS
+      ---------   -------------   -----   ---------------------------
+      mongodb     NoSQL DB        27017   -
+      redis       cache           6379    -
+      mysql       SQL DB          3306    -
+      rabbitmq    message queue   5672    -              [+] port
+      catalogue   NodeJS 20       8080    mongodb
+      user        NodeJS 20       8080    mongodb, redis
+      cart        NodeJS 20       8080    redis, catalogue
+      shipping    Java (maven)    8080    cart, mysql
+      payment     Python 3        8080    cart, user, rabbitmq
+      dispatch    Go                      rabbitmq
+      frontend    Nginx 1.24      80      catalogue, user, cart,
+                                          shipping, payment
+
+      WHAT EACH ONE DOES
+          catalogue   serves the list of items shown in the shop
+          user        logins and registrations
+          cart        the shopping cart
+          shipping    finds the distance and calculates the price
+          payment     payments
+          dispatch    dispatches the product after purchase
+          frontend    serves the web content
+
+      ORDER I FOLLOWED
+          mongodb -> catalogue -> frontend -> redis -> user -> cart
+          -> mysql -> shipping -> rabbitmq -> payment
+
+
+  2. THE SETUP
+  ----------------------------------------------------------------------
+
+      One EC2 instance per component:
+          - standard RHEL practice image (AMI)
+          - t3.micro
+          - no key pair
+          - security group: allowed all
+
+      Connected to each instance in MobaXterm, one tab per component,
+      and followed the Roboshop documentation in each tab.
+
+      EVERY TAB STARTS WITH
+          sudo su -
+
+      ONE ROUTE 53 RECORD PER COMPONENT
+          mongodb.mohitsai.cloud      A   TTL 1   <private ip>
+          redis.mohitsai.cloud        A   TTL 1   <private ip>
+          catalogue.mohitsai.cloud    ... and so on
+
+          nslookup mongodb.mohitsai.cloud       to check
+
+      Use these names, not IPs, inside every service file.
+
+
+  3. THE PATTERN FOR EVERY APPLICATION COMPONENT
+  ----------------------------------------------------------------------
+
+      Only the runtime, the zip name and the service file change.
+
+      a) Install the runtime
+      b) Create the system user
+             useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+      c) mkdir /app
+      d) Download and unzip
+             curl -L -o /tmp/<name>.zip https://roboshop-artifacts.s3.amazonaws.com/<name>-v3.zip
+             cd /app
+             unzip /tmp/<name>.zip
+      e) Install dependencies / build
+      f) Write /etc/systemd/system/<name>.service
+      g) systemctl daemon-reload
+         systemctl enable <name>
+         systemctl start <name>
+      h) Load data into the database, if this component has any
+      i) Check
+             systemctl status <name>
+             netstat -lntp
+             ps -ef | grep node
+             curl http://localhost:8080/health
+             telnet <dependency-host> <port>
+
+
+  4. MONGODB TAB
+  ----------------------------------------------------------------------
+
+      vim /etc/yum.repos.d/mongo.repo        (paste the repo text)
+      dnf install mongodb-org -y
+      systemctl enable mongod
+      systemctl start mongod
+      systemctl status mongod
+      ps -ef | grep mongo
+      netstat -lntp
+
+      vim /etc/mongod.conf        bind 127.0.0.1 -> 0.0.0.0
+      systemctl restart mongod
+      netstat -lntp
+
+      Details: databases/02-nosql-and-mongodb.txt
+
+
+  5. CATALOGUE TAB
+  ----------------------------------------------------------------------
+
+      dnf module disable nodejs -y
+      dnf module enable nodejs:20 -y
+      dnf install nodejs -y
+
+      useradd ... roboshop
+      mkdir /app
+      curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+      cd /app
+      unzip /tmp/catalogue.zip
+      npm install
+
+      vim /etc/systemd/system/catalogue.service
+
+          [Unit]
+          Description = Catalogue Service
+
+          [Service]
+          User=roboshop
+          Environment=MONGO=true
+          Environment=MONGO_URL="mongodb://mongodb.mohitsai.cloud:27017/catalogue"
+          ExecStart=/bin/node /app/server.js
+          SyslogIdentifier=catalogue
+
+          [Install]
+          WantedBy=multi-user.target
+
+      nslookup mongodb.mohitsai.cloud
+      systemctl daemon-reload
+      systemctl enable catalogue
+      systemctl start catalogue
+
+      netstat -lntp
+      systemctl status catalogue
+      ps -ef | grep node
+      telnet mongodb.mohitsai.cloud 27017
+
+      LOAD THE PRODUCTS  (master data)
+          vim /etc/yum.repos.d/mongo.repo
+          dnf install mongodb-mongosh -y
+          mongosh --host mongodb.mohitsai.cloud </app/db/master-data.js
+
+      CHECK THE DATA
+          mongosh --host mongodb.mohitsai.cloud
+          show dbs
+          use catalogue
+          show collections
+          db.products.find()
+
+      Schemas come from the developer as part of the code.
+      Master data usually comes from the business operations team.
+
+
+  6. FRONTEND TAB
+  ----------------------------------------------------------------------
+
+      dnf module disable nginx -y
+      dnf module enable nginx:1.24 -y
+      dnf install nginx -y
+      systemctl enable nginx
+      systemctl start nginx
+
+      rm -rf /usr/share/nginx/html/*         remove existing content
+      curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+      cd /usr/share/nginx/html
+      unzip /tmp/frontend.zip
+
+      vim /etc/nginx/nginx.conf
+          Paste the full content from sir's 03-frontend.MD and
+          replace localhost with each component's host name.
+
+          Here we edit the real file directly. In Expense we did
+          not touch the real file.
+
+      nginx -t
+      systemctl restart nginx
+
+      Details: networking/04-nginx-and-proxies.txt
+
+
+  7. REDIS TAB
+  ----------------------------------------------------------------------
+
+      dnf module disable redis -y
+      dnf module enable redis:7 -y
+      dnf install redis -y
+
+      vim /etc/redis/redis.conf
+          127.0.0.1 -> 0.0.0.0     and     protected-mode no
+
+      systemctl enable redis
+      systemctl start redis
+      netstat -lntp
+
+      Route 53:  redis.mohitsai.cloud
+
+
+  8. USER TAB
+  ----------------------------------------------------------------------
+
+      Same as catalogue. NodeJS 20, roboshop user, /app.
+
+      curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
+
+      /etc/systemd/system/user.service
+
+          [Unit]
+          Description = User Service
+          [Service]
+          User=roboshop
+          Environment=MONGO=true
+          Environment=REDIS_URL='redis://redis.mohitsai.cloud:6379'
+          Environment=MONGO_URL="mongodb://mongodb.mohitsai.cloud:27017/users"
+          ExecStart=/bin/node /app/server.js
+          SyslogIdentifier=user
+
+          [Install]
+          WantedBy=multi-user.target
+
+      telnet mongodb.mohitsai.cloud 27017
+      telnet redis.mohitsai.cloud 6379
+      curl http://localhost:8080/health
+
+      MY DOUBT, ANSWERED
+          Q. In catalogue we used mongosh to load data. Why did we
+             not do that here?
+          A. Catalogue has data that must exist BEFORE the shop
+             opens: the product list in master-data.js. The user
+             component has nothing like that. Users are created
+             when someone registers on the site, and the app writes
+             them to MongoDB itself. Nothing to load, so no mongosh.
+
+
+  9. CART TAB
+  ----------------------------------------------------------------------
+
+      Same as catalogue, it is a NodeJS application. No client and
+      no data loading here, unlike catalogue.
+
+      curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip
+
+      /etc/systemd/system/cart.service
+
+          [Unit]
+          Description = Cart Service
+          [Service]
+          User=roboshop
+          Environment=REDIS_HOST=redis.mohitsai.cloud
+          Environment=CATALOGUE_HOST=catalogue.mohitsai.cloud
+          Environment=CATALOGUE_PORT=8080
+          ExecStart=/bin/node /app/server.js
+          SyslogIdentifier=cart
+
+          [Install]
+          WantedBy=multi-user.target
+
+
+  10. MYSQL TAB
+  ----------------------------------------------------------------------
+
+      dnf install mysql-server -y
+      systemctl enable mysqld
+      systemctl start mysqld
+      mysql_secure_installation --set-root-pass RoboShop@1
+      netstat -lntp
+
+
+  11. SHIPPING TAB
+  ----------------------------------------------------------------------
+
+      Written in Java. Installing maven brings java with it.
+      Needs java >= 1.8 and maven >= 3.5.
+
+      dnf install maven -y
+      useradd ... roboshop
+      mkdir /app
+      curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
+      cd /app                          <- do not skip this
+      unzip /tmp/shipping.zip
+
+      cd /app
+      mvn clean package
+      mv target/shipping-1.0.jar shipping.jar
+
+      /etc/systemd/system/shipping.service
+
+          [Unit]
+          Description=Shipping Service
+
+          [Service]
+          User=roboshop
+          Environment=CART_ENDPOINT=cart.mohitsai.cloud:8080
+          Environment=DB_HOST=mysql.mohitsai.cloud
+          ExecStart=/bin/java -jar /app/shipping.jar
+          SyslogIdentifier=shipping
+
+          [Install]
+          WantedBy=multi-user.target
+
+      systemctl daemon-reload
+      systemctl enable shipping
+      systemctl start shipping
+
+      LOAD THREE FILES INTO MYSQL, IN THIS ORDER
+          dnf install mysql -y
+
+          mysql -h mysql.mohitsai.cloud -uroot -pRoboShop@1 < /app/db/schema.sql
+          mysql -h mysql.mohitsai.cloud -uroot -pRoboShop@1 < /app/db/app-user.sql
+          mysql -h mysql.mohitsai.cloud -uroot -pRoboShop@1 < /app/db/master-data.sql
+
+          schema.sql        the tables
+          app-user.sql      the MySQL user the shipping app logs in
+                            with (MySQL expects password login)
+          master-data.sql   all countries and cities with distances
+
+      systemctl restart shipping
+
+      The restart is required. Shipping depends on the schema and
+      only works after it is loaded.
+
+
+  12. RABBITMQ TAB
+  ----------------------------------------------------------------------
+
+      vim /etc/yum.repos.d/rabbitmq.repo     (from sir's 09-rabbitmq.MD)
+      dnf install rabbitmq-server -y
+      systemctl enable rabbitmq-server
+      systemctl start rabbitmq-server
+
+      rabbitmqctl add_user roboshop roboshop123
+      rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+
+  13. PAYMENT TAB
+  ----------------------------------------------------------------------
+
+      Written in Python 3.
+
+      dnf install python3 gcc python3-devel -y
+      useradd ... roboshop
+      mkdir /app
+      curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
+      cd /app
+      unzip /tmp/payment.zip
+      pip3 install -r requirements.txt
+
+      /etc/systemd/system/payment.service
+
+          [Unit]
+          Description=Payment Service
+
+          [Service]
+          User=root
+          WorkingDirectory=/app
+          Environment=CART_HOST=cart.mohitsai.cloud
+          Environment=CART_PORT=8080
+          Environment=USER_HOST=user.mohitsai.cloud
+          Environment=USER_PORT=8080
+          Environment=AMQP_HOST=rabbitmq.mohitsai.cloud
+          Environment=AMQP_USER=roboshop
+          Environment=AMQP_PASS=roboshop123
+
+          ExecStart=/usr/local/bin/uwsgi --ini payment.ini
+          ExecStop=/bin/kill -9 $MAINPID
+          SyslogIdentifier=payment
+
+          [Install]
+          WantedBy=multi-user.target
+
+      systemctl daemon-reload
+      systemctl enable payment
+      systemctl start payment
+
+
+  14. DISPATCH   (in sir's document, I have not run it)
+  ----------------------------------------------------------------------
+
+      Written in Go.
+
+      dnf install golang -y
+      useradd ... roboshop
+      mkdir /app
+      curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip
+      cd /app
+      unzip /tmp/dispatch.zip
+
+      go mod init dispatch
+      go get
+      go build
+
+      /etc/systemd/system/dispatch.service
+
+          [Unit]
+          Description = Dispatch Service
+          [Service]
+          User=roboshop
+          Environment=AMQP_HOST=rabbitmq.mohitsai.cloud
+          Environment=AMQP_USER=roboshop
+          Environment=AMQP_PASS=roboshop123
+          ExecStart=/app/dispatch
+          SyslogIdentifier=dispatch
+
+          [Install]
+          WantedBy=multi-user.target
+
+      systemctl daemon-reload
+      systemctl enable dispatch
+      systemctl start dispatch
+
+
+  15. MISTAKES I ACTUALLY MADE   (from my run on 7 Oct 2026)
+  ----------------------------------------------------------------------
+
+      1. RAN dnf AS ec2-user          (mysql, shipping, payment tabs)
+         "Error: This command has to be run with superuser
+         privileges"  and  "useradd: Permission denied."
+         -> First command in every tab:  sudo su -
+
+      2. cd app  INSTEAD OF  cd /app                 (catalogue tab)
+         "-bash: cd: app: No such file or directory"
+         -> /app is at the top of the filesystem. Always the slash.
+
+      3. UNZIPPED SHIPPING IN /root, NOT /app         (shipping tab)
+         I skipped  cd /app . The code, the jar and the db folder
+         all landed in /root.
+         journalctl -u shipping showed:
+             "Error: Unable to access jarfile /app/shipping.jar"
+         I had to  mv /root/shipping.jar /app/shipping.jar  and load
+         the schema from /root/db/ instead of /app/db/.
+         -> Check  pwd  before every unzip.
+
+      4. SHIPPING FAILING BEFORE THE DATABASE WAS LOADED
+         journalctl -u shipping showed:
+             "HikariPool-1 - Exception during pool initialization"
+             "Public Key Retrieval is not allowed"
+         -> The app's MySQL user did not exist yet. Load schema.sql,
+            app-user.sql and master-data.sql, then restart shipping.
+
+      5. NGINX WOULD NOT RESTART                      (frontend tab)
+         nginx -t showed:
+             host not found in upstream "user.mohitsai.cloud"
+         -> The config named a component whose Route 53 record was
+            not created yet. Create all the records first.
+
+      6. telnet WITHOUT A PORT                            (user tab)
+         telnet mongodb.mohitsai.cloud      -> Connection refused
+         telnet mongodb.mohitsai.cloud 27017 -> Connected
+         -> telnet always needs the port.
+
+      7. TRIED TO READ /app/db/master-data.js ON THE MONGODB SERVER
+         "No such file or directory"
+         -> That file is part of the catalogue code. It exists only
+            on the catalogue server.
+
+
+  16. WHEN THE SITE DOES NOT WORK   (sir's order of checking)
+  ----------------------------------------------------------------------
+
+      Follow the request:
+          frontend logs -> backend component logs -> is the DB fine?
+
+      The usual causes:
+          1. Frontend nginx config. Recheck it.
+          2. The backend may not be running.
+          3. Data is not loaded into the DB.
+          4. The database is not running.
+          5. DNS records are not updated.
+
+      Tools:
+          Browser > Inspect > Network       which API is failing
+          less /var/log/nginx/access.log    on the frontend box
+          less /var/log/messages
+          journalctl -u <component>
+
+      The app writes one JSON log line per request, with the method,
+      url, statusCode and responseTime in it.
+
+      502   proxy could not reach the component   -> it is down
+      500   proxy reached it, bad response        -> it is broken
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. Explain the Roboshop project.
+
+          SAY THIS: "Roboshop is a lab project, an e-commerce
+          application built as microservices. A frontend on Nginx,
+          backend services in NodeJS, Java and Python, and four data
+          stores: MongoDB, MySQL, Redis and RabbitMQ. I deployed
+          each component by hand on its own EC2 instance and
+          connected them with Route 53 DNS names."
+
+
+  [+] Q2. Which components depend on which?
+
+          catalogue -> mongodb
+          user      -> mongodb, redis
+          cart      -> redis, catalogue
+          shipping  -> cart, mysql
+          payment   -> cart, user, rabbitmq
+          frontend  -> all the backend components
+
+          So the data stores come up first, then the components that
+          need them, and the frontend last.
+
+
+  [+] Q3. Why DNS names instead of IP addresses in the configs?
+
+          A private IP changes when a server is recreated. With IPs
+          I would have to edit every service file that points to it.
+          With a DNS name I update one record and nothing else
+          changes.
+
+
+  [+] Q4. The site opens but the products are not showing. How do
+          you troubleshoot?
+
+          Follow the request, front to back:
+
+          1. Browser > Inspect > Network. Which API call is failing
+             and with what status code?  (/api/catalogue/...)
+          2. Frontend: nginx config and /var/log/nginx logs. Is the
+             proxy_pass for catalogue correct?
+          3. Catalogue server: systemctl status, journalctl -u
+             catalogue, curl localhost:8080/health
+          4. Can catalogue reach MongoDB?  telnet <mongodb> 27017
+          5. Is the data loaded?  mongosh, db.products.find()
+
+          A 502 points at step 3. A 200 with an empty list points
+          at step 5.
+
+
+  [+] Q5. Tell me about a problem you faced and how you solved it.
+
+          Use this shape: what I saw, how I found the cause, the
+          fix, what I do now.
+
+          "The shipping service would not start. systemctl only said
+          it failed, so I checked journalctl -u shipping, which
+          showed 'Unable to access jarfile /app/shipping.jar'. I had
+          unzipped the code without changing to /app first, so the
+          jar was built in /root. I moved it to /app and restarted,
+          and that error was gone. Now I check pwd before unzipping,
+          and when a service fails I go to journalctl first."
+
+          If they ask "and then it worked?": no. The next error was
+          the database connection, because the schema was not loaded
+          yet. That is a second honest story, in section 15.
+
+          The nginx one in section 15 (missing DNS record) is an
+          equally good answer. Both really happened.
+
+
+  [+] Q6. What was the hardest part, and what would you improve?
+
+          "Doing ten servers by hand. The same steps repeated with
+          small differences, and I made the same kind of mistake
+          more than once, like running commands as the wrong user.
+          It is not repeatable. The improvement is automation: a
+          script per component first, then configuration management
+          and infrastructure as code."
+
+          BE HONEST about where you are: say what you have actually
+          automated so far, and nothing beyond it.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Databases first, then the components that need them.
+      sudo su -  and  cd /app  before anything else.
+      Create the Route 53 record as soon as the server is up.
+      Service file changed?  daemon-reload, then restart.
+========================================================================

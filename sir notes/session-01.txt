@@ -1,0 +1,195 @@
+SDLC
+=====
+Software Development Life cycle
+
+Requirements
+Planning
+Analyse
+Construction
+Testing
+Handover
+Maintainance
+
+Business and Technology -> reduce cost, stability, relaibility, increase business
+
+Business Analyst
+
+Requirements gathering
+Analyse
+Design the system
+Development
+Testing
+Deployment
+Maintainance and Monitoring
+
+Waterfall vs Agile vs Agile with DevOps
+
+Yearly Health checks -> DEC 2026, max 50% chances -> Waterfall
+Monthly Health checks -> 80% chances to prevent -> Agile
+Apple watch -> DevOps -> Continous feedback
+
+Stakeholders -> Who is part of the system
+
+School -> Parents, Students, teachers, management, non teaching staff, investors, Government
+
+Project -> RBI, Government, Banking management, investors, bod, developers, testing, admin, devops and cloud, Support, reports, monitoring, etc.
+
+50 years back model
+=========
+Final Exam
+
+Parents -> Daily worry
+Teachers -> 3 months
+Students -> 60 days before
+
+30-40% pass percentage
+
+
+Process change -> Unit tests -> I, II, III, IV, V, Quarterly, half yearly, pre-final, final
+
+1 month
+========
+unit test - I
+teachers -> must complete syllabus
+students -> 1 week before
+
+result -> 30% pass
+parents -> 
+
+unit test - II
+=========
+teachers -> must complete syllabus
+students -> 2 weeks before
+
+result -> 40% pass
+parents teachers meeting
+||
+||
+||
+||
+||
+final
+80-90% pass percentage
+
+daily slip tests
+200 exams -> 200 feedbacks
+student -> DAY-1
+
+99.9% pass
+
+if you test a system 1 time, you get 10 defects
+if you test a system 100 times, you get aleast 11 defects
+
+DEV, QA, SIT, UAT, PERF, PRE-PROD, PROD
+
+formula -> test the drink -> DEV
+employees -> taste the drink, take feedback -> QA
+friends and family members -> take feedback -> SIT
+random group -> take feedback -> UAT
+
+Fassai -> take certification -> Client approval
+
+release to public market -> PROD
+
+Waterfall
+==========
+3 years -> 30cr
+clients
+tech team -> 
+6 months, 7 months
+development
+testing -> free, operations, build and release
+
+testing -> 100 defects
+developers -> free
+
+100 defects -> analyse 40 invalid defects
+working in DEV not working in PROD
+ambassdor
+
+
+Agile
+========
+modules -> user, cart, catalogue, shipping, payment, order management, reviews, delivery, etc..
+
+sprints -> 1 month
+user -> login,signup, forgot password, otps...
+1 month
+
+15 days development, 15 days deployment and testing
+
+developers -> from DAY-1
+testing -> day -> 10
+
+10 defects -> 3 invalid defects
+end of the month -> show something
+
+2 defects
+
+sprint-II
+=========
+2 defects backlog
+catalogue module completion
+DM, CSM -> what you did yesterday, what are you doing today, anything blocking you
+
+Digital revolution/transformation
+=================================
+Daily tests
+
+enter your first name -> 
+enter your last name ->
+
+success test cases -> right inputs, result fail -> failure
+failure test cases -> failure input, result succes -> failure
+
++ve, -ve test cases
+10 test cases -> less chances for invalid defects, 2 invalid defects
+productivitiy, co-ordination, cooperation
+
+build errors
+functionality/development errors
+deployment errors
+
+IDBI -> 5% market share
+100cr revenue
+invest some amount on technology, reduce cost by moving from waterfall to devops, cloud
+
+
+DevOps is the process of  building, deploying and testing the applications continuosly. basically if we can deploy and test the code on the same day we can get maximum feedback cycles to improve our product...
+Ofcourse we use multiple tools to make this process smooth. continuos development, integration, deployment, delivery, testing, monitoring, application security etc part of devops
+
+15th JULY -> AWS free tier is different
+6 months -> 100$ credits + 100$ credits
+
+debit and credit
+international transformations enable -> netbanking, online spending, etc.
+	SBI, Rupay try to avoid.. 
+	call to customer care
+use bank address while creating account
+give pan card, no problem
+try to give first name and last name matching to card
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

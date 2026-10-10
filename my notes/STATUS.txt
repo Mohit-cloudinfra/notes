@@ -1,0 +1,137 @@
+========================================================================
+  STATUS   -   how much of the course is in the bible
+========================================================================
+
+  Last updated:   10 Oct 2026
+  Covered up to:  session 12  (Roboshop manual setup complete)
+
+  OVERALL         [##--------------]   12 of 89 sessions
+
+
+  HOW TO READ THIS
+  ----------------------------------------------------------------------
+      done       in the bible, built from class notes
+      thin       in the bible, but the notes had very little
+      not yet    I have not reached this session, nothing written
+
+      The session numbers are only for tracking against sir's
+      syllabus. The bible itself is organised by topic.
+
+
+  WHAT IS DEVOPS                              [################]  100%
+  ----------------------------------------------------------------------
+    SDLC                              done    devops-basics/01
+    Waterfall vs Agile vs DevOps      done    devops-basics/01
+    Different environments            done    devops-basics/02
+    What is DevOps                    done    devops-basics/01
+
+
+  LINUX                                       [#############---]   81%
+  ----------------------------------------------------------------------
+    Computer elements                 done    linux/01
+    Windows vs Linux                  done    linux/01
+    Client server architecture        done    networking/01
+    Authentication mechanisms         done    linux/07
+    Public key and private key        done    linux/07
+    Firewall creation                 done    aws/01, networking/01
+    Launching EC2, connect to EC2     done    aws/01
+    Linux commands                    done    linux/02, linux/03
+    Vim editor                        done    linux/04
+    User management                   done    linux/05
+    Tar command                       done    linux/05
+    Permissions and ownership         done    linux/06
+    Key authentication of users       done    linux/07
+    Package management                done    linux/08
+    Service management                done    linux/09
+    Network management                done    linux/09
+    Process management                done    linux/10
+    --- Linux Advanced ---
+    Filesystem hierarchy              not yet   (session 13)
+    Hard disk vs network disk         not yet   (session 13)
+    Adding / resizing a disk          not yet   (session 13)
+    Inode, symlink, hardlink          not yet   (session 14)
+
+
+  ARCHITECTURE                                [################]  100%
+  ----------------------------------------------------------------------
+    3 tier architecture               done    architecture/01
+    Enterprise, monolith, micro       done    architecture/02
+    Java project structure            done    architecture/03
+    Python project structure          thin    architecture/03
+    Languages and build tools         done    architecture/03
+
+
+  NETWORKING AND DNS                          [################]  100%
+  ----------------------------------------------------------------------
+    Public IP vs private IP           done    networking/01
+    Forward vs reverse proxy          done    networking/04
+    Nginx                             done    networking/04
+    DNS, root servers, TLD            done    networking/02
+    Domain registrars, buying         done    networking/02
+    Hosted zone in AWS, A record      done    networking/02
+    DNS records                       done    networking/02
+    HTTP methods and APIs             done    networking/03
+    HTTP status codes                 done    networking/03
+
+
+  DATABASES                                   [################]  100%
+  ----------------------------------------------------------------------
+    SQL and MySQL                     done    databases/01
+    NoSQL and MongoDB                 done    databases/02
+    Redis                             done    databases/03
+    Queue, pub/sub, RabbitMQ          done    databases/04
+
+
+  PROJECTS                                    [################]  100%
+  ----------------------------------------------------------------------
+    Expense (DB, backend, frontend)   done    projects/01
+    Roboshop, all components          done    projects/02
+        dispatch is from sir's document only, I have not run it
+
+
+  GIT                                         [----------------]    0%
+    Version control, git commands     not yet   (session 14)
+    Branches, PR, merge, rebase       not yet   (sessions 71-73)
+
+  SHELL SCRIPTING                             [----------------]    0%
+    Sessions 15-20                    not yet
+
+  ANSIBLE                                     [----------------]    0%
+    Sessions 21-29                    not yet
+
+  TERRAFORM                                   [----------------]    0%
+    Sessions 30-48                    not yet
+
+  DOCKER                                      [----------------]    0%
+    Sessions 49-54                    not yet
+
+  KUBERNETES                                  [----------------]    0%
+    Sessions 55-71                    not yet
+
+  CI/CD  (Jenkins, GitHub Actions)            [----------------]    0%
+    Sessions 73-81                    not yet
+
+  MONITORING, ELK, ARGOCD, DAST               [----------------]    0%
+    Sessions 82-85                    not yet
+
+  PYTHON                                      [----------------]    0%
+    Sessions 86-89                    not yet
+
+
+  PHOTO BATCHES PROCESSED
+  ----------------------------------------------------------------------
+    Batch         Photos   Covered                       Moved to
+    -----------   ------   ---------------------------   ---------------
+    08 Oct 2026   21       Linux basics through          handwritten/
+                           Roboshop (sessions 2-11)      processed/
+                                                         2026-10-08/
+
+
+  OPEN ITEMS
+  ----------------------------------------------------------------------
+    - The last handwritten page stops at "In mysql tab" with nothing
+      under it. MySQL, shipping, rabbitmq and payment were filled
+      from sir's document and my own run logs.
+    - No notes from sir exist for session 80. The syllabus index
+      also skips 78-80.
+========================================================================

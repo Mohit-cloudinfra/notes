@@ -1,0 +1,136 @@
+========================================================================
+  DATABASES  >  QUEUES, PUB/SUB AND RABBITMQ
+========================================================================
+
+  IN ONE LINE
+  A queue lets one application drop a message and move on, while
+  another application picks it up whenever it is ready.
+
+
+  1. SYNCHRONOUS vs ASYNCHRONOUS
+  ----------------------------------------------------------------------
+
+      SYNCHRONOUS  = request and wait          (http)
+          The caller waits. With http it waits 30 seconds, and if
+          the server is not responding it gives an error.
+
+      ASYNCHRONOUS = fire and forget           (mail, WhatsApp)
+          Send it and carry on. The other side reads it later.
+
+      Example:   order placed  ->  delivery details
+                 The order does not wait for delivery to finish.
+
+      Tools:  ActiveMQ, IBM MQ, RabbitMQ, Kafka
+
+
+  2. WHY USE A QUEUE
+  ----------------------------------------------------------------------
+
+      - No waiting, good user experience
+      - Scalability
+      - Reliability
+      - Loose coupling
+            (tight coupling = one system depending directly on
+            another)
+      - Queue management: FIFO, first in first out
+
+
+  3. QUEUE vs PUB/SUB
+  ----------------------------------------------------------------------
+
+      QUEUE  =  1 to 1
+
+          [Ramesh] ------> [ Queue ] <------ [Suresh]
+          producer                           consumer
+
+          Producer   who is sending the message
+          Consumer   who is consuming the message
+
+      PUB/SUB  =  1 to many
+
+                                         +--- subscriber
+          [Ramesh] ------> [ topic ] <---+--- subscriber
+          publisher                      +--- subscriber
+
+          Publisher    who is sending the message
+          Subscriber   who is following
+
+
+  4. INSTALLING RABBITMQ
+  ----------------------------------------------------------------------
+
+      The developer shares the version: RabbitMQ 3.x
+
+      1. Create the repo file (long, copy it from sir's document):
+             vim /etc/yum.repos.d/rabbitmq.repo
+             -> sir documents/roboshop-documentation-main/09-rabbitmq.MD
+
+      2. dnf install rabbitmq-server -y
+
+      3. systemctl enable rabbitmq-server
+         systemctl start rabbitmq-server
+
+      4. Create a user for the application.
+         RabbitMQ comes with a default user  guest / guest , but
+         that user cannot be used to connect from another server.
+
+         rabbitmqctl add_user roboshop roboshop123
+         rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+         add_user alone is not enough. Without set_permissions the
+         user exists but can do nothing.
+
+  [+] RabbitMQ listens on port 5672. Check with:
+  [+]     netstat -lntp
+  [+]     telnet rabbitmq.mohitsai.cloud 5672     (from payment)
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between synchronous and
+          asynchronous communication?
+
+          Synchronous: the caller sends a request and waits for the
+          answer. HTTP calls work this way.
+          Asynchronous: the caller drops a message in a queue and
+          carries on. The receiver handles it when it can.
+
+
+  [+] Q2. Why use a message queue?
+
+          - The user does not wait for slow work to finish
+          - The two services do not depend on each other being up
+            at the same moment (loose coupling)
+          - A sudden rush of requests waits in the queue instead of
+            crashing the receiver
+
+
+  [+] Q3. What happens if the consumer is down?
+
+          The messages stay in the queue. When the consumer comes
+          back it picks them up from where it left off. Nothing is
+          lost, it is only delayed. With a direct HTTP call the
+          request would simply have failed.
+
+
+  [+] Q4. What is the difference between a queue and pub/sub?
+
+          Queue: each message is taken by ONE consumer. One to one.
+          Pub/sub: each message is delivered to EVERY subscriber.
+          One to many.
+
+
+  [+] Q5. Where was RabbitMQ used in your project?
+
+          In Roboshop, payment sends a message to RabbitMQ after a
+          payment, and dispatch picks it up to dispatch the order.
+          Payment does not wait for dispatch.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      http = wait.       queue = fire and forget.
+      Queue 1 to 1.      Pub/Sub 1 to many.
+      RabbitMQ needs its own user AND its permissions.
+========================================================================

@@ -1,0 +1,91 @@
+merge vs rebase
+branching strategy
+	* Git flow
+	* github flow/feature branching strategy
+reset, revert
+squash/interactive-rebase
+stash
+
+cherry-pick
+============
+when you want only a certain commit/changes in another branch we can go for cherry-pick. 
+
+C1 C2 C3 C4
+C2-C1 = a particular feature
+
+git cherry-pick C2
+
+a hot fix came, fixed it in hot-fix branch...directly deployed into PROD. you can get that code as cherry-pick into release branch
+
+CI(Continous Integration)
+=========================
+Image/AMI build
+Infra creation
+commands to deploy k8 applications
+
+application is an artifact
+build the application
+test the application
+scan the code
+deploy the application
+
+3 months sprint, once everyone says development completed then they go for deployment in DEV
+
+shift-left
+===========
+instead of testing and scanning the application after deployment can introduce lot of issues, fixing them takes more cycles again and again. but we can shift this before deployment
+
+functional defects -> functionality is not working as expected
+build errors -> you can't build image/ami
+deployment errors ->
+
+it is a process of integrating code into artifact. we can trigger this CI after every commit into git...we can also follow shift-left, we can do testing and scanning the code before build..
+
+Jenkins and GitHub actions
+===========================
+1. Complete control with us, We must depend on GitHub
+2. We need to main extra CI server and take care of upgrade, patching, etc...No need of extra server for GitHub. We must use GitHub as coding platform.
+
+logs, visualisation, rbac, diff platforms testing, etc..
+plugins add extra capabilities to jenkins
+
+
+CI
+==
+sudo curl -o /etc/yum.repos.d/jenkins.repo     https://pkg.jenkins.io/rpm-stable/jenkins.repo
+
+freestyle job
+=============
+code directly in jenkins
+accidental changes
+cant easily track who did that changes
+tough to restore
+no version control
+
+pipeline
+========
+we can keep the code in git
+
+declarative vs scripted pipeline
+==================================
+
+scripted -> old pipeline, groovy syntax. before pipeline it can't check for errors. at run time if error comes it will exit. we have more control to write scripts
+declarative -> latest pipline from jenkins 2.0. it allows groovy syntax, but before execution it check for errors
+
+we use a hybrid approach, we have script block in our declarative pipeline to have more control on the stages
+
+Master and Node architecture
+============================
+
+pre-build
+build
+post-build
+
+TRIGGERS
+=========
+web-hooks
+
+event driven
+
+if someone commits to git repo, we can trigger this pipeline
+

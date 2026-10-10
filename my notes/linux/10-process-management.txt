@@ -1,0 +1,177 @@
+========================================================================
+  LINUX  >  PROCESS MANAGEMENT
+========================================================================
+
+  IN ONE LINE
+  Whatever task you give Linux, it first creates a process with an
+  id (PID), works on it, gives the result and ends the process.
+
+
+  1. PARENT AND CHILD
+  ----------------------------------------------------------------------
+
+      SIR'S OFFICE STORY
+          DM      -> creates a task in his to-do list, assigns to TL
+          TL      -> creates a task in his to-do list, assigns to SE
+          SE      -> creates a task in his to-do list, assigns to
+                     the fresher
+          Fresher -> creates a task in his to-do list and COMPLETES it
+
+          Who is the parent of TL?  The DM.
+
+      IN LINUX
+          PID     Process Instance ID
+          PPID    Parent Process ID
+
+          The root processes are PID 0 and PID 1.
+
+              PID     PPID
+               2       0
+               3       1
+
+
+  2. LOOKING AT PROCESSES
+  ----------------------------------------------------------------------
+
+      ps              processes started by the current user
+      ps -ef          every process, with full details
+
+      UID    PID  PPID  C STIME TTY      TIME CMD
+      root     1     0  0 01:52 ?    00:00:01 /usr/lib/systemd/systemd
+      root     2     0  0 01:52 ?    00:00:00 [kthreadd]
+      root     3     2  0 01:52 ?    00:00:00 [rcu_gp]
+
+      ps -ef | grep nginx         find one process
+      ps -ef | grep sleep
+
+      top             how much CPU and memory is being consumed
+
+
+  3. FOREGROUND AND BACKGROUND
+  ----------------------------------------------------------------------
+
+      Foreground process    blocks the screen, we can't do anything
+      Background process    runs behind, the screen stays free
+
+      sleep 10              foreground, screen is stuck for 10 sec
+      sleep 10 &            background. Add & to send it behind
+
+
+  4. KILLING A PROCESS
+  ----------------------------------------------------------------------
+
+      kill <PID>            ask it to stop
+      kill -9 <PID>         if that does not work, stop it forcefully
+
+  [+] WHAT THEY REALLY SEND   (interviewers ask this)
+
+  [+]     kill <PID>       sends signal 15, called SIGTERM.
+  [+]                      A polite request. The process gets time
+  [+]                      to save its work, close files and exit.
+  [+]                      It can also ignore the request.
+
+  [+]     kill -9 <PID>    sends signal 9, called SIGKILL.
+  [+]                      The process is not even told. Linux
+  [+]                      removes it on the spot. No saving, no
+  [+]                      clean-up, and it cannot be ignored.
+
+  [+] That is why the order is always: kill first, and kill -9 only
+  [+] when the process refuses to stop. Using -9 on a database can
+  [+] leave half-written data behind.
+
+
+  5. SIR'S PRODUCTION STORY
+  ----------------------------------------------------------------------
+
+      One person in production had to run a PLSQL script (a scripting
+      language for databases). It normally takes about 30 minutes.
+
+      He was in MySQL Workbench, connected to the production server.
+      He clicked Run. Twenty minutes passed with nothing on screen.
+
+      He was not aware whether it was running, so he clicked the Run
+      button again. And again. Thirty to thirty-five times.
+
+      Each click created a new process.
+      Each process consumed CPU, RAM and hard disk.
+      All that load went onto the server. The application hanged and
+      was down for one hour.
+
+      THE LESSON
+          Every time a process is created, CPU, RAM and HD are
+          consumed.
+
+      WHAT TO DO WHEN THIS HAPPENS
+          1. top                see how much CPU and memory is used
+          2. Get all the logs   server logs, app logs, DB logs,
+                                heap dump, etc.
+          3. Kill the process and restart the services
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What are PID and PPID?
+
+          PID is the id of a process. PPID is the id of the process
+          that started it, its parent. Every process has a parent.
+
+
+  [+] Q2. What is PID 1?
+
+          systemd. It is the first process started when the server
+          boots, and it starts everything else. That is why
+          systemctl is the tool that manages services.
+
+          You can see it in  ps -ef :  PID 1, PPID 0.
+
+
+  [+] Q3. What is the difference between kill and kill -9?
+
+          kill sends signal 15 (SIGTERM): a polite request, the
+          process can save its work and exit cleanly.
+          kill -9 sends signal 9 (SIGKILL): the process is removed
+          immediately with no clean-up, and cannot refuse.
+
+          Always try kill first.
+
+
+  [+] Q4. A server is slow or CPU is at 100%. What do you do?
+
+          1. top                 which process is using the CPU or
+                                 memory
+          2. ps -ef | grep <it>  what it is and who started it
+          3. Check its logs      why is it doing that
+          4. Collect the logs, then restart the service or kill the
+             process
+
+          Sir's story is the perfect example: a script was started
+          30+ times because nobody checked whether it was already
+          running. Every click was a new process eating CPU and RAM.
+
+
+  [+] Q5. How do you run a command in the background?
+
+              sleep 100 &
+
+          Add & at the end. The screen is free immediately.
+
+
+  [+] Q6. What is a zombie process?
+
+          A process that has finished, but its parent has not yet
+          collected its result, so its entry is still in the process
+          list. It shows as Z or <defunct> in ps.
+
+          It uses no CPU or memory. You cannot kill it because it is
+          already dead. The fix is on the parent: restart or fix the
+          parent process and the zombie disappears.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      PID = this process       PPID = who started it
+      &   = run in background
+      kill, and only then kill -9
+      Collect the logs BEFORE you kill and restart.
+========================================================================

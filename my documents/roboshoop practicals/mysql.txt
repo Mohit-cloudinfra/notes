@@ -1,0 +1,127 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@100.30.199.92                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Tue Jan 13 18:30:33 2026 from 106.195.65.196
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ ec2-user@ip-172-31-40-24 ~ ]$ dnf install mysql-server -y
+Error: This command has to be run with superuser privileges (under the root user on most systems).
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ ec2-user@ip-172-31-40-24 ~ ]$ sudo su -
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]# dnf install mysql-server -y
+Last metadata expiration check: 0:14:50 ago on Wed Oct  7 16:13:26 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                                      Architecture             Version                             Repository                                    Size
+==============================================================================================================================================================
+Installing:
+ mysql-server                                 x86_64                   8.0.46-1.el9_8                      rhel-9-appstream-rhui-rpms                    17 M
+Installing dependencies:
+ mariadb-connector-c-config                   noarch                   3.2.6-2.el9_8                       rhel-9-appstream-rhui-rpms                    14 k
+ mecab                                        x86_64                   0.996-3.el9.4                       rhel-9-appstream-rhui-rpms                   360 k
+ mysql                                        x86_64                   8.0.46-1.el9_8                      rhel-9-appstream-rhui-rpms                   2.7 M
+ mysql-common                                 x86_64                   8.0.46-1.el9_8                      rhel-9-appstream-rhui-rpms                    79 k
+ mysql-errmsg                                 x86_64                   8.0.46-1.el9_8                      rhel-9-appstream-rhui-rpms                   515 k
+ mysql-selinux                                noarch                   1.0.14-1.el9_6                      rhel-9-appstream-rhui-rpms                    36 k
+ protobuf-lite                                x86_64                   3.14.0-17.el9_7                     rhel-9-appstream-rhui-rpms                   238 k
+
+Transaction Summary
+==============================================================================================================================================================
+Install  8 Packages
+
+Total download size: 21 M
+Installed size: 180 M
+Downloading Packages:
+(1/8): mysql-selinux-1.0.14-1.el9_6.noarch.rpm                                                                                912 kB/s |  36 kB     00:00
+(2/8): protobuf-lite-3.14.0-17.el9_7.x86_64.rpm                                                                               5.0 MB/s | 238 kB     00:00
+(3/8): mecab-0.996-3.el9.4.x86_64.rpm                                                                                         6.5 MB/s | 360 kB     00:00
+(4/8): mysql-common-8.0.46-1.el9_8.x86_64.rpm                                                                                 7.1 MB/s |  79 kB     00:00
+(5/8): mysql-errmsg-8.0.46-1.el9_8.x86_64.rpm                                                                                  29 MB/s | 515 kB     00:00
+(6/8): mariadb-connector-c-config-3.2.6-2.el9_8.noarch.rpm                                                                    2.1 MB/s |  14 kB     00:00
+(7/8): mysql-8.0.46-1.el9_8.x86_64.rpm                                                                                         43 MB/s | 2.7 MB     00:00
+(8/8): mysql-server-8.0.46-1.el9_8.x86_64.rpm                                                                                  99 MB/s |  17 MB     00:00
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                          73 MB/s |  21 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Installing       : mariadb-connector-c-config-3.2.6-2.el9_8.noarch                                                                                      1/8
+  Installing       : mysql-common-8.0.46-1.el9_8.x86_64                                                                                                   2/8
+  Installing       : mysql-8.0.46-1.el9_8.x86_64                                                                                                          3/8
+  Installing       : mysql-errmsg-8.0.46-1.el9_8.x86_64                                                                                                   4/8
+  Installing       : protobuf-lite-3.14.0-17.el9_7.x86_64                                                                                                 5/8
+  Running scriptlet: mysql-selinux-1.0.14-1.el9_6.noarch                                                                                                  6/8
+  Installing       : mysql-selinux-1.0.14-1.el9_6.noarch                                                                                                  6/8
+  Running scriptlet: mysql-selinux-1.0.14-1.el9_6.noarch                                                                                                  6/8
+  Installing       : mecab-0.996-3.el9.4.x86_64                                                                                                           7/8
+  Running scriptlet: mysql-server-8.0.46-1.el9_8.x86_64                                                                                                   8/8
+  Installing       : mysql-server-8.0.46-1.el9_8.x86_64                                                                                                   8/8
+  Running scriptlet: mysql-server-8.0.46-1.el9_8.x86_64                                                                                                   8/8
+  Running scriptlet: mysql-selinux-1.0.14-1.el9_6.noarch                                                                                                  8/8
+  Running scriptlet: mysql-server-8.0.46-1.el9_8.x86_64                                                                                                   8/8
+  Verifying        : mecab-0.996-3.el9.4.x86_64                                                                                                           1/8
+  Verifying        : mysql-selinux-1.0.14-1.el9_6.noarch                                                                                                  2/8
+  Verifying        : protobuf-lite-3.14.0-17.el9_7.x86_64                                                                                                 3/8
+  Verifying        : mysql-8.0.46-1.el9_8.x86_64                                                                                                          4/8
+  Verifying        : mysql-common-8.0.46-1.el9_8.x86_64                                                                                                   5/8
+  Verifying        : mysql-errmsg-8.0.46-1.el9_8.x86_64                                                                                                   6/8
+  Verifying        : mysql-server-8.0.46-1.el9_8.x86_64                                                                                                   7/8
+  Verifying        : mariadb-connector-c-config-3.2.6-2.el9_8.noarch                                                                                      8/8
+
+Installed:
+  mariadb-connector-c-config-3.2.6-2.el9_8.noarch mecab-0.996-3.el9.4.x86_64          mysql-8.0.46-1.el9_8.x86_64        mysql-common-8.0.46-1.el9_8.x86_64
+  mysql-errmsg-8.0.46-1.el9_8.x86_64              mysql-selinux-1.0.14-1.el9_6.noarch mysql-server-8.0.46-1.el9_8.x86_64 protobuf-lite-3.14.0-17.el9_7.x86_64
+
+Complete!
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]# systemctl enable mysqld
+Created symlink /etc/systemd/system/multi-user.target.wants/mysqld.service → /usr/lib/systemd/system/mysqld.service.
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]# systemctl start mysqld
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]# mysql_secure_installation --set-root-pass RoboShop@1
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1258/sshd: /usr/sbi
+tcp6       0      0 :::22                   :::*                    LISTEN      1258/sshd: /usr/sbi
+tcp6       0      0 :::3306                 :::*                    LISTEN      14996/mysqld
+tcp6       0      0 :::33060                :::*                    LISTEN      14996/mysqld
+
+100.30.199.92 | 172.31.40.24 | t3.micro | null
+[ root@ip-172-31-40-24 ~ ]#

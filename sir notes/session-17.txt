@@ -1,0 +1,57 @@
+1. ami_id
+2. sg_id
+
+authenticate
+t3.micro, ami_id, sg_id
+
+aws configure
+
+sh roboshop.sh mongodb catalogue
+
+$@
+
+for instance in $@
+do
+	echo $instance
+done
+
+aws ec2 run-instances --image-id <ami-id> --instance-type <instance-type> --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyNewInstance}]' --query 'Instances[0].InstanceId' --output text
+
+aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t3.micro --security-group-ids sg-076ec9ad23dab2b28 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" 
+
+i-01d7830788a10d3d3
+
+aws ec2 describe-instances --instance-ids i-01d7830788a10d3d3 --query 'Reservations[].Instances[].PublicIpAddress' --output text
+
+create instance and get the instance id..
+
+check if frontend or not
+	if frontend get the public ip
+	else get the private ip
+
+aws route53 change-resource-record-sets --hosted-zone-id HOSTED-ZONE-ID --change-batch file://change-batch.json
+
+1. check root user or not
+2. if root user continue, otherwise error
+3. colors
+4. logs
+5. validate function
+
+sed editor -> streamline editor
+
+insert text after line 1
+
+sed '1a Hi' users -> add the text after line 1, temporary edit only on screen. for perm use -i option
+
+sed '1i Hello' users -> before line 1
+sed '/sbin/d' -> deletes all the lines with text matching sbin/d
+sed '2d' -> delete 2nd line
+
+sed '2s/sbin/SBIN/g' users -> replace sbin with SBIN in 2nd line all occurences
+
+sed 's/sbin/SBIN/g' -> all lines all occurences
+
+idempotency -> if you run the script any number of times, it should give the same result
+
+
+

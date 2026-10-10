@@ -1,0 +1,118 @@
+========================================================================
+  LINUX  >  VIM EDITOR
+========================================================================
+
+  IN ONE LINE
+  vim has three modes. Knowing which mode you are in is 90% of vim.
+
+      vim <file-name>       opens the file, creates it if not there
+
+  (vim = Vi IMproved)
+
+
+  1. THE THREE MODES
+  ----------------------------------------------------------------------
+
+      +------------+    :     +------------+    i     +-------------+
+      | COLON MODE | <------- |  ESC MODE  | -------> | INSERT MODE |
+      | (commands) | -------> | (default)  | <------- |  (typing)   |
+      +------------+   Esc    +------------+   Esc    +-------------+
+
+      Esc    always brings you back to Esc mode
+      i      Esc mode -> Insert mode
+      :      Esc mode -> Colon mode
+
+
+  2. COLON MODE
+  ----------------------------------------------------------------------
+
+      SAVE AND QUIT
+          :q            quit
+          :wq           save the file and quit
+          :q!           force quit, don't save any changes
+
+      MOVING AND VIEWING
+          :set nu       display line numbers
+          :15           move the cursor to line 15
+          :noh          don't highlight anything
+
+      SEARCHING
+          :/word        search top to bottom
+          :?word        search bottom to top
+
+      DELETING
+          :<line-number>d       delete that line
+          :%d                   delete everything
+
+      SUBSTITUTING  (find and replace)
+          :s/<find>/<replace>
+                  current line, first occurrence
+          :<line-number>s/<find>/<replace>
+                  that line, first occurrence
+          :<line-number>s/<find>/<replace>/g
+                  that line, ALL occurrences
+          :%s/<find>/<replace>
+                  all lines, first occurrence in each
+          :%s/<find>/<replace>/g
+                  all lines, ALL occurrences
+
+          %  = every line          g  = every occurrence in the line
+
+
+  3. ESC MODE
+  ----------------------------------------------------------------------
+
+      gg            takes you to the top of the file
+      Shift + g     takes you to the bottom
+
+      u             undo
+      Ctrl + r      redo
+
+      dd            deletes (cuts) the line
+      yy            copies the line
+      p             pastes below the line
+      Shift + p     pastes above the line
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  Vim is rarely asked as theory. It gets tested when they watch you
+  edit a file, so these must be in your fingers.
+
+  [+] Q1. How do you save and quit? And quit without saving?
+
+              Esc  :wq       save and quit
+              Esc  :q!       quit, throw away the changes
+
+
+  [+] Q2. Replace a word everywhere in the file.
+
+              :%s/old/new/g
+
+          % = every line.  g = every occurrence in each line.
+          Without g only the first one in each line changes.
+
+
+  [+] Q3. Jump to line 51 and show line numbers.
+
+              :51
+              :set nu
+
+          FROM MY OWN RUN: nginx -t said the problem was at
+          "/etc/nginx/nginx.conf:51". Open the file, type :51 and you
+          are on the broken line.
+
+
+  [+] Q4. You made a wrong change. How do you undo it?
+
+              Esc  u            undo
+              Ctrl + r          redo
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Stuck?  Press Esc.
+      :wq   save and quit         :q!   quit without saving
+      %     all lines             g     all occurrences
+========================================================================

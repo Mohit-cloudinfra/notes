@@ -1,0 +1,72 @@
+emptyDir
+hostPath
+configmap as volume
+
+ebs static
+ebs dynamic
+efs static
+efs dynamic
+ebs vs efs
+pv, pvc, sc
+
+statefulset -> this is for stateful applications, where data storage is important
+deployment -> this is for stateless applications, data storage is not required
+
+1. pod names are standard in statefulset mysql-0, mysql-1, mysql-2, etc. deployment pod names are random
+2. pods in statefulset are created in order from 0 to n, deleted in reverse order one by one. pod creation/deletion is random
+3. pod in statefulset have its own disk. pods in deployment have shared disk.
+4. statefulset should have pv, pvc as mandatory. pv, pvc is not required for deployment
+5. statefulset requires headless service to find other nodes in the cluster when data replication is required, deployment does not require headless service..
+6. statefulset pods will have same identity
+
+a service with clusterIP none is called headless service
+
+1. drivers install
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.58"
+2. IAM role for instances
+3. storage class create
+
+Autoscaling
+============
+1. horizontal scaling
+2. vertical scaling
+
+vertical scaling
+================
+1GB RAM
+8GB HD
+2 CPU
+
+stop the server
+increases the resources
+restart
+
+1. downtime
+2. single point of failure
+
+horizontal scaling
+============
+you dont increases resources in single server, instead we create replicas
+
+1. no downtime
+2. no single point of failure
+
+1. you must configure resource limits
+2. metrics server should be running
+
+
+taints and tolerations
+===================
+taint == paint
+
+if you taint a node, it means kubernetes scheduler will not schedule any pods in that node..
+
+1. we reserver that node to other special workloads
+2. may be we can attach GPU node to the cluster, we reserve that for AI/ML workloads
+3. DB may accept connections from specific IP, we only send the pods that connects to DB in the tainted node.
+
+kubectl taint nodes node1 key1=value1:NoSchedule
+
+NoSchedule -> dont schedule the new pods
+PreferNoSchedule -> try not to schedule the new pods. scheduler may schedule the pods
+NoExecute -> dont schedule new pods and evict existing pods

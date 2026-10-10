@@ -1,0 +1,166 @@
+========================================================================
+  LINUX  >  AUTHENTICATION, SSH KEYS, NEW EMPLOYEE SETUP
+========================================================================
+
+  IN ONE LINE
+  You keep the private key, the server keeps your public key, and
+  the pair is what lets you in without a password.
+
+
+  1. THREE WAYS TO PROVE WHO YOU ARE
+  ----------------------------------------------------------------------
+
+      1. What you REMEMBER      passwords
+      2. What you HAVE          RSA tokens, OTP, authenticators
+      3. What you ARE           fingerprints, retina, palm
+
+
+  2. PUBLIC KEY AND PRIVATE KEY
+  ----------------------------------------------------------------------
+
+      ssh-keygen -f <file-name>
+
+          ssh-keygen -f daws-88s
+
+      This creates two files:
+          daws-88s.pub     public key     goes on the server
+          daws-88s         private key    stays with you
+
+      The public key can be visible to anyone.
+      The private key is never shared. That is what makes it secure.
+
+
+  3. CONNECTING
+  ----------------------------------------------------------------------
+
+      To connect to anything you need to know:
+          which protocol?   which port?   which server?
+          which user name and password (or key)?
+
+      For a Linux server:   protocol SSH,  port 22
+
+      ssh -i <private-key> <user-name>@<ip>
+
+          ssh -i daws-88s ec2-user@54.80.53.154
+          ssh -i /c/devops/daws-88s/daws-88s ec2-user@3.85.244.109
+
+      git bash  =  SSH client  =  a mini Linux on Windows
+
+
+  4. A NEW EMPLOYEE JOINS
+  ----------------------------------------------------------------------
+
+      THE PROCESS
+      1. He generates his own keys (public and private)
+      2. He sends the PUBLIC key to the administrator
+      3. Admin creates a .ssh folder inside his home directory
+      4. Permission of .ssh must be 700
+      5. Ownership must be the user, including the group
+      6. Admin creates authorized_keys inside .ssh and pastes the
+         public key in it
+      7. Permission of authorized_keys must be 600 at the most
+
+      Then the user can log in.
+
+      THE COMMANDS  (user: rahim)
+
+          sudo useradd rahim
+          sudo su -
+          cd /home/rahim
+          mkdir .ssh
+          cd .ssh
+          touch authorized_keys
+          vim authorized_keys            <- paste the public key
+          chmod 600 authorized_keys
+          cd ..
+          chown -R rahim:rahim .ssh/
+          chmod 700 .ssh
+
+      HE LOGS IN WITH
+          ssh -i rahim rahim@3.85.244.109
+
+  [+] IF HE GETS  "Permission denied (publickey)"
+  [+] His key is probably fine. Check the 700, the 600 and the owner
+  [+] of .ssh first. If they are too open the server ignores the key.
+  [+] Why: linux/06-permissions-and-ownership.txt, section 5.
+
+
+  5. NOW GIVE HIM ROOT ACCESS
+  ----------------------------------------------------------------------
+
+      Option 1: add him to the wheel group
+          usermod -aG wheel rahim
+
+      Option 2: through his team's group
+          usermod -g devops rahim
+          cd /etc/sudoers.d/            <- don't touch the big file
+          vim devops
+
+              %devops ALL=(ALL:ALL) NOPASSWD: ALL
+
+      Verify:
+          id rahim
+          visudo -c
+
+      More on sudo: see  linux/05-users-groups-and-sudo.txt
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. How does SSH key authentication work?
+
+          You generate a pair: a private key and a public key.
+          The public key is placed on the server, in the user's
+          ~/.ssh/authorized_keys. The private key never leaves your
+          machine.
+
+          When you connect, the server sends a challenge that only
+          the matching private key can answer. Your machine answers
+          it, and you are in. The private key itself is never sent.
+
+
+  [+] Q2. Why are keys better than passwords?
+
+          A password can be guessed or brute-forced, and it travels
+          to the server. A key is far too long to guess and the
+          private part is never sent anywhere.
+
+
+  [+] Q3. Where is the public key stored on the server, and with
+          what permissions?
+
+              /home/<user>/.ssh/authorized_keys
+
+              .ssh               700
+              authorized_keys    600
+              owner              the user himself
+
+
+  [+] Q4. A user gets "Permission denied (publickey)". What do you
+          check?
+
+          1. Is he using the right private key?      ssh -i <key>
+          2. Is he using the right user name?        ec2-user, not
+                                                     root
+          3. Is his public key in authorized_keys of THAT user?
+          4. Are the permissions and owner of .ssh correct?
+          5. Is port 22 open to him in the security group?
+             (If this is the problem he gets a timeout, not
+             "Permission denied".)
+
+
+  [+] Q5. What is multi-factor authentication?
+
+          Using two DIFFERENT kinds of proof out of the three:
+          what you remember (password), what you have (OTP, token),
+          what you are (fingerprint).
+          Two passwords is not MFA. Password + OTP is.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Public key on the server, private key with you.
+      .ssh = 700      authorized_keys = 600
+      Owner of .ssh must be the user himself.
+========================================================================

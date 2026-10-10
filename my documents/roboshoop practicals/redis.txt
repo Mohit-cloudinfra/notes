@@ -1,0 +1,127 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@98.87.1.15                                 │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Tue Jan 13 18:30:33 2026 from 106.195.65.196
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ ec2-user@ip-172-31-46-202 ~ ]$ sudo su -
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# dnf module disable redis -y
+Extra Packages for Enterprise Linux 9 - x86_64                                                                                157 kB/s |  29 kB     00:00
+Extra Packages for Enterprise Linux 9 - x86_64                                                                                 13 MB/s |  20 MB     00:01
+Extra Packages for Enterprise Linux 9 openh264 (From Cisco) - x86_64                                                          2.8 kB/s | 993  B     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                             73 kB/s | 4.5 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                             71 MB/s | 113 MB     00:01
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                                18 kB/s | 4.1 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                               112 MB/s | 154 MB     00:01
+Red Hat Enterprise Linux 9 Client Configuration                                                                                30 kB/s | 1.5 kB     00:00
+Red Hat Enterprise Linux 9 Client Configuration                                                                                31 kB/s | 2.6 kB     00:00
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                               Architecture                         Version                               Repository                             Size
+==============================================================================================================================================================
+Disabling modules:
+ redis
+
+Transaction Summary
+==============================================================================================================================================================
+
+Complete!
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# dnf module enable redis:7 -y
+Last metadata expiration check: 0:00:31 ago on Wed Oct  7 15:17:39 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                               Architecture                         Version                               Repository                             Size
+==============================================================================================================================================================
+Enabling module streams:
+ redis                                                                      7
+
+Transaction Summary
+==============================================================================================================================================================
+
+Complete!
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# dnf install redis -y
+Last metadata expiration check: 0:01:19 ago on Wed Oct  7 15:17:39 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                 Architecture             Version                                                  Repository                                    Size
+==============================================================================================================================================================
+Installing:
+ redis                   x86_64                   7.2.16-1.module+el9.8.0+24745+654dcf03                   rhel-9-appstream-rhui-rpms                   1.6 M
+
+Transaction Summary
+==============================================================================================================================================================
+Install  1 Package
+
+Total download size: 1.6 M
+Installed size: 5.9 M
+Downloading Packages:
+redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64.rpm                                                                        33 MB/s | 1.6 MB     00:00
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                          13 MB/s | 1.6 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Running scriptlet: redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64                                                                                  1/1
+  Installing       : redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64                                                                                  1/1
+  Running scriptlet: redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64                                                                                  1/1
+  Verifying        : redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64                                                                                  1/1
+
+Installed:
+  redis-7.2.16-1.module+el9.8.0+24745+654dcf03.x86_64
+
+Complete!
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# vim /etc/redis/redis.conf
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# systemctl enable redis
+Created symlink /etc/systemd/system/multi-user.target.wants/redis.service → /usr/lib/systemd/system/redis.service.
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# systemctl start redis
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:6379            0.0.0.0:*               LISTEN      4715/redis-server 0
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1262/sshd: /usr/sbi
+tcp6       0      0 ::1:6379                :::*                    LISTEN      4715/redis-server 0
+tcp6       0      0 :::22                   :::*                    LISTEN      1262/sshd: /usr/sbi
+
+98.87.1.15 | 172.31.46.202 | t3.micro | null
+[ root@ip-172-31-46-202 ~ ]#

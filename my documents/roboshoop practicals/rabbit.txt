@@ -1,0 +1,97 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@52.23.251.171                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Tue Jan 13 18:30:33 2026 from 106.195.65.196
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ ec2-user@ip-172-31-35-230 ~ ]$ sudo su -
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ root@ip-172-31-35-230 ~ ]# vim /etc/yum.repos.d/rabbitmq.repo
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ root@ip-172-31-35-230 ~ ]# dnf install rabbitmq-server -y
+modern-erlang-el9                                                                                                             1.5 MB/s | 704 kB     00:00
+modern-erlang-el9-noarch                                                                                                      896  B/s | 291  B     00:00
+modern-erlang-el9-source                                                                                                      617  B/s | 291  B     00:00
+rabbitmq-el9                                                                                                                  874  B/s | 291  B     00:00
+rabbitmq-el9-noarch                                                                                                           9.4 MB/s | 1.9 MB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                            105 kB/s | 4.5 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                               103 kB/s | 4.1 kB     00:00
+Red Hat Enterprise Linux 9 Client Configuration                                                                                32 kB/s | 1.5 kB     00:00
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                                Architecture                  Version                                Repository                                  Size
+==============================================================================================================================================================
+Installing:
+ rabbitmq-server                        noarch                        4.3.6-1.el8                            rabbitmq-el9-noarch                         25 M
+Installing dependencies:
+ erlang                                 x86_64                        27.3.4.17-1.el9                        modern-erlang                               20 M
+
+Transaction Summary
+==============================================================================================================================================================
+Install  2 Packages
+
+Total download size: 45 M
+Installed size: 70 M
+Downloading Packages:
+(1/2): rabbitmq-server-4.3.6-1.el8.noarch.rpm                                                                                  79 MB/s |  25 MB     00:00
+(2/2): erlang-27.3.4.17-1.el9.x86_64.rpm                                                                                       13 MB/s |  20 MB     00:01
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                          29 MB/s |  45 MB     00:01
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Installing       : erlang-27.3.4.17-1.el9.x86_64                                                                                                        1/2
+  Running scriptlet: rabbitmq-server-4.3.6-1.el8.noarch                                                                                                   2/2
+  Installing       : rabbitmq-server-4.3.6-1.el8.noarch                                                                                                   2/2
+  Running scriptlet: rabbitmq-server-4.3.6-1.el8.noarch                                                                                                   2/2
+  Verifying        : erlang-27.3.4.17-1.el9.x86_64                                                                                                        1/2
+  Verifying        : rabbitmq-server-4.3.6-1.el8.noarch                                                                                                   2/2
+
+Installed:
+  erlang-27.3.4.17-1.el9.x86_64                                               rabbitmq-server-4.3.6-1.el8.noarch
+
+Complete!
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ root@ip-172-31-35-230 ~ ]# systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
+Created symlink /etc/systemd/system/multi-user.target.wants/rabbitmq-server.service → /usr/lib/systemd/system/rabbitmq-server.service.
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ root@ip-172-31-35-230 ~ ]# rabbitmqctl add_user roboshop roboshop123
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+Adding user "roboshop" ...
+Done. Don't forget to grant the user permissions to some virtual hosts! See 'rabbitmqctl help set_permissions' to learn more.
+Setting permissions for user "roboshop" in vhost "/" ...
+
+52.23.251.171 | 172.31.35.230 | t3.micro | null
+[ root@ip-172-31-35-230 ~ ]#

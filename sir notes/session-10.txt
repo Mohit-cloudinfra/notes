@@ -1,0 +1,137 @@
+Root servers
+	13 root servers across the world managed by different organisations and goverments to control TLD's and part of ICANN. DNS resolutions requests from ISP comes to root servers
+TLD
+	Top level domains, basically who sells the domains. It has the complete details of the domains booked, avaialalbe, buyer information, etc.
+Registars
+	Who sells the domains, basically mediators between TLD and end users. Who can manage the domain too	
+NS
+	Who is currently managing the domain, we can buy domain with one registar and we can transfer the management to another registar by updating NS records.
+	
+A record is mapping the IP address to domain
+
+db.daws88s.online ->
+
+systemctl status
+netstat -lntp
+ps -ef | grep node
+curl http://localhost:8080/health
+telnet IP port
+
+frontend.daws88s.online
+
+HTTP status codes
+===================
+
+http://daws88s.online/api/transaction
+
+http://daws88s.online/api/transaction
+POST
+
+GET
+200 OK
+
+100 -> informational
+Continuing or switching protocols from HTTPS to HTTP
+
+2XX -> Success
+	200 -> OK
+	201 -> Created
+	204 -> Deleted
+	
+3XX -> redirectional
+	301 -> URL redirection perm
+	302 -> temp redirection
+	304 -> Cache
+	
+4XX -> Client side error
+	404 -> Not found
+	400 -> Bad request, invalid JSON
+	401 -> Unauthorised, no authentication
+	403 -> Forbidden, no permission to this
+
+https://emacet.ap.gov.in/api/results/2026/1234567
+
+https://emacet.ap.gov.in/api/results/2026/ -> GOV admins
+	
+{
+	"amountt": 200,
+	"description": ""
+}
+
+5XX -> Server side error
+
+	500 -> Internal server error
+	503 -> Service unavailable
+	
+Linkedin Blog
+===============
+Images
+crispy text
+
+Types of DNS records
+=====================
+NS 		-> Nameservers, who is managing the domain
+SOA 	-> Start of authority
+A 		-> IPv4
+AAAA 	-> IPv6
+MX 		-> Mail records
+TXT 	-> Verification
+CNAME	-> Canonical name, another domain
+
+give free for public
+paid for business
+
+SQL
+======
+MySQL
+Oracle
+Postgress
+MSSQL
+
+Schema -> Tables -> Rows and Columns
+
+SQL is not good for huge amount of data
+
+NoSQL
+======
+MongoDB
+
+data is in documents
+
+{
+	"name": "mouse",
+	"vendor": "amazon"
+}
+
+{
+	"name": "mouse",
+	"vendor": "amazon",
+	"faq": ""
+}
+
+proper data structure -> SQL
+un proper data structure, huge data -> NoSQL
+
+Redis
+======
+Caching Database, key value pair data
+
+Backend -> Database
+	1. Connecting establish -> Open
+	2. Request and response
+	3. Connection close
+	
+Backend -> Cache(If not exist) -> Connects to DB -> Keep it inside Cache
+
+TTL -> get response
+
+Queue
+======
+http -> wait for 30 sec, if server is not responding then error
+
+synchronus
+
+joindevops -> ramesh
+asynchronus
+
+order place -> delivery details

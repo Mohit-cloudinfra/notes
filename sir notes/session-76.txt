@@ -1,0 +1,100 @@
+shared library
+
+DRY
+common functions
+ansible roles
+terraform modules
+pipeline as library -> shared library
+
+jenkins will give us default variables in env
+
+call is the default function in groovy, if we call by filename by default it calls call() function
+
+language		Platform	BuildTool
+========		========	=========
+nodeJS				EKS			npm -> nodeJSEKSPipeline
+nodeJS				VM			npm
+java				EKS			maven -> javaMavenEKSPipeline
+java				EKS			gradle -> javaGradleEKSPipeline
+java				EKS			ant    -> javaAntEKSPipeline
+java				VM 			maven  -> javaVMPipeline
+java				VM			gradle
+java				VM			ant
+
+Onboarding -> central devops/platform enginner
+===========
+project
+component
+1. make sure they have the namespace created
+2. make sure they have folder in the jenkins in their project name
+3. sonarqube access
+4. do they need seperate agent requirements
+5. do they have ECR repo
+6. do they need ingress/gateway requirement
+7. any databases, do you need any firewalls
+8. github settings/tokens
+
+2 prod releases
+
+someone from their team, devops enginner
+
+pipeline{
+	agent{node{label 'wipro-finance'}}
+	options{
+		timeout(5 minutes)
+	}
+	parameters{
+		string param
+		boolean param
+		choice param
+	}
+	stages{
+		stage('build'){
+			steps{
+				script{
+					sh "mvn build"
+				}
+			}
+		}
+		stage('unit test'){
+			steps{
+				script{
+					sh "mvn test"
+				}
+			}
+		}
+		stage('scans'){
+			steps{
+				script{
+					sh "mvn test"
+				}
+			}
+		}
+		stage('deploy'){
+			steps{
+				script{
+					sh "mvn test"
+				}
+			}
+		}
+		
+		stage('functional test'){
+			steps{
+				script{
+					sh "mvn test"
+				}
+			}
+		}
+	}
+	post{
+		always{
+		
+		}
+		success{
+		
+		}
+		failure{
+		
+		}
+	}
+}

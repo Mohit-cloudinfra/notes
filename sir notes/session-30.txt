@@ -1,0 +1,62 @@
+Ansible -> node
+
+node -> public key
+
+Ansible -> private key
+
+ssh -i private-key ec2-user@IP
+
+servers -> create one user for ansible
+
+get the private key access to ansible server
+configure the path in ansible.cfg
+make sure keys are RSA based
+
+Terraform
+============
+IaaC tool
+Pulumi, Cloudformation(AWS), Arm, etc..
+
+multi-cloud
+connects to any platform
+
+1. Version control -> We can have history of our infra..easy to restore. can track who changed and review
+2. Consistent infra -> DEV, UAT and PROD
+3. CRUD -> inventory management
+4. Cost optimisation 
+5. Dependency management -> automatic in terraform
+6. Reusable infra -> terraform modules
+
+
+1. Install terraform
+2. Setup the PATH in ENV variables
+3. Install AWS CLI V2
+4. Run aws configure
+
+Providers
+==========
+
+HCL -> Hashicorp configuration language
+
+block_name "type" "name" {
+
+}
+
+resource, data, output, variable, module, terraform, etc..
+
+
+resource "aws_instance" "name-of-the-instance" {
+	key = value
+}
+
+aws_instance -> syntax
+name-of-the-instance -> we can change, this is for terraform reference
+ami, name, sg, instance_type
+
+terraform init => intialise terraform
+terraform plan
+
+terraform apply
+
+AWS
+Terraform

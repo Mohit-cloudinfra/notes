@@ -1,0 +1,100 @@
+NACL
+=====
+
+IP:port
+
+destination IP and destination port
+source IP and source port
+
+https://facebook.com:443
+
+0-65,535
+
+source ip: 192.168.1.3
+source port: 32,897
+
+0-1023 -> system ports
+1024-5000  -> ephemeral range
+
+32768-65535 -> ephemeral port range
+
+NACL vs SG
+===========
+SG -> attached to instance
+   -> source can be IP address or other SG ID
+   -> we can't add DENY rule
+   -> Rules are stateful, if we are allowing port number 8080 from 10.0.1.34. while sending response back to the source an ephemeral port is opened. since SG is stateful we no need to write seperate outbound rule
+   
+NACL -> attached to subnet level
+	 -> source can be subnet ID
+	 -> NACL is first layer of defence, then SG
+	 -> You can add DENY rule..
+	 -> NACL are stateless. you have to write outbound rules also...
+	 
+catalogue -> mongodb
+
+source IP: 10.0.11.26
+source port: 32,789
+
+destination IP: 10.0.21.5
+destination port: 27017
+
+request -> inbound
+response -> outbound
+
+cart -> redis
+
+source IP: 10.0.11.28
+source port: 32,792
+
+destination IP: 10.0.21.7
+destination port: 6379
+
+
+for i in 00-vpc/ 10-sg/ 20-sg-rules/ 30-bastion/ 50-backend-alb/ 70-acm/ 80-frontend-alb/ ; do cd $i; terraform apply -auto-approve; cd ..;done
+
+for i in $(ls -dr *); do cd $i; terraform init; terraform destroy -auto-approve; cd ..;done
+
+DOCKER_HOME = /var/lib/docker
+
+docker run nginx
+1. it checks image available locally or not. if available it will create container from it, otherwise it will download from docker hub, keep it in local and then create the container
+2. start the container
+
+containers run in foreground, but we should take them to background
+
+root 3337 3311  0 02:39 ?  00:00:00 nginx: master process nginx -g daemon off;
+PID: 3337
+PPID: 3311 -> docker engine
+
+
+docker run -d -p 80:80 nginx
+docker run -d -p 8080:80 nginx
+
+docker exec -it cdc00ddf3b81 bash
+
+Dockerfile -> we can create our own customised images
+
+FROM
+=====
+FROM is used to mention the base OS of the image.. it should be first instruction in Dockerfile
+rhel -> redhat image
+
+build the image
+===============
+docker build -t from:1.0.0 .
+
+docker login
+
+docker push from:1.0.0
+
+url/username/image-name:version
+docker.io/joindevops/from:1.0.0
+
+https://hub.docker.com/repositories/joindevops
+
+RUN
+===
+RUN instruction is used to install packages or configure image
+
+16.20.2

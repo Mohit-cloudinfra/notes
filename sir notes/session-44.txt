@@ -1,0 +1,20 @@
+aws ec2 terminate-instances --instance-ids 
+
+.terraform.lock.hcl -> should be available in git
+
+wherever you pull terraform code, we should run terraform init
+
+curl http://catalogue.backend-alb-dev.daws88s.online/health
+
+1. R53, if someone hits *.backend-alb-dev.daws88s.online -> forward this request to backend alb
+2. Listener, this is http listener 80
+3. Rule, catalogue rule matches
+4. target group, catalogue instance port no 8080
+5. before sending, alb sends only to healthy instances
+
+terraform-roboshop-component
+
+Region 		-> AZ
+us-east-1	-> us-east-1a
+
+TTL -> update TTL 1 day before to 1sec

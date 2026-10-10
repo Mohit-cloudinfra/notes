@@ -1,0 +1,75 @@
+everything is resource inside k8s
+K8s -> PaaS
+
+namespace -> an isolated space inside k8 cluster where can create our project related resources. we can completely control them. it is like our project inside k8s.
+
+1. namespace level -> VPC level
+2. cluster level -> global level
+
+kind: <type-of-resource>
+apiVersion: 
+
+there are resources categorised based on apiVersion..
+
+pod
+===
+pod is smallest deployable unit in kubernetes. a pod can have multiple containers in it. containers inside pod share same network and storage
+
+docker run -d -p 80:80 --name frontend nginx:1.24
+
+kubectl describe pod pod-name -n namespace
+
+assign to node
+node pulls the image
+create container
+start container
+
+kubectl exec -it multi-container -c nginx -- bash
+
+labels
+======
+lables adds metadata to the resource, labels are selectors inside kubernetes..
+
+CrashLoopBackOff -> when container is not able to start
+ImagePullBackOff/ErrorImagePull -> when your node is not able to pull the image.. image address may be wrong or authentication problems
+
+annotations:
+======
+annotations are again like labels adds metadata, but annotations are used to select external resources..
+labels have limitations in key value length and size. special charecters are not allowed inside labels
+
+resources
+=======
+you need to always restrict the resources to the pod..if you get more requests we can autoscaling
+
+1cpu = 1000m
+
+env
+====
+env variables useful for pod
+
+siva -> saiavaaa
+
+service
+=======
+pod1 -> pod2
+
+if we want pod to pod communication, ip address of pods are not useful since they are ephemeral. we can use k8s service to acheive
+1. pod to pod communication through DNS, service name works as DNS here
+2. load balancing
+
+cart -> catalogue
+
+pod1 -> service -> pod2, pod3, pod4
+
+1. ClusterIP
+2. NodePort
+2. NodePort
+3. LoadBalancer
+
+service ip: 10.100.10.134
+endpoints(pods): 192.168.5.23:80
+
+svc-test -> service -> labels
+
+url/repo-name/image-name:version

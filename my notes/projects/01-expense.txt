@@ -1,0 +1,250 @@
+========================================================================
+  PROJECTS  >  EXPENSE   (3-tier, manual setup)
+========================================================================
+
+  IN ONE LINE
+  Three servers: MySQL stores the expenses, a NodeJS backend adds
+  them, and Nginx serves the page and forwards /api/ to the backend.
+
+      [ user ] --> [ FRONTEND ] --/api/--> [ BACKEND ] --> [ MYSQL ]
+                     nginx                   nodejs 20       mysql 8
+                     port 80                 port 8080       port 3306
+
+  Diagrams:  sir documents/expense-documentation-main/*.svg
+
+  Do it in this order:  MySQL  ->  Backend  ->  Frontend
+  Everything below is run as root:   sudo su -
+
+
+  THE SEVEN STEPS OF ANY BACKEND   (sir's pattern)
+  ----------------------------------------------------------------------
+
+      1. Install the programming runtime
+      2. Create a directory and a system user
+      3. Download and unzip the code
+      4. Install dependencies
+      5. Create the systemctl service
+      6. Run DB scripts if required
+      7. Start the application
+
+      Two things you always deal with:   code  and  configuration
+
+
+  1. MYSQL SERVER
+  ----------------------------------------------------------------------
+
+      dnf install mysql-server -y
+      systemctl enable mysqld
+      systemctl start mysqld
+      systemctl status mysqld
+      ps -ef | grep mysql
+      netstat -lntp
+
+      mysql_secure_installation --set-root-pass ExpenseApp@1
+
+      VERIFY
+          mysql
+          show databases;
+
+      More: databases/01-sql-and-mysql.txt
+
+
+  2. BACKEND SERVER
+  ----------------------------------------------------------------------
+
+      The developer chose NodeJS and says it works with NodeJS 20+.
+
+      RUNTIME
+          dnf module list nodejs
+          dnf module disable nodejs -y
+          dnf module enable nodejs:20 -y
+          dnf install nodejs -y
+
+          Update the ssh packages too, so SSH login does not break:
+          dnf update -y openssh openssh-server openssh-clients
+          sshd -t
+
+      USER AND DIRECTORY
+          useradd expense
+          mkdir /app
+
+          expense is a function / daemon user that only runs the
+          application. We never log in with it. The name matches
+          the project. /app is the standard location for the code.
+
+      CODE
+          curl -o /tmp/backend.zip https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+          cd /app
+          unzip /tmp/backend.zip
+
+          /tmp is where the OS keeps temporary files. Nothing
+          important lives there.
+
+      DEPENDENCIES
+          cd /app
+          npm install
+
+      SERVICE
+          vim /etc/systemd/system/backend.service
+
+              [Unit]
+              Description = Backend Service
+
+              [Service]
+              User=expense
+              Environment=DB_HOST="<MYSQL-SERVER-IPADDRESS>"
+              ExecStart=/bin/node /app/index.js
+              SyslogIdentifier=backend
+
+              [Install]
+              WantedBy=multi-user.target
+
+          Replace <MYSQL-SERVER-IPADDRESS> with the PRIVATE IP of
+          the MySQL server.
+
+          systemctl daemon-reload
+          systemctl start backend
+          systemctl enable backend
+
+      LOAD THE SCHEMA
+          The app needs its tables. Install the mysql CLIENT here:
+
+          dnf install mysql -y
+
+          cd /app/schema
+          cat backend.sql                    (see what it creates)
+
+          mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql
+
+          Check it loaded:
+              mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1
+              show databases;
+              show tables;
+
+          systemctl restart backend
+
+      VERIFY
+          netstat -lntp                 port 8080 opened by backend
+          ps -ef | grep backend
+          ps -ef | grep expense
+          telnet <mysql-ip> 3306
+          curl http://localhost:8080/health
+
+
+  3. FRONTEND SERVER
+  ----------------------------------------------------------------------
+
+      dnf install nginx -y
+      systemctl enable nginx
+      systemctl start nginx
+
+      Open the public IP in the browser. You should see the default
+      nginx page.
+
+      REPLACE THE DEFAULT CONTENT
+          rm -rf /usr/share/nginx/html/*
+          curl -o /tmp/frontend.zip https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+          cd /usr/share/nginx/html
+          unzip /tmp/frontend.zip
+
+      Refresh the browser. Now you should see the Expense page.
+
+      REVERSE PROXY
+          vim /etc/nginx/default.d/expense.conf
+
+              proxy_http_version 1.1;
+
+              location /api/ { proxy_pass http://<backend-ip>:8080/; }
+
+              location /health {
+                stub_status on;
+                access_log off;
+              }
+
+          systemctl restart nginx
+
+      More: networking/04-nginx-and-proxies.txt
+
+
+  4. IF IT DOES NOT WORK
+  ----------------------------------------------------------------------
+
+      systemctl status <service>
+      netstat -lntp                          check the port
+      ps -ef | grep node                     check the process
+      curl http://localhost:8080/health
+      telnet <ip> <port>                     check the connection
+
+      less /var/log/messages
+      systemctl restart backend
+
+
+  5. WITH A DOMAIN
+  ----------------------------------------------------------------------
+
+      Once DNS is set up, use names instead of IPs:
+          db.daws88s.online          (in backend.service)
+          frontend.daws88s.online    (in the browser)
+
+      More: networking/02-dns.txt
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. Explain this project.
+
+          SAY THIS: "Expense is a lab project, a three-tier
+          application I deployed by hand on three EC2 instances.
+          MySQL as the database, a NodeJS backend running as a
+          systemd service under its own system user, and Nginx as
+          the frontend, serving the static pages and reverse
+          proxying /api/ to the backend on port 8080."
+
+          Say "lab project" yourself, early. Do not wait to be asked.
+
+
+  [+] Q2. In what order did you bring it up, and why?
+
+          Database, then backend, then frontend. Each one needs the
+          one behind it. The backend cannot start properly without
+          the database, and the frontend has nothing to call without
+          the backend.
+
+
+  [+] Q3. How does the frontend reach the backend?
+
+          The browser never calls the backend directly. It calls
+          /api/... on the frontend. Nginx matches  location /api/
+          and forwards the request to the backend's private IP on
+          port 8080 with proxy_pass.
+
+
+  [+] Q4. Why did you create a separate user for the application?
+
+          So the application does not run as root. If it is
+          compromised, the attacker only gets what that user can do.
+          The user has no password and is never used to log in.
+
+
+  [+] Q5. How does the backend start again after a reboot?
+
+          It runs as a systemd service. I wrote
+          /etc/systemd/system/backend.service, ran daemon-reload,
+          and enabled it, so systemd starts it at boot.
+
+
+  [+] Q6. What would you do differently?
+
+          "Everything was typed by hand, which is slow and easy to
+          get wrong, and nobody else could repeat it exactly. The
+          next step is to script it so it can be re-run safely."
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Order: database, backend, frontend.
+      Backend needs the mysql CLIENT to load the schema.
+      Restart the backend after loading the schema.
+      daemon-reload after writing the service file.
+========================================================================

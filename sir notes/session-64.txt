@@ -1,0 +1,116 @@
+Selectors
+=========
+nodeSelector -> based on node labels
+nodeAffinity/AntiAffinity -> In, NotIn, Exists, Gt, Lt, etc.
+PodAffinity/AntiAffinity -> attract or repel the pods
+Taints and tolerations -> firewall rules, specific hardware nodes are tainted.. workloads should have tolerations
+
+
+Helm Charts
+===========
+1. How to build the image -> nginx, nodejs, jre, etc..
+2. How to run the image -> manifest files
+
+1. you can use as package manager in k8s
+2. we can templatize the k8s manifest files
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+Chart.yaml
+==========
+apiVersion: v2 # K8S related
+name: nginx
+version: 0.0.1 # This is chart version
+appVersion: latest # This is application version like catalogue version
+
+values.yaml -> we can maintain the placeholder values here
+templates/ -> all k8s manifest files here with placeholders
+
+helm install <chart-name> .
+helm list -> list of the charts installed
+helm uninstall <chart-name> -> removes the application
+
+1. application -> code
+2. configuration -> change
+
+mongodb-dev.daws88s.online
+mongodb.daws88s.online
+
+values.yaml -> default values same across all environments
+values-dev.yaml -> values for dev specific environment
+
+build image, push image, run helm command, check app is running fine or not, if not rollback
+
+EBS drivers, EFS drivers
+
+dnf repo add docker.repo
+dnf update
+dnf install docker-ce -y
+
+helm repo add <url>
+helm repo update
+helm 
+
+prometheus/grafana
+run the image -> manifest
+
+statefulset, svc, role and rolebindings, 
+
+official helm repos -> statefulset, svc, role and rolebindings, 
+values.yaml
+
+helm repo add grafana-community https://grafana-community.github.io/helm-charts
+helm repo update
+kubectl create namespace monitoring
+helm search repo grafana-community/grafana
+helm upgrade --install roboshop-grafana grafana-community/grafana --set service.type=LoadBalancer --namespace monitoring
+
+RBAC -> Role based access control
+=====
+user who created EKS cluster by default gets admin access
+
+DevOps engineer for roboshop project -> admin access to roboshop namespace
+
+Nouns(resources), Verbs(actions)
+
+authentication(prove your identity) and authorisation(scan your id at ODC)
+User
+Group
+
+api group
+pod, deployment, configmap, etc..
+create pod, list pod, watch pod, update, delete, etc..
+
+an api group have multiple resources, you can perform multiple actions on resources
+
+trainee -> only read access
+junior -> only read access+core(api/v1) deployments update access..
+senior -> full access to app/v1 group
+TL -> roboshop namesapce all api groups, all resources, all actions
+
+Role -> Binds to users through rolebinding for example Suresh user has trainee role
+
+Kubernetes -> PaaS -> has its own authentication mechanism
+
+You can integrate IAM user to EKS
+
+namesapce level and cluster level
+
+Role and RoleBinding -> Namespace level access
+PV -> cluster level
+ClusterRole and ClusterRoleBinding -> cluster level resources
+
+Roboshop devops engineer sends a email to K8 admin
+create roboshop namespace and give access to us..
+
+roboshop-eks-client -> kubectl install -> authenticate with cluster -> run their workloads
+
+
+1.30 -> build
+
+--set imageVersion=1.30 --description "upgrading to 1.30"
+
+
+

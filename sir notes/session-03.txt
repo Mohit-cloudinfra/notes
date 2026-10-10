@@ -1,0 +1,107 @@
+absolute path
+relative path
+
+/c/devops/daws-88s/daws-88s -> absolute
+daws-88s/daws-88s -> relative
+
+cd -> change directory
+clear 
+$ -> normal user
+/home/ec2-user -> /home/<user-name>
+
+sudo su -> root access
+# -> super user
+
+/root -> root user home directory
+
+everything is command and text in linux
+
+command-name <inputs> <options>
+
+<inputs> <options> -> optional or mandatory based on the command
+
+uname -> print os/kernel infromation
+uname --help or man uname
+
+CRUD -> create read update delete
+
+ls -> list subdirectories
+ls -l -> long format alphabetical order.. file/folder who owns it, size, timestamp
+ls -lr
+ls -lt -> latest files on top
+ls -ltr -> latest files at bottom
+cd -> to home directory from wherever you are
+
+hidden files/folders start with .
+
+ls -lart -> hidden files and folders
+
+d rwx r-x r-x -> directory
+- rwx r-x r-x -> file
+
+cat > devops.txt -> enter the text you want
+
+Press Enter and Ctrl+d
+
+cat filename -> read the content in the file
+
+> -> redirection, usually overrides the previous text
+>> -> appends to the previous text
+
+source -> which file to copy
+destination -> destination
+
+cp <source> <destination>
+cp
+
+mv -> rename or move the file
+
+downloading files or softwares
+
+wget and curl
+
+https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.113/bin/apache-tomcat-9.0.113.tar.gz
+
+wget is used for downloading packages
+curl -> shows the o/p on the screen, it will not download by default
+curl is used to hit the API URL's
+
+grep -> command to search inside the file
+
+grep <word-to-search> <file>
+-i -> case insensitive
+-v -> non matching
+-n -> display line numbers
+-c -> matching line numbers count
+
+display line number ending with the word architecture
+
+$ -> ending charecter
+^ -> starting charecter
+
+ctrl + r start typing you can see the commands you used
+
+$ -> ending
+^ -> starting
+
+tail -f <file-name> -> follow the log
+
+head -> top 10 lines by default
+tail -> bottom 10 lines by default
+
+cut and awk
+
+https://raw.githubusercontent.com/daws-88s/notes/refs/heads/main/session-02.txt
+
+cut -d "/" -f1 <file-name>
+
+/etc/passwd
+
+awk -F "/" '{print $NF}'
+
+
+
+Tomorrow's session
+==================
+vim editor
+user management

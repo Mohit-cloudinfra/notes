@@ -1,0 +1,213 @@
+========================================================================
+  LINUX  >  SERVICES, PORTS AND SYSTEMD
+========================================================================
+
+  IN ONE LINE
+  A service is a program that keeps running and listens on a port;
+  systemctl is how you start it, stop it and check on it.
+
+
+  1. PORTS
+  ----------------------------------------------------------------------
+
+      A server has ports numbered   0 - 65,535
+      Each running service sits on one port.
+
+      SIR'S ADDRESS STORY   (a letter from Delhi to Hyderabad)
+          Hyderabad pincode  -> reaches the HYD central office
+          Street name
+          Apartment name
+          Flat number        -> reaches the exact door
+
+          IP address = the building.   Port = the flat number.
+
+      WHAT HAPPENS WHEN I OPEN  https://facebook.com
+          1. Get the IP address of facebook.com
+          2. Connect to the service running on port 443
+             (https protocol always connects to port 443)
+
+      A Facebook employee doing  ssh facebook.com  connects to
+      port 22, where the sshd service is running.
+
+      PORTS TO KNOW
+          22       SSH    (sshd service)
+          80       HTTP   (nginx)
+          443      HTTPS
+          3306     MySQL
+          27017    MongoDB
+          6379     Redis
+  [+]     5672     RabbitMQ
+          8080     our backend applications
+
+
+  2. systemctl
+  ----------------------------------------------------------------------
+
+      systemctl start <service-name>
+      systemctl restart <service-name>
+      systemctl status <service-name>     is it running or not
+      systemctl enable <service-name>     auto start when server boots
+      systemctl disable <service-name>
+      systemctl stop <service-name>
+
+      start = run it now.     enable = run it after every reboot.
+      You almost always want both.
+
+      Not everything is a service. wget and curl are commands, so
+      "systemctl start wget" makes no sense.
+
+      FIRST PRACTICE
+          sudo dnf install nginx -y
+          sudo systemctl start nginx          start
+          sudo systemctl status nginx         check status
+          netstat -lntp                       check the ports
+          ps -ef | grep nginx                 check the process
+
+
+  3. WHERE systemctl GETS ITS INSTRUCTIONS
+  ----------------------------------------------------------------------
+
+      .service files live in      /etc/systemd/system/*.service
+
+      systemctl start nginx   reads   nginx.service
+
+      Software installed with dnf brings its own service file.
+      OUR OWN application has none, so systemctl knows nothing about
+      it. We write the service file ourselves.
+
+      vim /etc/systemd/system/backend.service
+
+          [Unit]
+          Description = Backend Service
+
+          [Service]
+          User=expense
+          Environment=DB_HOST="<MYSQL-SERVER-IPADDRESS>"
+          ExecStart=/bin/node /app/index.js
+          SyslogIdentifier=backend
+
+          [Install]
+          WantedBy=multi-user.target
+
+      READING IT
+          Description         a label
+          User                which user runs the app (never root)
+          Environment         values the app reads, like the DB address
+          ExecStart           the exact command that starts the app
+          SyslogIdentifier    the name it uses in the logs
+          WantedBy            lets "enable" start it at boot
+
+      AFTER CREATING OR EDITING A SERVICE FILE
+          systemctl daemon-reload         tell systemd to re-read
+          systemctl start backend
+          systemctl enable backend
+
+      daemon-reload is needed because we added a new service; without
+      it systemd will not detect the file.
+
+
+  4. FIVE WAYS TO CHECK A SERVICE
+  ----------------------------------------------------------------------
+
+      systemctl status <service>               is the service up
+      netstat -lntp                            is the port open
+      ps -ef | grep node                       is the process there
+      curl http://localhost:8080/health        does the app answer
+      telnet <ip> <port>                       can I reach it from
+                                               another server
+
+      netstat -lntp  shows which ports are running and whether they
+      are accessible to the internet.
+
+      telnet needs BOTH the address and the port:
+          telnet mongodb.mohitsai.cloud 27017      Connected  = good
+          Connection refused / hangs               = blocked or down
+
+
+  5. WHERE TO READ WHAT WENT WRONG
+  ----------------------------------------------------------------------
+
+      /var/log/                       all logs live here
+      less /var/log/messages          system and application logs
+                                      (Shift+g jumps to the bottom)
+      journalctl -u <service>         logs of just that service
+
+      After fixing:  systemctl restart <service>
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between systemctl start and enable?
+
+          start runs the service now. enable makes it start by itself
+          after every reboot. They are independent: a service can be
+          started but not enabled, and then it is gone after a reboot.
+
+          SAY THIS: "I always do both, and after a reboot I check
+          with systemctl status."
+
+
+  [+] Q2. A service is not starting. What do you do?
+
+          1. systemctl status <service>     the last few log lines
+          2. journalctl -u <service>        the full story
+          3. Read the actual error, fix it, then restart
+
+          FROM MY OWN RUN: shipping would not start. journalctl
+          showed "Unable to access jarfile /app/shipping.jar". I had
+          unzipped the code in /root instead of /app. Moved the jar,
+          restarted, and that error was gone. (The next error was
+          the database one: see databases/01-sql-and-mysql.txt.)
+
+
+  [+] Q3. You changed a .service file but the change is not applied.
+          Why?
+
+          systemd keeps its own copy in memory. It does not re-read
+          the file by itself.
+
+              systemctl daemon-reload
+              systemctl restart <service>
+
+          daemon-reload re-reads the file. restart applies it to the
+          running process. You need both, in that order.
+
+
+  [+] Q4. How do you check which process is using port 8080?
+
+              netstat -lntp | grep 8080
+
+          The last column shows the PID and the program name.
+
+          Many newer servers do not have netstat installed. The
+          replacement takes the same options:
+
+              ss -lntp | grep 8080
+
+
+  [+] Q5. The service is running but users cannot reach it. What do
+          you check?
+
+          Work from the inside out:
+
+          1. On the server      curl http://localhost:8080/health
+                                Works? The app is fine.
+          2. Listen address     netstat -lntp
+                                127.0.0.1 means only this server can
+                                reach it. It must be 0.0.0.0.
+          3. From outside       telnet <ip> <port>
+                                Fails? It is the firewall (security
+                                group) or the wrong IP / DNS record.
+
+          FROM MY OWN RUN: this is why we changed the bind address
+          in /etc/mongod.conf from 127.0.0.1 to 0.0.0.0. Until then
+          only the MongoDB server itself could connect to it.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      start = now          enable = at boot
+      New or changed .service file -> daemon-reload
+      status, netstat, ps, curl, telnet = the five checks
+========================================================================

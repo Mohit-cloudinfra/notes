@@ -1,0 +1,31 @@
+1. play level
+2. task level
+3. files
+4. prompt
+5. inventory
+6. command line
+
+register
+set_fact
+
+shell vs command
+
+conditions -> when
+loops -> loop -> item
+list -> -/[
+dict -> {
+
+filters/functions
+VAR | filter
+
+roboshop using ansible
+======================
+catalogue-dev.daws88s.online
+catalogue-qa.daws88s.online
+
+1. create instances
+2. create r53 records
+
+1. console
+2. cli
+3. SDK -> botocore and boto3

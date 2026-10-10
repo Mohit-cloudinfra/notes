@@ -1,0 +1,143 @@
+Jenkins shared library -> common pipelines are here, like we can use pipelines as functions, we can send parameters they will be triggered
+
+centralised pipelines
+easy maintainace
+enforcing same standards across project
+proper governance
+
+adding these as trusted global pipeline libraries in jenkins manage jenkins -> system
+
+then we import them in application Jenkinsfile
+
+def call(Map configMap){
+	Pipeline{
+	
+	}
+}
+
+multi branch pipleine -> you can get individual pipelines based on branches
+
+feature-branching main and feature branch
+
+shift-left
+build once, deploy anywhere -> whatever tested in dev is promoting all the way to prod
+commit-status
+
+
+sprint-1
+========
+2 weeks
+create sprint-1, add the dates, starting date and ending dates
+create tasks inside them for everyone
+TO-DO IN-PROGRESS BLOCKED DONE
+
+create feature branch
+commits -> trigger feature branch pipeline
+clone, read version, npm install, unit-tests, sonar-scan, library-scan, image-build, trivy-scan, push-image
+if everything is fine -> feature completed
+
+if commit-id is changed -> code may or may-not changed
+if commit-id not changed -> code is also not changed
+
+create PR to main branch
+1. approvals -> 2
+2. check commit-status -> unit-tests, sonar-scan, library-scan, trivy-scan, push-image
+
+a new merge commit-id is created
+
+jenkins webhook triggers main pipeline
+
+catalogue:1.0.0
+catalogue:<commit-id>
+
+1. read the version -> from package.json (ECR must have this image)
+2. image promotion -> pull image from ECR, retag it using commit-id and push to ECR again
+3. deploy to dev
+4. run api/functional testing -> testing team will do this
+5. create jira ticket -> project, component, appVersion, commit-id
+	deploy to UAT -> click this button -> it will call jenkins pipeline
+	
+	deployment to uat, version -> commit-id, appVersion -> 1.0.0
+	
+	pull image from ECR
+	deploy to UAT
+	run e2e testing
+	update jira as success ->
+	
+	deploy to prod (button) -> You must provide CR number,
+		-> check CR -> approved or not? within time frame of deployment or not?
+		-> deploy to PROD
+		-> simple health checks
+		-> tag commit-id with version 1.0.0
+
+1. he should edit package.json version
+
+1.0.0 -> 1.1.0
+
+change-request or change-management
+===================================
+CR tool -> service-now, monday, custom-tools
+
+which date and time(6hr)?
+what is the change?
+what is the version?
+project, component?
+what is the description?
+what if failure?
+what is the rollback plan?
+CR-1GT56
+
+approvals -> team lead, delivery manager approval -> client approval (APPROVED)
+
+dev uat prod
+
+dev qat -> roboshop-dev -> roboshop-dev, roboshop-qa
+sit uat -> roboshop-uat -> roboshop-uat, roboshop-sit
+pre-prod prod -> roboshop-prod -> roboshop-prod, roboshop-pre-prod
+
+roboshop-dev roboshop-uat roboshop-prod
+
++ sed -i s/IMAGE_VERSION/49e2645/g values.yaml
++ helm upgrade --install catalogue -f values-dev.yaml -n roboshop-dev --atomic --wait --timeout=5m .
+
+* DEV -> PROD complete CICD automation
+infra creation using terraform
+EKS cluster
+Shift-left
+Build once and run anywhere
+
+We have implemented status checks in every environment before promoting to next environment
+We are using jenkins shared libraries. we are supporting 20 components...
+common pipelines powered by jenkins shared library, we let developers only to code... remaning everything we take care
+
+we have pipelines ready based on programing language and platform, for example we have
+nodejsEKS
+javaEKS
+pythonEKS
+
+whenever developers comes to us we explain
+branching strategy, merging strategy
+
+we do the settings in their repo... min approvals 2, status checks should be passed, only PR to main branch
+
+then we will ask them to keep a simple jenkinsfile in their repo that call our jenkins shared library
+
+1. to enforce best standards across all projects
+2. easy maintainance and governance and complaince
+
+Roles and responsibilities
+===========================
+1. new projects
+2. existing projects
+
+SOP -> brand new
+jenkins, kuberentes, infra using terraform, jira(bridge between app team and jira team), repo settings
+
+SOP -> existing project
+jenkins, kuberentes, infra using terraform, jira(bridge between app team and jira team), repo settings
+
+maintain
+
+* language upgrade
+* platform(Jenkins, SonarQube, EKS, JIRA, etc) upgrade
+* AMI (OS upgrade)

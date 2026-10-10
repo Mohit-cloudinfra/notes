@@ -1,0 +1,234 @@
+========================================================================
+  LINUX  >  USERS, GROUPS AND SUDO
+========================================================================
+
+  IN ONE LINE
+  A user is a person, a group is a team, and access is given to the
+  team so nobody has to be handled one by one.
+
+
+  1. THE FOUR WORDS
+  ----------------------------------------------------------------------
+
+      user           a human
+      group          a group of humans, a team
+      role           a position
+      permissions    the access level given to that role
+
+      CRUD FOR USERS
+          -> create user
+          -> create group / team
+          -> assign user to that group
+          -> remove user from group
+          -> delete user
+
+
+  2. CREATING AND CHECKING
+  ----------------------------------------------------------------------
+
+      useradd <user-name>         create a user
+      id <user-name>              show the user's id and groups
+      passwd <user-name>          set the password
+
+      cat /etc/passwd             all users info
+      cat /etc/group              all groups in the server
+
+      groupadd devops             create a group
+
+
+  3. PRIMARY AND SECONDARY GROUPS
+  ----------------------------------------------------------------------
+
+      A user has exactly ONE primary group, and can also be in
+      secondary groups.
+
+      When you create a user, a group with the SAME NAME is created
+      and becomes the primary group.
+
+      usermod -g <group-name> <user-name>      change PRIMARY group
+      usermod -aG <group-name> <user-name>     ADD a secondary group
+
+          usermod -g devops ramesh
+          usermod -aG testing ramesh
+
+      gpasswd -d <user-name> <group-name>      remove from a group
+
+
+  4. TWO KINDS OF ACCOUNTS
+  ----------------------------------------------------------------------
+
+      human accounts          user name AND password
+      non-human accounts      user name but NO password
+        (system users)        used only to run an application
+
+      useradd expense
+
+      useradd --system --home /app --shell /sbin/nologin \
+              --comment "roboshop system user" roboshop
+
+          --system               a system user, not a person
+          --home /app            its home is the app folder
+          --shell /sbin/nologin  nobody can log in as this user
+          --comment              a note about what it is for
+
+      Applications should run as a non-root user. That is why every
+      project gets its own system user.
+
+
+  5. PASSWORD LOGIN IS OFF BY DEFAULT
+  ----------------------------------------------------------------------
+
+      By default only key-based authentication is enabled.
+
+      SSH config lives here:
+          vim /etc/ssh/sshd_config
+
+  [+] To turn password login ON, find this line and set it to yes:
+
+  [+]     PasswordAuthentication yes
+
+  [+] Then test, and restart the ssh service to apply it:
+  [+]     sshd -t
+  [+]     systemctl restart sshd
+
+      ALWAYS TEST AFTER EDITING:
+          sshd -t         checks the syntax of the config
+
+      WHY: if this file is corrupted and you log out, NO ONE can log
+      in to the server again. So test it before you leave.
+
+
+  6. GIVING SUDO ACCESS
+  ----------------------------------------------------------------------
+
+      Sudo access is controlled by   /etc/sudoers
+
+      BEST PRACTICE: add the user to the  wheel  group.
+      (root is the ultimate authority; wheel members can sudo)
+
+          usermod -aG wheel ramesh
+
+      DON'T TOUCH THE BIG FILE
+          /etc/sudoers is a big file and should not be messed with.
+          Put your own rules in a small file inside:
+
+          cd /etc/sudoers.d/
+          vim devops
+
+              %devops ALL=(ALL:ALL) NOPASSWD: ALL
+
+          The % means "this is a group". Without it the rule applies
+          to a user called devops.
+
+      ALLOW ONLY ONE COMMAND
+          which systemctl               -> /usr/bin/systemctl
+
+          ramesh ALL=(ALL) /usr/bin/systemctl
+
+      ALWAYS CHECK
+          visudo -c       syntax check of the sudoers files
+          id <user>       confirm the groups
+
+
+  7. tar   (zip and unzip the Linux way)
+  ----------------------------------------------------------------------
+
+      .zip        Windows zip format
+      .tar.gz     Linux format
+
+      tar -czf devops.tar.gz devops        zips the folder
+      tar -xf devops.tar.gz                extracts
+
+          c = create     x = extract     z = gzip     f = file name
+
+
+  8. EMPLOYEE IS LEAVING
+  ----------------------------------------------------------------------
+
+      1. Lock him immediately
+      2. Remove him from all groups
+      3. Take a backup of his home folder
+      4. Delete the user
+
+      usermod -L ramesh                          lock
+      gpasswd -d ramesh testing                  out of the group
+      usermod -g ramesh ramesh                   primary group back
+                                                 to his own
+      tar -czf /root/ramesh.tar.gz /home/ramesh  backup
+      userdel -r ramesh                          delete the user AND
+                                                 his home directory
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between a primary and a secondary
+          group?
+
+          Every user has exactly one primary group. New files the
+          user creates belong to that group. Secondary groups are
+          extra memberships that give more access.
+
+              usermod -g  devops ramesh      change primary
+              usermod -aG testing ramesh     add secondary
+
+          Forgetting the  a  in -aG REPLACES all his secondary
+          groups with just this one.
+
+
+  [+] Q2. How do you give a user sudo access?
+
+          Either add him to the wheel group:
+              usermod -aG wheel ramesh
+          or add a rule file in /etc/sudoers.d/.
+
+          Never edit /etc/sudoers directly. One syntax mistake there
+          and nobody on the server can use sudo. Always run
+              visudo -c
+          after any change.
+
+
+  [+] Q3. What is in /etc/passwd?
+
+          One line per user, seven fields separated by colons:
+
+              ec2-user:x:1000:1000:Cloud User:/home/ec2-user:/bin/bash
+              name    :x:UID :GID :comment   :home          :shell
+
+          The x means the password is not here. It is kept, hashed,
+          in /etc/shadow.
+
+
+  [+] Q4. What is a system user and why do applications use one?
+
+          A user with no password and no login shell (/sbin/nologin),
+          created only to run an application.
+
+          If the application is hacked, the attacker gets only what
+          that user can do, not root. That is why we never run
+          applications as root.
+
+
+  [+] Q5. An employee has left. What do you do on the servers?
+
+          1. Lock the account immediately     usermod -L
+          2. Remove him from all groups       gpasswd -d
+          3. Back up his home folder          tar -czf
+          4. Delete the user                  userdel -r
+
+          Lock first, because that takes one second and stops access
+          while you do the rest.
+
+
+  [+] Q6. How do you check which groups a user is in?
+
+              id ramesh
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      -g   primary group            -aG   add secondary group
+      sshd -t   after editing sshd_config
+      visudo -c after editing sudoers
+      Never edit /etc/sudoers itself. Use /etc/sudoers.d/
+========================================================================

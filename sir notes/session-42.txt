@@ -1,0 +1,67 @@
+LB -> TL/TM
+Listener -> 80/HTTP, 443/HTTPS
+Rules -> catalogue.* -> catalogue target group
+Target group -> a group of instances
+Health check -> check instance is available or not
+
+Launch template -> template to launch instance
+Autoscaling -> uses launch template as input, can trigger instance if CPU utilisation is more than 70%
+
+http://IP:8080/health
+
+3 success -> healthy
+2 failure -> not healthy
+
+*.backend-alb-dev.daws88s.online
+
+catalogue.backend-alb-dev.daws88s.online -> catalogue target group
+user.backend-alb-dev.daws88s.online -> user target group
+
+
+icicibank.com -> main host
+
+retailbanking.icicibanking.com -> retailbanking target group
+corporatebanking.icicibanking.com
+
+retailbanking.icicibanking.com -> hostpath
+
+icicibank.com/reatailbanking
+icicibank.com/citbanking
+
+10 instances -> v3
+Rolling update
+===============
+4 instances -> v4
+4 instances -> v4
+2 instances -> v4
+
+create new instance
+
+download v4 and configure it
+stop the instance
+take AMI
+
+I can use this AMI to create instances
+4 instances -> v4
+4 old instances -> terminate
+
+at same point of time, our app serves 2 versions
+
+1. load balancer
+2. listener
+3. r53 record
+
+instance
+configure
+stop it
+create AMI
+create target group
+add instance to target group
+create ALB rule -> catalogue.alb_url
+
+provider.tf
+main.tf
+variables.tf
+locals.tf
+data.tf
+

@@ -1,0 +1,68 @@
+CI
+====
+npm install
+docker build
+
+shift-left
+=====
+testing and scanning
+
+docker build -t catalogue:1.0.0
+
+scanning
+========
+application security
+network security
+data security
+
+DevSecOps
+==========
+SonarQube
+----------
+Static source code analysis
+Static application security testing
+
+Dynamic application security testing
+Opensource libraries scanning
+Image scanning
+
+1. sonarqube scanner -> agent running in jenkins agent
+2. sonarqube server -> central server
+
+Overall code = total code
+new code = C2-C1
+
+vulnerabilties = 0
+issues in code that can be used by attackers to exploit
+
+Bugs
+Bugs that can cause unexpected behaviour in runtime
+
+Code Smells
+very hard to understand
+
+Coverage
+How many lines of code is tested
+
+Duplications
+Code should not be duplicated
+
+Security Hotspots
+SAST
+
+code + node_modules -> catalogue.zip
+
+jenkins
+jenkins agent
+
+* stage view
+* aws creds
+* aws steps
+* pipeline utility steps
+* sonarqube
+
+* master agent
+* add creds
+
+* sonarqube tool setup
+* sonarqube system setup

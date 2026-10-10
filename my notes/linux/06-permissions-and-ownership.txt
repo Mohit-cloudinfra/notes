@@ -1,0 +1,166 @@
+========================================================================
+  LINUX  >  PERMISSIONS AND OWNERSHIP
+========================================================================
+
+  IN ONE LINE
+  Every file answers two questions: who owns it, and what is each
+  kind of person allowed to do with it.
+
+
+  1. READING THE LINE
+  ----------------------------------------------------------------------
+
+      -  rw-  r--  r--   1  ec2-user  devops   a.txt
+      |   |    |    |           |        |
+      |   |    |    |           |        +---- group
+      |   |    |    |           +------------- owner
+      |   |    |    +-- others (o)   everyone else
+      |   |    +------- group  (g)   the owner's team
+      |   +------------ user   (u)   the owner
+      +---------------- type         - file    d directory
+
+      In the example above:
+          user / owner     read access, write access
+          group            read access
+          others           read access
+
+
+  2. THE THREE LETTERS
+  ----------------------------------------------------------------------
+
+      r   read      4
+      w   write     2
+      x   execute   1
+
+      Add them up for each of the three:
+
+      chmod 764 a.txt      7 = rwx     6 = rw-     4 = r--
+                           owner       group       others
+
+      chmod 777 a.txt      everyone gets everything
+
+  [+] THE SAME LETTERS MEAN DIFFERENT THINGS ON A FILE AND A FOLDER
+
+  [+]          ON A FILE                 ON A FOLDER
+  [+]          ---------------------     ----------------------------
+  [+]     r    read the content          see the names of the files
+  [+]          (cat a.txt)               inside it  (ls)
+  [+]
+  [+]     w    change the content        create, delete and rename
+  [+]          (vim a.txt, >, >>)        files inside it
+  [+]                                    (touch, rm, mv)
+  [+]
+  [+]     x    run it as a program       go inside it  (cd)
+  [+]          (a script)
+
+  [+] A folder cannot be "run", so x on a folder means permission to
+  [+] enter. If  cd somefolder  says "Permission denied", the missing
+  [+] letter is x, not r.
+
+  [+] w on a folder is useless without x. You cannot create or delete
+  [+] files in a folder you are not allowed to enter.
+
+  [+] Deleting a file depends on the FOLDER's w, not the file's. If
+  [+] you have w on the folder you can delete a file in it even when
+  [+] the file itself is read-only for you.
+
+
+  3. CHANGING PERMISSIONS   chmod
+  ----------------------------------------------------------------------
+
+      chmod o+x a.txt        give others execute
+      chmod o-x a.txt        take it back
+      chmod ugo+w a.txt      user, group and others all get write
+
+      WHO CAN DO IT:  either the owner of the file, or root.
+
+
+  4. CHANGING OWNERSHIP   chown
+  ----------------------------------------------------------------------
+
+      chown <user>:<group> <file-or-folder>
+
+      sudo chown ec2-user:devops linux
+      sudo chown -R ec2-user:devops linux      -R = everything inside
+
+      WHO CAN DO IT:  root only.
+      Not even the owner of the file can change its ownership.
+
+
+  5. WHERE THIS MATTERS MOST
+  ----------------------------------------------------------------------
+
+      SSH key login needs exactly these:
+
+          .ssh/                   700
+          .ssh/authorized_keys    600 at the most
+
+  [+] WHAT HAPPENS IF THEY ARE TOO OPEN  (say 777)
+  [+] The server thinks: "anyone could have edited this file and
+  [+] added their own key, so I cannot trust it", and ignores your
+  [+] key completely.
+
+  [+] The error you see is:
+  [+]     Permission denied (publickey)
+
+  [+] It reads as if your key is wrong. Your key is fine. The folder
+  [+] permissions are the problem. When a new user cannot log in with
+  [+] a correct key, check these two numbers and the owner first.
+
+      Full steps: see  linux/07-ssh-keys-and-new-employee.txt
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What does chmod 755 mean?
+
+              7 = rwx    owner can read, write, execute
+              5 = r-x    group can read and execute
+              5 = r-x    others can read and execute
+
+          They will give you a number and expect the letters, or the
+          other way round. 644 = rw- r-- r--.  600 = rw- --- ---.
+
+
+  [+] Q2. What is the difference between chmod and chown?
+
+          chmod changes WHAT can be done to the file (permissions).
+          chown changes WHO owns it (owner and group).
+
+          The owner or root can chmod. Only root can chown.
+
+
+  [+] Q3. You run a script and get "Permission denied". What do you
+          check?
+
+              ls -l script.sh
+
+          If there is no x for you, the file is not executable.
+
+              chmod u+x script.sh
+
+          Or run it through the shell, which only needs read:
+              sh script.sh
+
+
+  [+] Q4. What does x mean on a directory?
+
+          Permission to enter it. Without x you cannot cd into the
+          folder or reach any file inside it, even if you have r.
+
+
+  [+] Q5. Why should you not use chmod 777?
+
+          It lets every user on the server read, change and run the
+          file. It "fixes" a permission error by removing all
+          protection. Find out who needs access and give only that.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      chmod  = what can be done     owner or root
+      chown  = who it belongs to    root only
+      4 2 1  = r w x
+      u g o  = user, group, others
+========================================================================

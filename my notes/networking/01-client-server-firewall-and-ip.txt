@@ -1,0 +1,149 @@
+========================================================================
+  NETWORKING  >  CLIENT-SERVER, PROTOCOLS, FIREWALL, PUBLIC vs PRIVATE IP
+========================================================================
+
+  IN ONE LINE
+  The one who asks is the client, the one who answers is the server,
+  and a protocol is the set of rules they both follow.
+
+
+  1. CLIENT-SERVER ARCHITECTURE
+  ----------------------------------------------------------------------
+
+      It is about the ROLE, not the device.
+
+      Mobile used to access or control a laptop
+            [mobile] -------> [laptop]
+             client            server
+
+      Laptop used to access or control a mobile
+            [laptop] -------> [mobile]
+             client            server
+
+      I open facebook.com
+            [Chrome / Firefox] -------> [facebook]
+                 client                  server
+
+      Mobile (client) -> Netflix (server)
+
+
+  2. PROTOCOL  =  A SET OF RULES
+  ----------------------------------------------------------------------
+
+      http       port 80       for everyone
+      https      port 443
+      SSH        port 22       only for employees
+
+
+  3. FIREWALL
+  ----------------------------------------------------------------------
+
+      A firewall controls incoming traffic and outgoing traffic.
+
+      incoming  = inbound     checked.  Don't trust anyone.
+      outgoing  = outbound    no checks. Allow everyone to exit.
+
+      Some organisations check outbound traffic too:  NASA, DRDO.
+
+
+  4. PUBLIC IP  vs  PRIVATE IP
+  ----------------------------------------------------------------------
+
+      SIR'S LINE:  actual name  vs  sweet name
+                   external     vs  internal
+
+                              +----------------------------------+
+                              |   [modem]                        |
+         ISP ~~~~~~~~~~~~~~~~ |      |      [phone] 192.168.1.5  |
+                              |      |      [laptop] 192.168.1.6 |
+         59.182.17.212        |      |      [tv]                 |
+           EXTERNAL           |   INTERNAL                       |
+           (public IP)        |   (private IPs)                  |
+                              +----------------------------------+
+
+      Public IP     what the outside world sees. One for the house.
+      Private IP    what devices inside use to talk to each other.
+
+      IN OUR PROJECTS
+          Servers talk to each other on PRIVATE IPs.
+          Only the frontend is reached by users on its PUBLIC IP.
+
+
+  5. WHO IS ALLOWED TO CONNECT TO A SERVICE
+  ----------------------------------------------------------------------
+
+      Databases by default do not accept connections from remote
+      servers. They open their port only to localhost (127.0.0.1),
+      meaning only an application on the SAME server can reach them.
+
+      To let other servers in, change the listen / bind address in
+      the config:
+
+          127.0.0.1   ->   0.0.0.0
+
+      then restart the service.
+
+          MongoDB     /etc/mongod.conf
+          Redis       /etc/redis/redis.conf
+                      (also protected-mode  yes -> no)
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between a public and a private IP?
+
+          A public IP is reachable from the internet. A private IP
+          works only inside the network (ranges like 10.x.x.x,
+          172.16-31.x.x, 192.168.x.x).
+
+          SAY THIS: "In my project the servers talked to each other
+          on private IPs, and only the frontend was reached on its
+          public IP."
+
+
+  [+] Q2. What is a port? Name the common ones.
+
+          A number that identifies which service on a server a
+          request is for. The IP gets you to the server, the port
+          gets you to the service.
+
+              22 SSH      80 HTTP      443 HTTPS
+              3306 MySQL  27017 MongoDB  6379 Redis
+
+
+  [+] Q3. What is the difference between 127.0.0.1 and 0.0.0.0 ?
+
+          127.0.0.1 is localhost: the server talking to itself.
+          A service listening there accepts connections only from
+          the same server.
+
+          0.0.0.0 as a listen address means "all network interfaces":
+          the service accepts connections from other servers too.
+
+
+  [+] Q4. What is the difference between HTTP and HTTPS?
+
+          HTTP sends data as plain text on port 80.
+          HTTPS is the same, encrypted with TLS, on port 443, so
+          nobody in between can read or change it.
+
+
+  [+] Q5. What is the difference between inbound and outbound
+          rules?
+
+          Inbound: who is allowed to connect TO this server.
+          Outbound: where this server is allowed to connect to.
+
+          Inbound is kept tight. Outbound is usually open, because
+          the server needs to download packages and call other
+          services.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Client asks, server answers.
+      Inbound is checked, outbound is usually free.
+      Private IP between servers, public IP for users.
+      127.0.0.1 = only me.     0.0.0.0 = anyone.
+========================================================================

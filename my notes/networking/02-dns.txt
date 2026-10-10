@@ -1,0 +1,245 @@
+========================================================================
+  NETWORKING  >  DNS  (Domain Name System)
+========================================================================
+
+  IN ONE LINE
+  Humans remember names, computers need numbers, and DNS is the
+  phone book that turns one into the other.
+
+      contact name  ->  mobile number
+      word          =   meaning
+      facebook.com  ==  33.45.78.212
+
+
+  1. THE PLAYERS
+  ----------------------------------------------------------------------
+
+      ICANN
+          Internet Corporation for Assigned Names and Numbers.
+          A non-profit organisation.
+
+      ROOT SERVERS
+          13 root servers across the world, managed by different
+          organisations and governments, part of ICANN. They track
+          all the TLDs and their addresses. DNS resolution requests
+          from the ISP come to the root servers.
+
+      TLD  (Top Level Domain)
+          .com .us .in .uk .net .org .edu .co .ai .shop .online
+          The TLD holds the complete details of the domains under
+          it: booked, available, buyer information.
+
+          .in  -> Indian government
+          .tv  -> Tuvalu government. A video advertising company
+                  can still buy ivs.tv
+
+      DOMAIN REGISTRARS
+          godaddy, hostinger, porkbun, aws, gcp, azure ...
+          They sell domains. Mediators between the TLD and end
+          users. They can manage the domain too.
+
+      NAME SERVERS  (NS)
+          Who is CURRENTLY managing the domain and is responsible
+          for providing its IP address.
+          You can buy a domain with one registrar and transfer the
+          management to another company by updating the NS records.
+
+      DNS RESOLVER
+          Responsible for getting the IP address for a domain.
+          Usually your ISP's.
+
+
+  2. WHAT HAPPENS WHEN YOU BUY A DOMAIN
+  ----------------------------------------------------------------------
+
+      joindevops.com
+
+      1. Availability check. The registrar asks the TLD owner
+         whether that domain is available.
+      2. If available, it collects your details: name, company,
+         address, mobile, email id, payment info.
+      3. When you complete payment, the registrar updates the TLD
+         with the buyer details and domain details.
+      4. You create one A record against the domain:
+
+             joindevops.com    A    167.89.87.23
+
+      Update anything in your domain and it propagates to the TLD.
+
+      WHERE TO BOOK
+          temporary / practice    hostinger, a .online domain
+          permanent               godaddy
+
+
+  3. HOW A NAME GETS RESOLVED
+  ----------------------------------------------------------------------
+
+      Browser cache
+          |  not found
+      OS cache
+          |  not found
+      ISP DNS resolver cache
+          |  not found
+      Root servers          -> "here is the TLD information"
+          |
+      TLD                   -> "this domain is managed by godaddy"
+          |
+      Name server (godaddy) -> fetches the A record
+          |
+      IP address comes back, and is cached on the way
+
+
+  4. STARTING YOUR OWN TLD   (.siva)
+  ----------------------------------------------------------------------
+
+      You will be asked:
+          1. How many servers do you have?
+          2. What is your infra capacity?
+          3. How much funding do you have?
+
+      Root servers must carry your TLD information, and you need to
+      approach popular registrars (godaddy, hostinger) to sell it.
+
+
+  5. WHO CAN ACT ON A DOMAIN   (sir's example)
+  ----------------------------------------------------------------------
+
+      ED -> local police -> MoEA -> MoHA -> Interpol -> US courts
+         -> Porkbun (the registrar)
+
+      The registrar is the one who finally acts on the domain.
+
+
+  6. TTL  (Time To Live)
+  ----------------------------------------------------------------------
+
+      How long a record lives in cache = how long an update takes
+      to reach everyone.
+
+          default    3600 seconds
+
+      BEFORE A CHANGE
+          At least 1 day before, reduce the TTL to 1 second.
+          Make the change.
+          Once everything is fine, take the TTL back to 3600.
+
+
+  7. TYPES OF DNS RECORDS
+  ----------------------------------------------------------------------
+
+      NS       Name servers. Who is managing the domain
+      SOA      Start Of Authority
+      A        maps the domain to an IPv4 address
+      AAAA     IPv6 address
+      MX       Mail records
+      TXT      Verification
+      CNAME    Canonical name. Points to another domain
+
+
+  8. DOING IT IN AWS  (Route 53)
+  ----------------------------------------------------------------------
+
+      Create a Hosted Zone for your domain, then create records.
+
+      Route 53 > Hosted zone > Create record
+
+          Record name     mongodb          (-> mongodb.mohitsai.cloud)
+          Type            A
+          TTL             1
+          Value           the PRIVATE IP of that server
+
+      Backend and database records get the PRIVATE IP.
+      The frontend record gets the PUBLIC IP.
+
+      CHECK IT
+          nslookup mongodb.mohitsai.cloud
+
+      Then use the domain name instead of the IP address in the
+      service files and configs:
+          db.daws88s.online        frontend.daws88s.online
+
+
+  QUESTIONS SIR SAID TO BE READY FOR
+  ----------------------------------------------------------------------
+      What are root servers?
+      What are TLDs?
+      What are domain registrars?
+      What are name servers?
+      What is an A record?
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What happens when you type a website name in the browser?
+
+          The DNS part, which is what they want first:
+
+          1. Browser checks its own cache, then the OS cache.
+          2. If not found, it asks the DNS resolver (the ISP's).
+          3. The resolver asks a root server, which points it to the
+             TLD servers (.com).
+          4. The TLD server points it to the domain's name servers.
+          5. The name server returns the A record: the IP address.
+          6. The answer is cached at each step for the TTL.
+
+          Then the browser connects to that IP on port 443 and
+          sends the HTTP request.
+
+
+  [+] Q2. What is the difference between an A record and a CNAME?
+
+          A record     name -> IP address
+          CNAME        name -> another NAME
+
+              mongodb.mohitsai.cloud    A      172.31.45.245
+              www.example.com           CNAME  example.com
+
+
+  [+] Q3. What is TTL and why does it matter?
+
+          How long a DNS answer may be cached. With a TTL of 3600,
+          a change can take up to an hour to reach everyone.
+
+          Before a planned IP change, lower the TTL a day ahead so
+          the switch takes effect in seconds. Raise it back after.
+
+
+  [+] Q4. You changed a DNS record but still get the old IP. Why?
+
+          Something on the way still has the old answer cached and
+          will keep it until the TTL runs out. Check what the name
+          resolves to right now with:
+
+              nslookup <name>
+
+
+  [+] Q5. What are name servers?
+
+          The servers that hold the actual records of a domain and
+          answer for it. The NS record says which name servers are
+          in charge. Change the NS records and you move the
+          management of the domain to another provider, for example
+          from the registrar to Route 53.
+
+
+  [+] Q6. Tell me about a DNS problem you faced.
+
+          FROM MY OWN RUN: nginx refused to restart. nginx -t said
+          "host not found in upstream user.mohitsai.cloud". The
+          config named a component whose Route 53 record I had not
+          created yet. Nginx resolves every host name at start-up
+          and will not start if one is missing. The fix is to create
+          the record, run nginx -t again, and restart.
+
+          NOTE TO SELF: my log ends at the failed nginx -t. I did
+          not capture the fix working. Confirm it before telling
+          this as a finished story.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Root servers know the TLDs.  TLDs know who manages the domain.
+      Name servers give the A record.
+      Lower the TTL a day BEFORE you change an IP.
+========================================================================

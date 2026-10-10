@@ -1,0 +1,109 @@
+Merge vs Rebase
+===============
+1. merge creates extra commit, rebase will not create extra commit
+2. merge preserves history, rebase rewrites the history
+3. rebase changes the commit id references
+
+if shared branch go with merge, if private/local branch go for rebase
+merge is the safest option...
+
+How we get conflicts? How to resolve conflicts?
+================
+egg-dosa-ramesh
+egg-dosa-suresh
+
+if git sees diff content in the same line number, it gives conflict. whoever responsible for that code should sit and resolve the conflict
+
+branching strategy
+=================
+How you bring changes in code from DEV -> PROD
+
+develop -> uat -> production
+
+git flow
+=========
+merge and rebase -> merging strategy
+
+master and develop
+release
+
+feature -> source from develop, target release branch
+release -> source from develop, merge to master
+develop -> get changes from master
+
+long lived branches
+short lived branches
+
+main, develop -> long lived branches
+short lived branches -> release, feature, hotfix
+
+main -> always points to production
+develop -> source=main, target=main
+
+feature branches
+================
+feature/1 -> source=develop, target=develop
+feature/2 -> source=develop, target=develop
+
+current -> 2.53
+release -> 2.54 -> release/2.54 source=develop
+test the code into diff environments like dev,uat, sit, etc...
+create bug fixes branches and raise PR to release branch
+release/2.54 -> .exe .zip
+deploy to PROD
+then raise PR to develop
+main branch points to release/2.54
+
+
+2.53
+2.53.1 -> hotfix/bugfix
+
+feature branching strategy
+=====================
+main and feature
+
+do the development in feature
+merge to master/main
+
+develop, uat, sit, prod
+
+tag the version at successful commit
+configuration is different, but code is always same
+we maintain config-map seperate for diff env, sep values-dev.yaml or values-prod.yaml
+
+git reset/revert
+================
+to undo the changes
+
+soft -> it brings the changes from local to staging
+mixed -> it brings the changes from local to workspace
+hard -> delete the changes
+
+reset is used only for local branches
+
+revert is used to undo the changes in remote branches, it will not delete the commit, it will correct the code through extra commit...
+
+git squash/interactive rebase
+===========
+main -> 10 commits
+feature -> 200 commits
+
+210 commits -> only one feature is the difference
+210 - 10 = extra feature
+feature-1 -> 10 commits
+feature-2 -> 11 commits
+
+11-10 = extra feature
+git rebase -i eccd68e
+
+replace pick with squash except 1st line
+
+git stash
+==========
+you are working in some feature branch, suddenly you got emergency defect in production..
+
+git stash ->  saves your code to stash memory
+git stash pop -> brings your code to workspace
+
+
+

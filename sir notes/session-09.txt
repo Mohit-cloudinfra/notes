@@ -1,0 +1,90 @@
+facebook.com
+google.com
+
+DNS resolver -> responsible to get IP address for the domains
+
+Root servers -> there are 13 root servers in the world formed by different organisations
+
+Domain information and TLD information
+
+TLD -> top level domains
+
+.com
+.us
+.in
+.uk
+.net
+.org
+.edu
+.co
+.ai
+.shop
+.online
+
+What happens if we buy the domain?
+
+godaddy, hostinger, aws, gcp, azure, etc...
+
+joindevops.com
+1. availability check -> check with TLD owner is that domain available or not?
+2. if available, collect the details name, company, address, mobile, email id, payment info, etc.
+3. when we complete payment, godaddy updates TLD about buyer details and domain details..
+
+4. create one A record againts the domain
+
+joindevops.com A 167.89.87.23
+
+update anything in your domain it propagates to TLD..
+
+Root servers
+=============
+tracks all the TLD and their addresses..
+
+1. how many servers?
+2. what is our infra capacity
+3. how much funding we have
+
+.siva -> TLD
+
+I need to approach popular domain registars like godaddy, hostinger, etc.
+
+Root servers has TLD information...
+
+
+Browser -> Cache -> OS -> Cache -> ISP DNS Resolver -> Cache -> Root servers -> TLD information -> Contact TLD -> godaddy -> it will now fetch A record for us
+
+ED -> 
+Local police -> MOEA -> MOHA -> Interpole police -> US courts -> Porkbun
+
+Domain registars -> Porkbun
+We can change domain authority to another company
+
+Tuvalu Gov -> .tv
+.in -> Indian government
+ivs.tv -> video advertising company
+
+NS -> Name servers
+
+Who is managing the domain, who is responsible to provide IP address..
+
+DNS Records
+===============
+TTL -> Time to Live -> How much time to live in cache or How much time to update
+A -> Holds the IP address of your domain
+
+3600S
+
+atleast 1 day before reduce TTL to 1sec
+
+once everything is fine, take TTL back to 3600
+
+What are root servers?
+What are TLD
+What are domain registars?
+What are nameservers?
+WHat is A record?
+
+Book a domain
+temp -> hostinger -> .online
+perm -> go daddy
+

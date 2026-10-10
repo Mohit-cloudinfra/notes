@@ -1,0 +1,24 @@
+ansible.builtin.command vs ansible.builtin.shell
+
+command
+=======
+simple commands you can execute
+you can't get complete shell env of the remote server. more secure
+> , | will not work here
+
+shell
+======
+you will get the entire environment of the server...
+less secure
+> | works here
+
+ssh ec2-user@IP 'echo "Hello" > /tmp/hello.txt'
+
+filters
+========
+VAR_NAME | FILTER_NAME
+
+convert yaml to json
+====================
+1. take yaml into one variable
+2. then convert to json

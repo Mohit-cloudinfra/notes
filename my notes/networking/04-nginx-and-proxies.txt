@@ -1,0 +1,203 @@
+========================================================================
+  NETWORKING  >  NGINX, FORWARD PROXY, REVERSE PROXY
+========================================================================
+
+  IN ONE LINE
+  Nginx serves the website's HTML, CSS and JS, and as a reverse proxy
+  it passes API calls to the backend so users never see the backend.
+
+
+  1. NGINX
+  ----------------------------------------------------------------------
+
+      - popular HTTP web server and reverse proxy
+      - replaced Apache
+      - a web server serves HTML, CSS and JS
+      - runs on port 80
+
+      WHERE THINGS LIVE
+          configs         /etc/nginx
+          HTML            /usr/share/nginx/html
+          logs            /var/log/nginx
+          default page    /usr/share/nginx/html/index.html
+
+
+  2. PROXY  =  ON BEHALF OF SOMEONE
+  ----------------------------------------------------------------------
+
+      FORWARD PROXY   (stands in front of the CLIENT)
+          1. Hides the client's identity
+          2. Sits in between client and server
+          3. The client is aware of it
+          4. Company laptops, normal VPNs, content filtering,
+             traffic monitoring
+          5. Can be used for caching also
+
+      REVERSE PROXY   (stands in front of the SERVER)
+          1. Hides the server's identity
+          2. The server is aware of it (the client is not)
+          3. Security reasons and queue management
+          4. Acts as a load balancer also
+          5. Used for SSL / TLS / HTTPS termination
+
+
+  3. HOW NGINX LOADS ITS CONFIG
+  ----------------------------------------------------------------------
+
+      The main file is   /etc/nginx/nginx.conf
+
+      Inside it there are two include lines:
+          include /etc/nginx/conf.d/*.conf;
+          include /etc/nginx/default.d/*.conf;
+
+      So we do NOT touch the real file. We drop our own small file
+      into default.d and nginx picks it up.
+      (Same idea as /etc/sudoers.d/)
+
+
+  4. THE REVERSE PROXY CONFIG   (Expense)
+  ----------------------------------------------------------------------
+
+      vim /etc/nginx/default.d/expense.conf
+
+          proxy_http_version 1.1;
+
+          location /api/ { proxy_pass http://<backend-ip>:8080/; }
+
+          location /health {
+            stub_status on;
+            access_log off;
+          }
+
+      READING IT
+          location /api/     any request whose path starts with /api/
+          proxy_pass         is forwarded to the backend on port 8080
+          /health            a simple page to check nginx is alive
+
+      Replace localhost with the real IP of the backend server. The
+      word localhost in sir's document is only there so nginx does
+      not fail.
+
+      systemctl restart nginx          to load the change
+
+
+  5. THE ROBOSHOP VERSION
+  ----------------------------------------------------------------------
+
+      In Roboshop we edited /etc/nginx/nginx.conf directly and pasted
+      the full content. In Expense we did not touch the real file.
+
+      One location line per backend component:
+
+          location /api/catalogue/ { proxy_pass http://<catalogue>:8080/; }
+          location /api/user/      { proxy_pass http://<user>:8080/; }
+          location /api/cart/      { proxy_pass http://<cart>:8080/; }
+          location /api/shipping/  { proxy_pass http://<shipping>:8080/; }
+          location /api/payment/   { proxy_pass http://<payment>:8080/; }
+
+      /api/catalogue  ->  forward those requests to the catalogue
+                          component
+
+
+  6. WHEN NGINX WILL NOT START   (happened to me)
+  ----------------------------------------------------------------------
+
+      systemctl restart nginx
+          Job for nginx.service failed because the control process
+          exited with error code.
+
+      nginx -t                     <- tests the config and tells you
+          nginx: [emerg] host not found in upstream
+          "user.mohitsai.cloud" in /etc/nginx/nginx.conf:51
+
+      CAUSE   The config pointed to user.mohitsai.cloud, but that
+              DNS record did not exist yet. Nginx looks up every
+              host name when it starts, and refuses to start if
+              even one cannot be found.
+
+      FIX     Create the Route 53 record for every component named
+              in the config first, then restart nginx.
+
+
+  7. TROUBLESHOOTING THE FRONTEND
+  ----------------------------------------------------------------------
+
+      1. Browser > Inspect > Network tab. See which API call fails
+         and its status code.
+      2. Go into the frontend box:
+             less /var/log/nginx/access.log     (Shift+g = bottom)
+             less /var/log/messages
+      3. nginx -t   to check the config
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between a forward proxy and a
+          reverse proxy?
+
+          A forward proxy sits in front of CLIENTS and hides them
+          from the internet. Example: a company VPN.
+
+          A reverse proxy sits in front of SERVERS and hides them
+          from the clients. Example: nginx in front of the backend.
+
+          Forward proxy: the server does not know the real client.
+          Reverse proxy: the client does not know the real server.
+
+
+  [+] Q2. Why put a reverse proxy in front of the application?
+
+          - Security: backend servers are never exposed directly
+          - One entry point for many backend services
+          - Load balancing across several backend servers
+          - HTTPS is handled in one place (SSL termination)
+
+
+  [+] Q3. How do you check an nginx config before applying it?
+
+              nginx -t
+
+          It tests the syntax and tells you the file and line number
+          of the problem. Always run it before restarting.
+
+
+  [+] Q4. What is the difference between restart and reload in
+          nginx?
+
+          restart stops nginx and starts it again. Connections in
+          progress are dropped.
+          reload applies the new config without stopping. Existing
+          connections finish normally.
+
+              systemctl reload nginx
+
+          For a config change on a live site, use reload.
+
+
+  [+] Q5. Where are the nginx logs and what is in them?
+
+              /var/log/nginx/access.log    every request: who, what
+                                           URL, status code
+              /var/log/nginx/error.log     what went wrong
+
+          A 502 on the site shows up in access.log, and the reason
+          is in error.log.
+
+
+  [+] Q6. What does this line do?
+              location /api/ { proxy_pass http://backend:8080/; }
+
+          Any request whose path starts with /api/ is not served
+          from nginx's own files. It is forwarded to the backend on
+          port 8080, and the backend's answer is passed back to the
+          user.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Forward proxy hides the client.  Reverse proxy hides the server.
+      Own config goes in /etc/nginx/default.d/
+      nginx -t before restart.
+      Every host in the config must resolve, or nginx will not start.
+========================================================================

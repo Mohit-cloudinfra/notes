@@ -1,0 +1,180 @@
+========================================================================
+  AWS  >  ACCOUNT, REGIONS, FIREWALL AND THE FIRST EC2
+========================================================================
+
+  IN ONE LINE
+  Pick a region, create a firewall and a key, launch a server, and
+  connect to it over SSH.
+
+
+  1. CREATING THE AWS ACCOUNT
+  ----------------------------------------------------------------------
+
+      1. Credit or debit card
+      2. Enable international transactions (netbanking, online
+         spending). Try to avoid SBI and Rupay cards. If it fails,
+         call customer care.
+      3. Use the SAME address as in the bank
+      4. PAN card is mandatory. Giving it is no problem.
+      5. Try to use the same first name and last name as on the card
+
+      FREE TIER  (changed from 15th July)
+          6 months, $100 credits + $100 credits  (about 18,000 INR)
+
+      Auto-pay is enabled by default. Disable it in UPI.
+
+
+  2. REGIONS AND AVAILABILITY ZONES
+  ----------------------------------------------------------------------
+
+      Region                a city.            e.g. Hyderabad
+      Availability Zone     a zone inside it.  east, west, north,
+      (AZ)                                     south. At least 2.
+
+      us-east-1  =  N. Virginia         (the region we use)
+      us-east-1a =  one AZ inside it
+
+      AWS gives two basic things:   compute  or  storage.
+
+
+  3. THE FIREWALL  =  SECURITY GROUP
+  ----------------------------------------------------------------------
+
+      A security group is the firewall of an EC2 instance.
+
+          inbound   = incoming traffic
+          outbound  = outgoing traffic
+
+      0.0.0.0/0  =  every IP on the internet
+
+      For practice we allow everything:
+          All traffic, All ports, source 0.0.0.0/0
+
+      (This is a temporary firewall for learning only.)
+
+
+  4. KEY PAIRS
+  ----------------------------------------------------------------------
+
+      EC2 > Network & Security > Key Pairs
+
+      Generate the keys on your laptop and import the PUBLIC key:
+          ssh-keygen -f daws-88s
+
+      While importing, make sure there is NO new line at the end.
+
+
+  5. LAUNCHING AN INSTANCE
+  ----------------------------------------------------------------------
+
+      While launching we select:
+          OS (AMI), CPU, RAM, firewall, key, hard disk
+
+      THE PRACTICE IMAGE
+          Name          RHEL-9-DevOps-Practice  (search devops-practice)
+          AMI           ami-09c813fb71547fc4f   (later:
+                        ami-0220d79f3f480ecf5)
+          OS            RHEL 9
+          Login         ec2-user  /  DevOps321
+
+          This image is only for the lab. It is not for production
+          or any company environment.
+
+      FOR THE PROJECTS
+          Instance type     t3.micro
+          Key pair          none (the image uses the password above)
+          Security group    allow all
+
+
+  6. CONNECTING
+  ----------------------------------------------------------------------
+
+      ssh -i <private-key> <user-name>@<ip>
+
+          ssh -i daws-88s ec2-user@54.80.53.154
+
+      Linux server on the left, SSH client on the right. Our SSH
+      client is git bash, or MobaXterm (one tab per server).
+
+      THE FULL FLOW
+          AWS account creation
+          client-server architecture
+          create SSH keys
+          create firewall
+          launch EC2 instance
+          connect
+
+
+  7. WHEN CONNECTING FAILS
+  ----------------------------------------------------------------------
+
+      1. "file or directory not found"
+            Refer to the key by a correct absolute or relative path.
+      2. Check the security group inbound and outbound rules.
+            All traffic, All ports, source 0.0.0.0/0
+      3. Key pair: no new line while importing.
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between a Region and an
+          Availability Zone?
+
+          A Region is a geographic area, like N. Virginia
+          (us-east-1). An Availability Zone is one or more separate
+          data centres inside that region (us-east-1a, 1b ...).
+
+          You spread servers across at least two AZs so that if one
+          data centre fails, the application keeps running.
+
+
+  [+] Q2. What is a Security Group?
+
+          The firewall of an EC2 instance. It decides which traffic
+          can come in and go out.
+
+          - By default all inbound is blocked, all outbound allowed.
+          - You can only write ALLOW rules.
+          - It is stateful: if a request is allowed in, the reply is
+            automatically allowed out. No second rule needed.
+
+
+  [+] Q3. What does 0.0.0.0/0 mean? Is it safe?
+
+          Every IP address on the internet.
+
+          Fine for ports 80 and 443 on a public website.
+          Not fine for port 22 or any database port.
+
+          BE HONEST: "In my lab I allowed all traffic to keep the
+          focus on the setup. In a real setup I would open 22 only
+          to my IP or a bastion, and database ports only to the
+          application servers."
+
+
+  [+] Q4. You cannot SSH into an EC2 instance. What do you check?
+
+          1. Is the instance running?
+          2. Am I using the PUBLIC IP, and has it changed?
+             (It changes on stop / start.)
+          3. Does the security group allow port 22 from my IP?
+          4. Right key, right path, right user (ec2-user)?
+
+          Timeout = network or security group.
+          "Permission denied" = key or user name.
+
+
+  [+] Q5. What is an AMI?
+
+          Amazon Machine Image. A template with an operating system
+          and any pre-installed software, used to launch instances.
+          Every instance launched from the same AMI starts identical.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Region > Availability Zone
+      Security group = firewall.  0.0.0.0/0 = the whole internet.
+      Can't connect?  Key path, security group, key import.
+========================================================================

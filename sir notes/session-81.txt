@@ -1,0 +1,30 @@
+https://api.slack.com/apps
+
+https://hooks.slack.com/services/
+
+
+curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/
+
+- name: Send Slack Notification
+  uses: slackapi/slack-github-action@v2.0.0
+  with:
+    payload: |
+      {
+        "text": "Build status: ${{ job.status }}\nRepo: ${{ github.repository }}"
+      }
+  env:
+    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+- name: Post a message in a channel
+  uses: slackapi/slack-github-action@v3.0.3
+  with:
+    webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+    webhook-type: incoming-webhook
+    payload: |
+      text: "*GitHub Action build result*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      blocks:
+        - type: "section"
+          text:
+            type: "mrkdwn"
+            text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"

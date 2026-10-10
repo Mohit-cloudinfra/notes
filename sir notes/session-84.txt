@@ -1,0 +1,39 @@
+gitops tool
+works only for kubernetes deployments
+
+namespace
+storage classes
+ingress controller
+
+git -> single source of truth
+
+argocd
+=======
+1. managing the cluster
+2. k8 application deployments
+
+kubectl create namespace argocd-1
+kubectl apply -n argocd-1 --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+
+kubectl patch svc argocd-server -n argocd-1 -p '{"spec": {"type": "LoadBalancer"}}'
+
+argocd admin initial-password -n argocd
+
+everything is called as application
+
+source -> git is single source of truth
+destination -> K8s cluster
+sync policy -> how frequently argocd should go and check github.. by default every 3min
+
+1. OIDC cluster
+2. policy creation
+3. eks service account -> creates IAM role and map sa with IAM role
+4. install through helm charts
+
+argocd is git ops tool. we are using argocd to manage eks cluster and recently we started deploying few applications with argocd. in argocd everything is application. it has source, destination and sync policy. when we update source it will automatically sync that to destination
+
+we are managing namespaces, drivers, load balancer controller, etc through argocd. application deployments also through argocd. our CI pipeline updates image versions in helm values file based on environment, our argocd application syncs it automatically

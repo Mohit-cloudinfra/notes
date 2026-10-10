@@ -1,0 +1,177 @@
+========================================================================
+  DATABASES  >  SQL AND MYSQL
+========================================================================
+
+  IN ONE LINE
+  SQL databases keep data in tables with a fixed structure, and are
+  the right choice when the data has a proper shape.
+
+      SQL    = Structured Query Language
+      RDBMS  = Relational Database Management System
+
+      Examples:  MySQL, Oracle, Postgres, MSSQL
+
+
+  1. HOW DATA IS ORGANISED
+  ----------------------------------------------------------------------
+
+      Schema  ->  Tables  ->  Rows and Columns
+
+      Tables are linked by keys:
+
+          users
+              Primary key  -> ID
+
+          payments
+              Primary key  -> ID
+              Foreign key  -> User ID      (points to users)
+
+      SQL is not good for huge amounts of data.
+
+      A database is nothing but software installed on a Linux
+      server. Linux server + DB software = DB server.
+      In a database we store: how much, and for what purpose.
+
+
+  2. SERVER vs CLIENT
+  ----------------------------------------------------------------------
+
+      mysql-server    the database itself        package: mysql-server
+      mysql           the client used to connect  package: mysql
+
+      +--------------------+          +------------------------+
+      |  application       |          |   DB server            |
+      |  server            | -------> |   [ mysql server ]     |
+      |  [ mysql client ]  |          |         ^              |
+      +--------------------+          |   [ mysql client ]     |
+                                      +------------------------+
+
+      To connect from another server, just install the  mysql
+      package (the client) there. You do not need the server.
+
+
+  3. INSTALLING THE SERVER
+  ----------------------------------------------------------------------
+
+      dnf install mysql-server -y
+      systemctl enable mysqld
+      systemctl start mysqld
+      systemctl status mysqld
+
+      ps -ef | grep mysql
+      netstat -lntp
+
+      user name       root
+      default port    3306
+
+      After install the user is root and we must set its password:
+
+      mysql_secure_installation --set-root-pass ExpenseApp@1
+
+
+  4. CONNECTING
+  ----------------------------------------------------------------------
+
+      mysql -h <host-address> -u root -p<password>
+
+          mysql -h 172.31.18.160 -uroot -pExpenseApp@1
+
+          No space between -p and the password.
+
+      If the client and server are on the SAME server, no need for
+      -h and -p since it is local:
+
+          mysql
+
+
+  5. LOOKING AROUND
+  ----------------------------------------------------------------------
+
+      show databases;
+      use mysql;
+      show tables;
+      select * from user;
+      exit
+
+
+  6. LOADING A SCHEMA FROM A FILE
+  ----------------------------------------------------------------------
+
+      mysql -h <mysql-ip> -uroot -pExpenseApp@1 < /app/schema/backend.sql
+
+      The  <  feeds the .sql file into mysql, which runs every
+      statement in it.
+
+      Check the connection from the app server first:
+          telnet <mysql-ip> 3306
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between SQL and NoSQL?
+
+          SQL: data in tables with a fixed structure, tables linked
+          by keys. Best when the data is structured and must be
+          exact, like payments and orders.
+
+          NoSQL: data as flexible documents or key-value pairs, no
+          fixed structure. Best for huge volumes and data whose
+          shape varies, like product catalogues.
+
+
+  [+] Q2. What is the difference between a primary key and a
+          foreign key?
+
+          Primary key: the column that uniquely identifies each row
+          in a table. No duplicates, never empty.
+          Foreign key: a column that points to the primary key of
+          ANOTHER table. It is how tables are linked.
+
+              payments.user_id  ->  users.id
+
+
+  [+] Q3. What is a schema?
+
+          The structure of the database: which tables exist, their
+          columns and how they are linked. An application will not
+          work until its schema is loaded, even if the database is
+          running.
+
+
+  [+] Q4. The application cannot connect to MySQL. What do you
+          check?
+
+          1. Is MySQL running?          systemctl status mysqld
+          2. Is port 3306 listening?    netstat -lntp
+          3. Can the app server reach it?
+                                        telnet <mysql-host> 3306
+          4. Right host, user and password in the app's config?
+          5. Is the schema and the app's database user loaded?
+
+          FROM MY OWN RUN: shipping kept failing with "Exception
+          during pool initialization" and "Public Key Retrieval is
+          not allowed". MySQL was up and reachable. The database
+          user the app logs in with did not exist yet. The fix is to
+          load schema.sql, app-user.sql and master-data.sql and then
+          restart shipping.
+
+          NOTE TO SELF: my log ends right after loading the three
+          files. I did not capture the restart or shipping working
+          afterwards. Re-run it and confirm with journalctl before
+          telling this story as "and then it worked".
+
+
+  [+] Q5. What is the difference between mysql-server and mysql?
+
+          mysql-server is the database itself. mysql is only the
+          client used to connect to one. An application server needs
+          just the client.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      mysql-server = server      mysql = client
+      Port 3306, user root
+      Proper structure -> SQL.  Huge or shapeless data -> NoSQL.
+========================================================================

@@ -1,0 +1,117 @@
+Coverage
+=========
+brick -> basic building block
+
+code -> function
+
+login(username, password)
+singup(details)
+forgotpassword(email_id)
+
+what is object/class?
+
+1. knows -> parameters
+2. does -> 
+
+1000 functions
+
+catalogue
+===========
+unit testing -> testing individual function -> developers
+functionality testing -> involved multiple functions -> developers/testing team
+
+integration testing
+===========
+all components integratedly working or not?
+cart -> catalogue
+shipping -> cart
+
+smoke testing -> after deployment, our system is working or not
+regression testing -> after change, check everything. system working as expected or not
+
+login(username, password){
+	check_user_in_database()
+	if (success){
+		getHomePage()
+	}
+	else{
+		sendCredsFailure()
+	}
+}
+
+10 functions -> 9 functions -> 90%
+
+we dont had scanning in our projects
+
+6 months
+=========
+sonarqube installation -> dev, prod
+
+2nd month -> onboard every project and include scanning for them
+2 months -> high and critical bugs should be fixed
+5th month -> we will stop the build if bugs and vuln are found
+6th month -> new code, code coverage 80%, overall code 10%
+
+npm test -> run the unit test cases
+it will save the report -> .txt, .json, .html
+sonarqube -> send this test report, then it shows code coverage report there
+
+quality profiles -> dev team architect
+
+NVD -> national vuln database -> Non profit org -> funded by US gov
+google, facebook, amazon, etc...
+
+they continously scan for vuln -> bounty programs
+
+CVE -> Common vuln exposure
+which package, version
+what is the bug
+what is the effect
+what is the criticality -> 
+7/10 -> critical
+6 -> high
+1 -> low
+which version this bug is fixed
+maintainer 
+CVSS -> 
+
+scanning software -> -> internal DB -> NVD
+
+library scanning -> nexusiq, blackduck, github dependabot
+
+query dependabot, check for high and critical, if found fail the pipeline
+
+curl -L \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer <TOKLE>" \
+  -H "X-GitHub-Api-Version: 2026-03-10" \
+  https://api.github.com/repos/daws-88s/catalogue/dependabot/alerts
+  
+
+  
+Image scanning
+==============
+Docker -> base images
+
+trivy -> image scanning tool
+
+base os scan, check for high and medium alerts, if found exit, give report in table/html format
+
+trivy image \
+                                --scanners vuln \
+                                --pkg-types os \
+                                --severity HIGH,MEDIUM \
+                                --format table \
+                                --exit-code 1 \
+                                --quiet \
+                        160885265516.dkr.ecr.us-east-1.amazonaws.com/roboshop/catalogue:1.0.0
+						
+docker -> internal repo proxy
+whitelisted base images -> 
+
+node:18
+RUN apk updte 
+
+custom-node:18.1.0
+
+FROM custom-node:18.1.0

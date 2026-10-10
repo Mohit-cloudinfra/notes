@@ -1,0 +1,147 @@
+========================================================================
+  ARCHITECTURE  >  THREE-TIER ARCHITECTURE
+========================================================================
+
+  IN ONE LINE
+  Split the application into web, app and database, each on its own
+  server, so each does one job and can be secured separately.
+
+
+  1. WHERE WE STARTED: DESKTOP APPLICATIONS
+  ----------------------------------------------------------------------
+
+      - consume more resources
+      - you must install, upgrade and repair them
+      - data is stored in the local computer
+      - you should install antivirus
+      - what if the laptop crashes?
+      - can't access from remote
+
+      So applications moved to the web.
+
+
+  2. ONE, TWO, THREE TIERS
+  ----------------------------------------------------------------------
+
+      1 TIER   all in one
+          [ UI + Business logic + Database ]      a single PC
+
+      2 TIER   database separated
+          [ Client application: UI + Business logic ]
+                          |  SQL queries
+                    [ DB server ]
+
+      3 TIER   everything separated
+          [ Client: Browser / Mobile ]
+                          |  HTTP API
+          [ Application server: Business logic ]
+                          |  Queries
+                    [ DB server ]
+
+      PROBLEMS WITH FEWER TIERS
+          -> maintenance issues
+          -> queue management
+          -> security problem
+
+
+  3. SIR'S HOTEL STORY
+  ----------------------------------------------------------------------
+
+      ROADSIDE HOTEL  =  1 tier
+          A single person does everything. Maximum 5 customers.
+          What if 20 persons suddenly come?
+
+      HOTEL  =  2 tier
+          Cashier  -> cash management
+          Cook     -> only cooks, plus queue and order management
+          Handles 15 members. What about 50?
+
+      RESTAURANT  =  3 tier
+          Captain  -> welcomes us
+          Waiter   -> takes the order
+          Chef     -> prepares the order
+          Waiter   -> decorates it with onions, lemon, keera
+          Customer -> eats
+
+      Raw food items -> chef cooks them -> waiter decorates them
+      -> customer eats them
+
+      Database server -> application server gets the data
+      -> hands it to the web server -> web server decorates it with
+      HTML, CSS and JS -> shows it to the user
+
+          Raw food      = database
+          Chef          = application server
+          Waiter        = web server
+          Customer      = user
+
+
+  4. A LOGIN, END TO END
+  ----------------------------------------------------------------------
+
+      User types a user name and password.
+
+      select * from user
+      where username="sivakumar" and password="siva123"
+
+          found       -> 1  -> login success
+          not found   -> 0  -> login failed
+
+
+  5. WHAT RUNS IN EACH TIER
+  ----------------------------------------------------------------------
+
+      WEB TIER          APP TIER          DATABASE TIER
+      ----------        ----------        ---------------
+      HTML              Java              MySQL
+      CSS               Python            Oracle
+      JS                .NET              Postgres
+      React             Go                MongoDB
+                        NodeJS            Redis
+                                          ELK, Kafka
+
+      [ web ] ---------> [ app ] ---------> [ database ]
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. Explain three-tier architecture.
+
+          SAY THIS: "The application is split into three layers on
+          separate servers. The web tier serves the pages to the
+          user. The app tier holds the business logic and exposes
+          APIs. The database tier stores the data. The user only
+          talks to the web tier, the web tier calls the app tier,
+          and only the app tier talks to the database."
+
+
+  [+] Q2. Why split it into tiers?
+
+          - Security: the database is never exposed to users
+          - Scaling: add more app servers without touching the rest
+          - Maintenance: change or restart one tier without the
+            others
+          - A failure in one tier is easier to find and contain
+
+
+  [+] Q3. Which tier should be reachable from the internet?
+
+          Only the web tier. The app and database tiers sit on
+          private IPs and accept connections only from the tier in
+          front of them.
+
+
+  [+] Q4. Have you built one?
+
+          SAY THIS: "Yes, as a lab project called Expense. Nginx as
+          the web tier, a NodeJS backend as the app tier and MySQL
+          as the database, each on its own EC2 instance, set up by
+          hand." Details: projects/01-expense.txt
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Web decorates, app thinks, database remembers.
+      The user only ever talks to the web tier.
+========================================================================

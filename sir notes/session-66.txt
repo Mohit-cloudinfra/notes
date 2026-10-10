@@ -1,0 +1,49 @@
+RBAC
+=====
+Role -> authorisation service in k8s which can control permissions. which api group, which resource inside api group, what actions user can perform on resources
+Role Binding -> map user to role
+aws auth -> map IAM users to K8 users
+Cluster Role -> Cluster level resources permissions control
+Cluster Role Binding -> map user to cluster role
+Service Account -> an identity to pod, pod can have service account that maps with IAM role
+
+Ingress controller
+==================
+type: LoadBalancer
+classic LoadBalancer -> legacy, not intelligent
+
+hostpath based routing
+=================
+amazon.joindevops.com -> amazon
+roboshop.joindevops.com -> roboshop
+
+ALB -> Listener -> evaluate rule -> target group -> VM
+ALB -> Listener -> evaluate rule -> target group -> Pod
+
+AWS load balancer controller
+
+1. we need single controller
+2. https://app1.daws88s.online -> app1 pods
+3. https://app2.daws88s.online -> app2 pods
+
+1. OIDC provider installation -> external resources authentication
+2. create IAM policy and service account -> maps IAM role with permission that can create AWS resources
+3. We need to install ingress controller drivers
+4. We need ingress resource to provide networking rules to the applications -> it can expose applications inside k8 to the outside world, it can define the routing rules, it can create AWS resources using annotations
+
+
+eksctl create iamserviceaccount \
+--cluster=roboshop \
+--namespace=kube-system \
+--name=aws-load-balancer-controller \
+--attach-policy-arn=arn:aws:iam::160885265516:policy/AWSLoadBalancerControllerIAMPolicy \
+--override-existing-serviceaccounts \
+--region us-east-1 \
+--approve
+
+if we want application running inside k8 to be exposed to internet, we need ingress resource that can route http/s requests to pods, through annotations we can select external resources like alb, listener, target group, certificate arn, etc.
+
+ingress talks to ingress controller drivers, that will have service account mapped to IAM role and permission to create the resources..
+
+10.0.0.0/16 -> VPC CIDR range
+EKS_NODE_SG should allow traffic from 10.0.0.0/16

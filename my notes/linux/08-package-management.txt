@@ -1,0 +1,149 @@
+========================================================================
+  LINUX  >  PACKAGE MANAGEMENT
+========================================================================
+
+  IN ONE LINE
+  A package manager downloads software from repositories listed in
+  a config folder, and installs it with one command.
+
+
+  1. WHICH MANAGER FOR WHICH FAMILY
+  ----------------------------------------------------------------------
+
+      yum         old Redhat (before RHEL 8)
+      dnf         latest Redhat (RHEL 8 onwards)
+
+      apt-get  or  apt install        Ubuntu family
+
+      We use Redhat based instances, so:  dnf
+
+
+  2. THE COMMANDS
+  ----------------------------------------------------------------------
+
+      dnf install <package-name>
+      dnf install nginx -y            -y = say yes to the prompt
+      dnf remove nginx -y
+      dnf list available              everything that can be installed
+      dnf search python               search for a package
+      dnf update -y <package>         update
+
+
+  3. WHERE DOES dnf LOOK?
+  ----------------------------------------------------------------------
+
+      cd /etc/yum.repos.d/
+      ls -l
+
+      All the repository URLs are configured in this folder.
+      One .repo file per source.
+
+      If a software is not in the default repos, you add a repo file
+      here first and then dnf install works.
+
+      EXAMPLE: MongoDB
+          vim /etc/yum.repos.d/mongo.repo
+
+          [mongodb-org-7.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/x86_64/
+          enabled=1
+          gpgcheck=0
+
+          dnf install mongodb-org -y
+
+      EXAMPLE: Jenkins
+          sudo wget -O /etc/yum.repos.d/jenkins.repo \
+              https://pkg.jenkins.io/redhat-stable/jenkins.repo
+          sudo yum upgrade
+          sudo yum install fontconfig java-21-openjdk
+          sudo yum install jenkins
+          sudo systemctl daemon-reload
+
+
+  4. CHOOSING A VERSION   (modules)
+  ----------------------------------------------------------------------
+
+      Some software comes in several versions. The default one is
+      often old, so disable it and enable the one you need.
+
+      dnf module list                     see what is available
+      dnf module list nodejs
+
+      dnf module disable nodejs -y        switch off the default (16)
+      dnf module enable nodejs:20 -y      switch on version 20
+      dnf install nodejs -y
+
+      Same pattern everywhere:
+          nodejs:20       nginx:1.24       redis:7
+
+      WHICH VERSION?  Always check with the developer. The developer
+      tells you the version the application works with.
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between yum and dnf?
+
+          Same job. yum is the older one, dnf replaced it from
+          RHEL 8. dnf is faster and resolves dependencies better.
+          The commands are almost identical, and on new systems yum
+          is just a link to dnf.
+
+
+  [+] Q2. What is the difference between rpm and dnf?
+
+          rpm installs ONE package file that you already have. It
+          does not fetch anything, and fails if a dependency is
+          missing.
+
+          dnf finds the package in a repository, downloads it, and
+          installs every dependency it needs as well.
+
+
+  [+] Q3. dnf says "No match for argument" for a package. What do
+          you do?
+
+          The package is not in any repository the server knows.
+
+              dnf search <name>          maybe the name is different
+              ls /etc/yum.repos.d/       which repos do I have
+
+          If it is not there, add the vendor's .repo file to
+          /etc/yum.repos.d/ and install again. That is exactly what
+          we did for MongoDB and RabbitMQ.
+
+
+  [+] Q4. How do you install a specific version of software?
+
+              dnf module list nodejs
+              dnf module disable nodejs -y
+              dnf module enable nodejs:20 -y
+              dnf install nodejs -y
+
+
+  [+] Q5. How do you check whether a package is installed?
+
+              rpm -q nginx
+              dnf list installed | grep nginx
+
+
+  [+] Q6. Why does dnf fail as ec2-user?
+
+          Installing software changes system folders, so it needs
+          root. Use  sudo dnf install ...  or become root first.
+
+          FROM MY OWN RUN: I ran dnf install as ec2-user on three
+          servers and got "This command has to be run with superuser
+          privileges".
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      dnf install / remove / search / list available
+      Repos live in /etc/yum.repos.d/
+      Wrong version? module disable, module enable, then install.
+      dnf needs root. As ec2-user it fails with "This command has to
+      be run with superuser privileges".
+========================================================================

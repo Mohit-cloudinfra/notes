@@ -1,0 +1,153 @@
+:q -> quit
+:q! -> force quit
+:wq -> write quit
+:/ -> search from top
+:? search from bottom
+:set nu -> display numbers
+:noh -> no highlight
+:<line-number>
+:%d -> delete everything
+:%s -> substituion
+
+Esc Mode
+=======
+u -> undo
+Ctrl+r -> redo
+gg -> takes to top
+Shift+g -> takes to bottom
+yy -> copy
+p -> paste
+dd -> cut
+shift+p -> paste above the line
+
+useradd <user-name>
+/etc/passwd
+id user-name
+
+/etc/group
+
+usermod -g group-name user-name
+usermod -aG group-name user-name
+
+passwd user-name
+/etc/ssh/sshd_config
+sshd -t
+
+/etc/sudoers
+vimsudo -c
+
+gpasswd -d <user-name> <group-name>
+userdel 
+
+tar -xf *.tar.gz
+tar -cf *.tar.gz folder_name
+
+awk and cut commands
+
+Permissions
+============
+- 	rw- 		r-- 	r--
+	User/owner	group	others
+	u			g		o
+
+chmod o+w perm
+either owner of the file or root user can only change access levels
+
+R -> 4
+W -> 2
+X -> 1
+
+chmod 764
+
+Ownership
+===========
+chown <user>:<group> 
+ownership can only be changed by root user. not even owner of the file can change the ownership
+
+employee joins organisation
+==========================
+1. He should generate keys
+2. send public key to admins
+3. admin creates .ssh folder inside user home directory
+4. permission should be 700 for .ssh
+5. ownershop should be user including group
+6. create authorized_keys inside .ssh folder and paste public key in it
+7. authorized_keys permission should be max 600
+
+then user can login
+
+ssh -i rahim rahim@3.85.244.109
+add him to wheel group
+/etc/sudoers
+
+package management
+=================
+yum -> old rhel
+dnf -> latest
+
+apt-get or apt install
+
+dnf install <package-name> -> redhat based instances
+
+/etc/yum.repos.d/ -> all URLS are configured
+
+he developed Linux kernel from the scratch using c language... he invented git also..
+
+flavours or distributions
+
+Redhat -> commands + apps -> Redhat flavour/distribution -> CentOs/fedora
+Redhat family = redhat = centos = fedora = aws linux
+Ubuntu
+Oracle
+Suse
+IBM
+
+1. community edition -> free
+2. enterprise edition -> support redhat
+
+dnf install <package-name>
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo yum upgrade
+# Add required dependencies for the jenkins package
+sudo yum install fontconfig java-21-openjdk
+sudo yum install jenkins
+sudo systemctl daemon-reload
+
+Service Management
+===================
+0-65,535
+
+https://facebook.com
+
+ssh facebook.com
+port 22 sshd service is running
+
+1. get the facebook.com IP address
+2. connect to the service running on port 443
+
+Delhi -> Hyderabad
+
+HYD pincode -> HYD central office
+Street name ->
+Apartment name ->
+Flat number -> 
+
+systemctl start <service-name>
+systemctl restart <service-name>
+systemctl status <service-name>
+systemctl enable <service-name> -> auto start
+systemctl disable <service-name>
+
+systemctl start wget
+systemctl start curl
+
+nginx -> http/web server -> port 80
+
+systemctl status <service-name> -> check service is running or not
+
+network management
+=================
+netstat -lntp -> check port is running or not and accessible to internet
+

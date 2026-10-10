@@ -1,0 +1,77 @@
+1. Build the image
+2. Run the image
+
+Namespace -> isolated project space where we create our project resources
+Pod -> smallest deployable unit in kubernetes, pod contains multiple containers. every container share 	   same network and storage
+Labels -> adds metadata to the pods, labels are selectors. we can attach labels to any resource in k8s
+env -> can pass env variables to the containers
+resources -> we need to restrict pod resources. request and limits soft limit and hard limit
+annotations -> agains adds metadata, but used to select external resources like load balancers, IAM roles, etc
+config map -> configuration resource, we can attach config map to the pod
+secrets -> confidential information, can attach to pod environment, but only encoded information not encrypted
+services
+1. pod to pod communication since podip is ephemeral. we can communicate with service name
+2. load balancing between pods
+3. service select pods based on labels as selectors
+
+1. cluster ip -> internally exposing pod with in the cluster
+2. node port -> cluster ip is subset of nodeport.. every node inside eks cluster open the nodeport. 30000–32767
+3. load balancer -> node port is subset of load balancer. it will create a classic load balancer
+
+Sets
+=====
+1. ReplicaSet -> create multiple replicas of your pod. always runs desired number of pods
+2. Deployment
+3. DaemonSet
+4. StatefulSet
+
+
+deployment/release
+==========
+you have v1 running, v2 is ready
+
+1. stop the application server or component. systemctl stop catalogue
+2. remove the v1 code
+3. download v2 code
+4. restart catalogue. systemctl restart catalogue
+
+since pods are immutable, we can create another set of v2 pods, then delete v1 pods
+
+etcd -> k8 cluster storage...
+
+85  03/04/26 02:55:51 kubectl describe pod nginx-78cc6c5555-b55qs
+   86  03/04/26 02:56:01 kubectl rollout history deployment/nginx
+   87  03/04/26 02:56:14 kubectl undo deployment nginx
+   88  03/04/26 02:56:23 kubectl rollout undo deployment nginx
+   89  03/04/26 02:56:34 kubectl rollout history deployment/nginx
+   90  03/04/26 03:05:32 cd ..
+   91  03/04/26 03:05:40 git clone https://github.com/daws-88s/k8-roboshop.git
+   92  03/04/26 03:05:46 cd k8-roboshop/
+   93  03/04/26 03:05:47 clear
+   94  03/04/26 03:05:54 kubectl apply -f 01-namespace.yaml
+   95  03/04/26 03:05:59 cd mongodb/
+   96  03/04/26 03:06:04 kubectl apply -f manifest.yaml
+   97  03/04/26 03:06:15 kubectl get deployment -n roobshop
+   98  03/04/26 03:06:24 kubectl get deployment -n roboshop
+   99  03/04/26 03:06:35 kubectl get rs -n roboshop
+  100  03/04/26 03:06:46 kubectl get pods -o wide -n roboshop
+  101  03/04/26 03:06:56 kubectl get svc -n roboshop
+  102  03/04/26 03:07:10 kubectl describe svc mongodb -n rooboshop
+  103  03/04/26 03:07:14 kubectl describe svc mongodb -n roboshop
+  104  03/04/26 03:12:15 git pull
+  105  03/04/26 03:12:21 cd ../catalogue/
+  106  03/04/26 03:12:32 kubectl apply -f manifest.yaml
+  107  03/04/26 03:12:37 kubectl get pods
+  108  03/04/26 03:12:43 kubectl get pods -n roboshop
+  109  03/04/26 03:13:08 kubectl exec -it catalogue-7758f68dc7-j46rc -- bash
+  110  03/04/26 03:13:12 kubectl exec -it catalogue-7758f68dc7-j46rc -- sh
+  111  03/04/26 03:13:18 kubectl get pods -n roboshop
+  112  03/04/26 03:13:34 kubectl exec -it catalogue-7758f68dc7-j46rc -n roboshop -- sh
+  113  03/04/26 03:18:15 cd ../../eksctl/
+  114  03/04/26 03:19:32 kubectl get svc -o wide
+  115  03/04/26 03:23:21 history
+
+
+
+
+

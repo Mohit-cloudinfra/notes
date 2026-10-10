@@ -1,0 +1,21 @@
+1. Build the image
+2. Run the image, before running the image we need to make sure custom bridge network is created. 
+
+there are dependencies between components
+
+docker compose -> YAML file
+-> It can build the images
+-> It can define the dependencies between the components
+-> It can starts all the components at a time
+-> it can remove all the components at a time
+-> you can define network and volume also here
+
+It will make our job easy and accurate
+
+docker run -d --network roboshop --name mongodb joindevops/mongodb:1.0.0 
+
+docker compose up -d --build
+
+by default, docker containers are ephemeral. once we remove container it will remove entire data
+
+we need to use volumes to keep the data even containers are removed..

@@ -1,0 +1,21 @@
+1. Project Infra -> one time infra
+2. Application Infra -> 
+
+1. VPN
+2. Bastion/Jump host -> instance in public subnet used to connect instances in private subnets for security purpose.
+
+bastion(roboshop-dev-bastion) -> roboshop-dev(roboshop-dev)
+								22 10.0.1.94/32
+								22 mention source of traffic roboshop-dev-bastion
+10.0.11.233							
+telnet 172.31.9.80 22
+
+use variables
+use data sources
+use locals
+use outputs
+
+1. module should output the required info to users
+2. users should catch and store it in SSM parameter store
+
+/roboshop/dev/vpc_id

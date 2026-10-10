@@ -1,0 +1,7 @@
+mysql -h host -u root -p password < /file/path/.sql
+
+code and configuration
+
+compile time issues
+run time issues
+

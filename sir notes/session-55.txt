@@ -1,0 +1,93 @@
+mongodb
+redis
+mysql
+rabbitmq
+
+logs
+metrics
+
+1. dont keep stateful apps in containers
+2. if we want we can keep not end user stateful apps
+
+shell vs ansible
+
+with in docker host we are using bridge network
+
+
+autoscaling, networking, storing secrets, managing volumes is difficult in docker swarm, heavy applications are not suitable
+
+we need kubernetes
+
+workstation
+===========
+1. Install docker -> build the images, push the images to ECR repo hub
+2. eksctl -> create, update and delete the eks cluster
+3. kubectl -> connect with eks cluster
+4. aws cli (aws configure) -> to provide authentication while creating cluster, connecting to cluster
+
+
+sudo growpart /dev/nvme0n1 4
+sudo lvextend -L +30G /dev/RootVG/varVol
+sudo xfs_growfs /var
+
+sudo dnf -y install dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ec2-user
+
+# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
+
+
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.35.2/2026-02-27/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+
+spot instances
+===============
+1TB RAM, 200TB HD
+
+40GB RAM, 80TB HD -> not in use
+70-80% discount they give us if we use this..
+AWS will take out these spot instances with 2 min notice...
+
+eksctl create cluster --config-file=eks.yaml
+
+DOCKER_BUILDKIT=0 docker build -t user:1.0.0 --rm=false --no-cache .
+
+FROM node:20 -> create container from it
+login to that intermediate container
+
+run this instruction
+WORKDIR /app
+
+create image out of this container -> image-abcfd1234
+
+create container from abcd1234 -> container id is container-xyz1234
+
+xyz1234 -> run next instruction COPY package.json . -> image-dfd5346
+
+create container from image-dfd5346 called container-fadh1632
+
+docker layers
+=============
+docker creates intermediate container for every instruction
+it will run next following instruction inside this container -> create image out of it
+then it creates another intermediate container from that image, run the next instruction -> create image out of it
+
+so for every instruction new layers are created -> docker exports all these layers into hub while pushing the image
+so for every instruction new layers are created -> docker exports all these layers into hub while pushing the image
+
+we must keep frequently changing instructions at the bottom of Dockerfile to make the build process fast and storage

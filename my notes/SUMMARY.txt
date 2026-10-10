@@ -1,0 +1,142 @@
+========================================================================
+  SUMMARY   -   the whole bible on one page
+========================================================================
+
+  Last updated:  10 Oct 2026
+
+  Open the file named on the left for the full section.
+  Progress against the syllabus is in STATUS.txt.
+
+
+  DEVOPS BASICS
+  ----------------------------------------------------------------------
+  01  SDLC, Waterfall, Agile, DevOps
+      Waterfall tests once at the end, Agile tests every sprint,
+      DevOps builds, deploys and tests the same day. More tests
+      means more feedback means fewer surprises in PROD.
+      Business first, technology second.
+
+  02  Environments
+      DEV > QA > SIT > UAT > PERF > PRE-PROD > PROD.
+      Each one is a wider audience before the public.
+
+
+  LINUX
+  ----------------------------------------------------------------------
+  01  Computers and why Linux
+      box = server = node. Servers use Linux: secure, no graphics so
+      light and fast, free, runs for years, open source.
+
+  02  Basic commands
+      $ user, # root, sudo su -. ls -ltr, touch, mkdir, cat > and >>,
+      rm, cp, mv. wget downloads, curl shows.
+
+  03  Reading and searching text
+      head, tail, tail -f for live logs. Pipe joins commands.
+      grep finds lines, cut picks fields, awk picks fields with $NF
+      and conditions.
+
+  04  Vim
+      Three modes: Esc, Insert (i), Colon (:). :wq saves, :q! quits.
+      :%s/find/replace/g replaces everywhere.
+
+  05  Users, groups and sudo
+      useradd, usermod -g (primary), -aG (secondary), gpasswd -d.
+      Sudo through the wheel group or a file in /etc/sudoers.d/.
+      Employee leaving: lock, remove from groups, backup, delete.
+
+  06  Permissions and ownership
+      r=4 w=2 x=1 for user, group, others. chmod by owner or root.
+      chown by root only.
+
+  07  SSH keys and new employee
+      Public key on the server, private key with you.
+      .ssh is 700, authorized_keys is 600, owned by the user.
+
+  08  Package management
+      dnf install / remove / search. Repos in /etc/yum.repos.d/.
+      Version choice: module disable, module enable, install.
+
+  09  Services, ports and systemd
+      Ports 0-65535. systemctl start (now) and enable (at boot).
+      Own app needs its own .service file, then daemon-reload.
+      Five checks: status, netstat, ps, curl, telnet.
+
+  10  Process management
+      Every task is a process with a PID and a parent PPID.
+      & sends it to the background. kill, then kill -9.
+
+
+  AWS
+  ----------------------------------------------------------------------
+  01  Account, regions and the first EC2
+      Region > Availability Zone. Security group is the firewall,
+      0.0.0.0/0 is the whole internet. Launch, then ssh -i.
+
+
+  NETWORKING
+  ----------------------------------------------------------------------
+  01  Client-server, firewall, public vs private IP
+      Client asks, server answers. Inbound is checked. Servers talk
+      on private IPs. 127.0.0.1 is only me, 0.0.0.0 is anyone.
+
+  02  DNS
+      Root servers know the TLDs, TLDs know who manages the domain,
+      name servers give the A record. Lower the TTL a day before a
+      change. Record types: NS, SOA, A, AAAA, MX, TXT, CNAME.
+
+  03  HTTP, APIs and status codes
+      URL is the noun, method is the verb (POST GET PUT DELETE).
+      2XX worked, 3XX redirect, 4XX client's fault, 5XX server's.
+      502 = backend unreachable, 500 = backend broke.
+
+  04  Nginx and proxies
+      Forward proxy hides the client, reverse proxy hides the
+      server. Own config in /etc/nginx/default.d/. nginx -t tests it.
+
+
+  ARCHITECTURE
+  ----------------------------------------------------------------------
+  01  Three-tier architecture
+      Web decorates, app thinks, database remembers. The restaurant:
+      waiter, chef, raw food.
+
+  02  Enterprise, monolithic, microservices
+      .ear everything together, .war frontend and backend split,
+      .jar every component separate.
+
+  03  Languages and build tools
+      NodeJS: package.json, npm.  Java: pom.xml, maven.
+      Python: requirements.txt, pip.  JDK to build, JRE to run.
+
+
+  DATABASES
+  ----------------------------------------------------------------------
+  01  SQL and MySQL
+      Tables, rows, columns, keys. mysql-server is the server,
+      mysql is the client. Port 3306.
+
+  02  NoSQL and MongoDB
+      Flexible documents for huge, shapeless data. Service mongod,
+      client mongosh, port 27017. Bind 0.0.0.0 for remote access.
+
+  03  Redis and caching
+      In-memory key-value cache. App asks cache first, then DB.
+      Port 6379.
+
+  04  Queues and RabbitMQ
+      http waits, a queue is fire and forget. Queue is 1 to 1,
+      pub/sub is 1 to many.
+
+
+  PROJECTS
+  ----------------------------------------------------------------------
+  01  Expense
+      MySQL, NodeJS backend, Nginx frontend. Seven-step pattern for
+      any backend. Order: database, backend, frontend.
+
+  02  Roboshop
+      Eleven components, one server each, joined by Route 53 names.
+      Includes the seven mistakes I made on my own run and sir's
+      order for troubleshooting.
+========================================================================

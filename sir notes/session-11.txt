@@ -1,0 +1,82 @@
+A 	 -> IPv4
+AAAA -> IPv6
+MX 	 -> Mail
+NS	 -> Domain authority
+CNAME -> Point to another domain
+TXT  -> verification
+
+1XX -> informational
+2XX -> Success
+3XX -> Redirectional
+4XX -> Client error
+5XX -> Server error
+
+NoSQL
+=======
+data is un sctructured
+useful when huge amounts of data
+data is stored as documents
+generally used for product catalouges, Real-time analytic, etc but not for transactions
+
+Redis
+=======
+in-memory(RAM) database
+in-memory(RAM) database
+HD -> RAM -> Processor
+key-value database
+apps -> cache -> database
+
+Asynchronous
+===========
+ActiveMQ, IBM MQ, RabbitMQ, Kafka, etc...
+
+request and wait -> http
+fire and forget  -> mail, whatsapp, etc..
+
+Prodcuer -> Who is sending message
+Consumer -> Who is consuming message
+
+No waiting, good user experience
+Scalability
+Reliability
+Loose Coupling
+	Tight Coupling -> with on our system
+Queue management -> FIFO
+
+Pub/Sub -> 1 to many
+Queue -> 1 to 1
+Publisher -> Who is sending message
+Subscriber -> Who is following
+
+Generally databases by default not accept connections from remote servers
+
+backend -> combining all components in single module
+
+component == module == application
+node == box == server
+
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+
+/home/user-name
+
+frontend
+
+/api/catalogue -> forward those requests to catalogue component
+
+Jan 22 02:58:54 ip-172-31-78-60.ec2.internal catalogue[2349]: {"level":"info","time":1769050734046,"pid":2349,"hostname":"ip-172-31-78-60.ec2.internal","req":{"id":42,"method":"GET","url":"/product/RMC","headers":{"host":"catalogue.daws88s.online:8080","connection":"close","accept":"application/json, text/plain, */*","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 26_1_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144.0.7559.85 Mobile/15E148 Safari/604.1","accept-language":"en-IN,en;q=0.9","referer":"http://daws88s.online/product/RMC","accept-encoding":"gzip, deflate"},"remoteAddress":"::ffff:172.31.78.82","remotePort":44312},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","timing-allow-origin":"*","access-control-allow-origin":"*","content-type":"application/json; charset=utf-8","content-length":"198","etag":"W/\"c6-sTc8wmePzqQNogwimig6Jch9Qj4\""}},"responseTime":4,"msg":"request completed","v":1}
+
+
+[Unit]
+Description = Cart Service
+[Service]
+User=roboshop
+// highlight-start
+Environment=REDIS_HOST=redis.daws88s.online
+Environment=CATALOGUE_HOST=catalogue.daws88s.online
+Environment=CATALOGUE_PORT=8080
+// highlight-end
+ExecStart=/bin/node /app/server.js
+SyslogIdentifier=cart
+
+[Install]
+WantedBy=multi-user.target

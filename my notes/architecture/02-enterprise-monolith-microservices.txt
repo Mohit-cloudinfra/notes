@@ -1,0 +1,120 @@
+========================================================================
+  ARCHITECTURE  >  ENTERPRISE (LEGACY), MONOLITHIC, MICROSERVICES
+========================================================================
+
+  IN ONE LINE
+  Applications got split into smaller and smaller independent pieces
+  so that one problem stops taking everything down.
+
+  WORDS THAT MEAN THE SAME
+      component = module = application
+      node = box = server
+
+
+  1. OLD ENTERPRISE APPLICATIONS
+  ----------------------------------------------------------------------
+
+      Servers:  IBM Websphere, Oracle Weblogic, JBOSS EAP
+      Package:  .ear  (enterprise archive)
+
+          roboshop.ear = frontend + backend + libraries
+
+      PROBLEMS
+          1. Tightly coupled
+          2. A small problem takes BOTH frontend and backend down
+          3. A small change is costly. End-to-end testing has to be
+             done again
+          4. Every time, the frontend components must be downloaded
+             from the server
+
+      Frontend technology of that time: jQuery, Angular JS
+
+
+  2. MONOLITHIC
+  ----------------------------------------------------------------------
+
+      Servers:  Apache Tomcat, JBOSS AS
+      Package:  .war
+
+      Frontend and backend are now SEPARATE.
+      Backend = all components combined in a single module.
+
+      BETTER BECAUSE
+          1. Easy maintenance
+          2. Backend only serves data, through an API
+          3. Loose coupling between frontend and backend
+
+      STILL A PROBLEM
+          1. A problem in catalogue makes the ENTIRE backend down
+          2. The entire application must be developed in the same
+             programming language
+          3. Tight coupling between backend components
+
+
+  3. MICROSERVICES
+  ----------------------------------------------------------------------
+
+      Package:  .jar, with an inbuilt lightweight server
+
+      catalogue, user, cart, shipping, payment ... each on its own.
+
+          1. Each component is independent
+          2. Different programming languages can be used
+          3. A problem in one component can't disturb the others
+
+      This is what Roboshop is.
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between monolithic and
+          microservices?
+
+          Monolithic: the whole backend is one application, built
+          and deployed as one unit.
+          Microservices: the backend is split into small services
+          (catalogue, user, cart ...), each built, deployed and
+          scaled on its own, talking to each other over APIs.
+
+
+  [+] Q2. What are the advantages of microservices?
+
+          - One service failing does not bring down the rest
+          - Each service can be deployed without touching the others
+          - Each can use the language that suits it
+          - Scale only the service that is under load
+
+
+  [+] Q3. What are the disadvantages?
+
+          They always ask this after Q2.
+
+          - Many more things to deploy, configure and monitor
+          - Services call each other over the network, and network
+            calls fail
+          - A problem is harder to trace because a request passes
+            through several services
+
+          FROM MY OWN RUN: Roboshop needed ten servers, ten service
+          files and ten DNS records, done by hand. One missing DNS
+          record stopped nginx from starting. This is exactly why
+          microservices need automation.
+
+
+  [+] Q4. How do microservices talk to each other?
+
+          Two ways:
+          - Directly over HTTP APIs, and wait for the answer.
+            In Roboshop, cart calls catalogue on port 8080.
+          - Through a message queue, without waiting.
+            In Roboshop, payment sends to RabbitMQ and dispatch
+            picks it up.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      .ear   everything together         one failure kills all
+      .war   frontend / backend split    one failure kills backend
+      .jar   every component separate    one failure kills one
+========================================================================

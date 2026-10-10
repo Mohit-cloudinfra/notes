@@ -1,0 +1,143 @@
+ingress -> gateway
+
+db in k8 require statefulset, headless service, normal service, PV, PVC and SC
+
+1. EBS dynamic provisioning requires SC
+
+install ebs drivers
+make sure node has EBSCSIDriverPolicy
+create storage class
+
+make sure RDS is running and it allows 3306 from bastion and EKS node. 
+
+helm charts
+	deployment -> resources, liveness probe, readiness probe, etc..
+	configmap/secret
+	service
+	hpa
+	
+1. service type is load balancer -> CLB
+
+1. ingress controller -> ingress beta1
+2. aws load balancer controller -> ingress v1
+3. gateway controller
+
+ingress -> API to connect with external resources like load balancer
+
+ingress controller -> drivers. same across all the 3 versions. Service Account has IAM role mapping, it has IAM permissions to create/read/update/delete the resources
+
+on-premise -> plain kubernetes -> nginx ingress controller
+
+1. make sure OIDC provider exist
+2. download IAM policy and create
+3. create service account for load-balancer-controller
+4. install aws load-balancer-controller drivers
+5. create ingress resource.. annotations are useful to select external resources
+
+1. apiVersion changes
+2. initial version can't group load balancers -> over cost
+3. target group didn't have IP type, you must add all the instances to the load balancer as targets and nodePort should be opened.
+
+eksctl create iamserviceaccount \
+--cluster=roboshop-dev \
+--namespace=kube-system \
+--name=aws-load-balancer-controller \
+--attach-policy-arn=arn:aws:iam::160885265516:policy/AWSLoadBalancerControllerIAMPolicy \
+--override-existing-serviceaccounts \
+--region us-east-1 \
+--approve
+
+eksctl delete iamserviceaccount \
+--cluster=roboshop-dev \
+--namespace=kube-system \
+--name=aws-load-balancer-controller
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=roboshop-dev \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller
+  
+ingress API and ingress controller. ingress controller never changed
+only ingress api changed
+1. v1beta1 to v1
+
+ingress-v1
+
+https://roboshop-dev.daws88s.online/ -> ALB -> HTTPS Listener -> Rule -> roboshop-dev.daws88s.online -> TG -> pods
+
+when ingress API changed from v1beta1 -> v1
+
+1. apiVersion
+2. grouping
+3. registering pods as IP address in target group
+
+cost optimisation, security(no need to open nodePort)
+
+ingress api is frozen
+1. no new features, no innovations
+2. only bug fixes and security patches
+
+python-2.X vs python-3.X
+
+ingress API does not have role seperation between developer and devops
+
+they created new API called gateway. but controller is same. aws-load-balancer-controller
+
+devops/eks admins
+==================
+gatewayclass -> which LB to use ALB/NLB
+loadbalancerconfiguration -> internal/public
+gateway -> listener
+
+rule and target-group ()
+
+developer job
+==============
+TargetGroupConfiguration
+HTTPRoute
+
+1. delete ingress
+2. delete drivers
+
+helm uninstall aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system
+
+hops
+
+VPC Subnets
+
+ALB -> public
+
+helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=roboshop-dev \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=us-east-1 \
+  --set vpcId=$VPC_ID \
+  --set controllerConfig.featureGates.ALBGatewayAPI=true \
+  --set controllerConfig.featureGates.NLBGatewayAPI=true
+  
+1. create ALB, Listener, Rule, Target Group
+2. Then you just add targetgroupbinding to attach pods
+
+kubectl delete \
+  -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/refs/heads/main/config/crd/gateway/gateway-crds.yaml
+  
+kubectl delete --server-side=true \
+  -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/standard-install.yaml
+
+git-ops. project and application at single place. if changes also single place. no chance of forgetting
+
+ALB ACM -> git
+
+check any infra changes ->1st step
+check k8 manifest -> 2nd step
+
+init containers
+fetching secret from secretmanager by pod
+networking
+
+git
+
+cicd using jenkins

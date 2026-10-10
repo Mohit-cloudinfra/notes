@@ -1,0 +1,39 @@
+FROM -> refer base OS
+RUN -> to configure image
+CMD -> command executed at the time of container creation
+LABEL -> metadata of the image
+EXPOSE -> port information
+ADD -> same as COPY but 2 extra capabilities. can download content directly from internet and untar the file
+COPY -> copy the files from local to image
+USER -> to mention the user that container should be running on
+WORKDIR -> working directory of the image/container
+ENV -> env variables to the container
+ARG -> variables at build time, cant be accessed inside container. ARG can be first instruction before 	FROM to supply the version
+ENTRYPOINT -> command to be executed while creating container. it cant be overridden, if we try it will go append. CMD can be overridden. CMD can supply default args for ENTRYPOINT. we can always override default args
+
+ONBUILD
+=======
+our image can be used by someone else. but we want to put some conditions to use our image. that can be enforced using ONBUILD instruction..
+
+our nginx image expects index.html while it is used by others.
+
+OS -> 8,9,10, etc..
+configurations -> packages update
+programming languages -> nodejs 20,21, etc..
+
+Ansible
+
+docker uses by default bridge network
+default bridge network containers can't communicate with each other..
+
+you should create your own bridge network
+
+
+roboshop bridge: 172.18.0.1
+172.18.0.2
+172.18.0.3
+
+when you install docker, it creates one bridge network with name also as bridge
+by default containers get IP address from this network with name bridge
+if you use default bridge network you cant communicate between the containers using names
+you should create your own bridge network

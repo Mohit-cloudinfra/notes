@@ -1,0 +1,173 @@
+========================================================================
+  NETWORKING  >  HTTP, APIs AND STATUS CODES
+========================================================================
+
+  IN ONE LINE
+  The frontend talks to the backend through an API: it sends a
+  request in an agreed format and gets a response with a status code.
+
+
+  1. WHAT IS AN API
+  ----------------------------------------------------------------------
+
+      API = Application Programming Interface
+
+      SIR'S EAMCET STORY
+          The results sit in ONE government database.
+          eenadu, tv9, manabadi, sakshi all show the results.
+          They do not have the database. They call the EAMCET API.
+
+          eenadu frontend  ->  EAMCET API  ->  EAMCET DB
+
+          You enter hall ticket and date of birth, press submit.
+          The site calls:   https://eamcet.ap.gov.in/api/results
+
+          Request format:
+              {
+                  "hallTicketNo": 123456789,
+                  "dob": "01-01-1999"
+              }
+
+          Response format:
+              {
+                  "name": "sivakumar",
+                  "result": "pass",
+                  "marks": 99.99
+              }
+
+      IN OUR EXPENSE PROJECT
+          http://<ip>/api/transaction
+
+          {
+              amount: "200",
+              desc: "travel"
+          }
+
+
+  2. HTTP METHODS  =  CRUD
+  ----------------------------------------------------------------------
+
+      The URL is the NOUN.  The method is the VERB.
+
+      Same URL:   http://<ip>/api/transaction
+
+          POST       Create
+          GET        Read
+          PUT        Update
+          DELETE     Delete
+
+      transactions = noun,  GET = verb   ->   "getTransactions"
+
+
+  3. STATUS CODES
+  ----------------------------------------------------------------------
+
+      1XX   INFORMATIONAL
+            100   Continue
+            101   Switching protocols
+
+      2XX   SUCCESS
+            200   OK
+            201   Created
+            204   No Content  (what a successful delete returns)
+
+      3XX   REDIRECTION
+            301   URL redirection, permanent
+            302   Temporary redirection
+            304   Cache (not modified, use your cached copy)
+
+      4XX   CLIENT SIDE ERROR   (you sent something wrong)
+            400   Bad request, e.g. invalid JSON
+            401   Unauthorised, no authentication
+            403   Forbidden, no permission to this
+            404   Not found
+
+      5XX   SERVER SIDE ERROR   (the server failed)
+            500   Internal server error
+            502   Bad gateway
+            503   Service unavailable
+            504   Gateway timeout
+
+      EXAMPLES SIR GAVE
+          400   sending  { "amountt": 200, "description": "" }
+                the field name is wrong, so the request is bad
+
+          403   https://eamcet.ap.gov.in/api/results/2026/1234567
+                    -> a student can see this
+                https://eamcet.ap.gov.in/api/results/2026/
+                    -> only GOV admins. Anyone else gets 403.
+
+      502 vs 500   (this one gets asked)
+          502   The proxy server could NOT get a response from the
+                upstream server. The backend is probably down.
+          500   The proxy COULD reach the upstream server, but a
+                proper response did not come. The backend is up
+                and broke while handling the request.
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is the difference between 401 and 403?
+
+          401   You have not proved who you are. Log in.
+          403   I know who you are, and you are not allowed.
+
+
+  [+] Q2. What is the difference between 502, 503 and 504?
+
+          All three come from a proxy or load balancer in front.
+
+          502 Bad Gateway          the backend gave no valid answer.
+                                   Usually it is down or refusing
+                                   connections.
+          503 Service Unavailable  nothing is able to handle the
+                                   request right now: overloaded,
+                                   in maintenance, or no healthy
+                                   backend.
+          504 Gateway Timeout      the backend was reached but took
+                                   too long to answer.
+
+
+  [+] Q3. The site returns 502. What do you check?
+
+          The proxy is fine, the backend is the problem.
+
+          1. Is the backend running?    systemctl status <service>
+          2. Is its port open?          netstat -lntp
+          3. Is proxy_pass pointing to the right host and port?
+          4. Can the frontend reach it? telnet <backend> 8080
+          5. Backend logs               journalctl -u <service>
+
+
+  [+] Q4. What is the difference between 4XX and 5XX?
+
+          4XX: the request was wrong. Fix the client.
+          5XX: the request was fine, the server failed. Fix the
+          server. As the DevOps person, 5XX is yours to chase.
+
+
+  [+] Q5. What is the difference between GET and POST?
+
+          GET reads data and changes nothing. It can be repeated
+          safely.
+          POST creates something. Sending it twice creates two.
+
+          GET read, POST create, PUT update, DELETE delete.
+
+
+  [+] Q6. What is an API?
+
+          A fixed way for one program to ask another for something:
+          a URL, a method, a request format and a response format.
+          The frontend does not touch the database. It calls the
+          backend's API, and the backend talks to the database.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      2XX worked     3XX go elsewhere     4XX your fault
+      5XX server's fault
+      401 = who are you?       403 = I know you, and no.
+      502 = backend not reachable     500 = backend reachable, broken
+========================================================================

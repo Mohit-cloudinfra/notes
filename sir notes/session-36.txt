@@ -1,0 +1,20 @@
+2 AZ
+1 subnet for 1 AZ
+public - roboshop-public-us-east-1a
+
+public 10.0.1.0/24 10.0.2.0/24 -> 256
+private 10.0.11.0/24 10.0.12.0/24
+database 10.0.21.0/24 10.0.22.0/24
+
+ingress/inbound -> incoming traffic
+egress/outbound -> traffic/data goes out from VPC/servers
+
+dnf install mysql-server -y -> outgoing traffic
+
+NAT gateway -> Ec2 instance
+Elastic IP -> Static IP is mandatory to create NAT gateway
+
+1. create VPC
+2. create IGW and attach to VPC
+
+roboshop-dev

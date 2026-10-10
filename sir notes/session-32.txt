@@ -1,0 +1,64 @@
+resource "type_of_resource" "name_of_resource"{
+	key=value
+}
+
+variable "name_of_variable" {
+	type = string
+	default = ""
+}
+
+terraform.tfvars
+ENV variables TF_VAR_VAR_NAME
+-var "var_name=value"
+
+expression ? "true_val" : "false_val"
+
+count.index
+
+list -> ordered,index based values -> allows duplicates
+set -> order not gaurenteed, remove duplicates
+
+count based loop -> list
+
+for_each loop
+===============
+set or map
+each -> special variable
+
+count, for_each, dynamic(only for repeated code inside resource)
+count -> list based
+for_each -> map or set
+
+data sources
+============
+if you want to get the information from provider, we can use data sources
+
+functions
+=============
+we can't write custom functions in terraform.
+
+FName
+MName
+LName
+
+merge
+=====
+{
+	a = "b"
+	c = "d"
+}
+
+{
+	d = "e",
+	c = "z"
+}
+
+{
+	d = "e",
+	e = "f"
+}
+
+a = "b"
+c = "d"
+d = "e"
+e = "f"

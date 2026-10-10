@@ -1,0 +1,86 @@
+Java
+=====
+Build tool -> Ant, Maven, Gradle, etc.
+.java
+
+JDK -> Java development kit
+JRE -> Java Runtime environment
+
+while developing we need JDK
+while running JRE is enough
+
+JDK = JRE + development utilities
+
+Source code -> Compile -> Byte code -> 0 and 1
+node js = compile + running
+java = running directly
+
+Build tool = Maven
+output format -> .ear, .war, .jar
+.jar has inbuilt lightweight server
+
+Old Enterprise applications -> IBM Websphere, Oracle weblogic, JBOSS EAP, etc..
+===========================
+enterprise archive = frontend+backend+libraries -> .ear
+roboshop.ear
+
+1. tight couple
+2. small problem makes both frontend and backend down
+3. a small change is also costly. end to end testing should be done again
+4. everytime frontend components should be downloaded from server
+
+Jquery, Angular JS, etc..
+
+Monolithic -> Apache Tomcat, JBOSS AS, etc.
+=============
+.war
+frontend and backend
+1. easy maintance
+2. data only will be served by backend through API
+3. loose coupling
+
+problems
+=========
+1. problem in catalogue makes entire backend down
+2. entire application should be developed in same programming language
+3. tight coupling between backend components
+
+Microservices -> inbuilt servers
+=============
+catalogue, user, cart, etc..
+
+1. each component is independent
+2. diff programming languages can be used
+3. problem in one component cant disturb other components
+
+nodejs =  node + npm
+maven = java + maven
+
+programming language == programming runtime
+mvn clean package -> clean previous builds + install dependencies + pack the application
+
+a new directory target will be created
+
+Python
+============
+.py
+pip
+requirements.txt
+
+1. OOPS
+2. Scripting
+
+frontend logs -> backend component logs -> DB is running fine or not
+
+1. frontend nginx config recheck
+2. backend may not be running
+3. data is not loaded into DB
+4. database is not running
+5. DNS records are not updated
+
+502 -> Bad gateway -> proxy server not able to get response from upstream server
+500 -> internal server error -> proxy able to reach upstream server, but proper response is not there
+
+https://typegrow.com/tools/linkedin-text-formatter
+
+https://www.linkedin.com/posts/sivakumar-reddy-mettukuru_devops-cloudcomputing-sre-activity-7420307090109259776-ylTD?utm_source=share&utm_medium=member_desktop&rcm=ACoAABDIcU0BU8bgQnwg0jN1W2BYG8lApo6P9Ec

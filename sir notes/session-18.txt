@@ -1,0 +1,17 @@
+How to call one sccript from another script
+
+
+sh script-2.sh -> seperate process, can't access script-1 variables
+source -> same process, can access script-1 variables
+
+/home/ec2-user/.local/bin:
+/home/ec2-user/bin:
+/usr/local/bin:
+/usr/bin:
+/usr/local/sbin:
+/usr/sbin
+
+Tomorrow's topic:
+=================
+1. making common script
+2. monitoring scripts

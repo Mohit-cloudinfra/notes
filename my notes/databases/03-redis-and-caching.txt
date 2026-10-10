@@ -1,0 +1,116 @@
+========================================================================
+  DATABASES  >  REDIS AND CACHING
+========================================================================
+
+  IN ONE LINE
+  Redis keeps data in RAM as key-value pairs, so the application can
+  get an answer without going to the slow database every time.
+
+      Redis = REmote DIctionary Server
+
+
+  1. WHAT IT IS
+  ----------------------------------------------------------------------
+
+      - in-memory (RAM) database
+      - key-value pair data
+      - caching database
+      - ultra fast, because it reads from RAM
+
+      SPEED ORDER
+          Hard disk  ->  RAM  ->  Processor
+          (slow)                  (fast)
+
+
+  2. WHY A CACHE
+  ----------------------------------------------------------------------
+
+      WITHOUT A CACHE, every request does this:
+          Backend -> Database
+              1. Connection establish (open)
+              2. Request and response
+              3. Connection close
+
+      WITH A CACHE
+          apps  ->  cache  ->  database
+
+          Backend asks the cache first.
+              found      -> return it, done
+              not found  -> connect to the DB, get it, and KEEP IT
+                            in the cache for next time
+
+      TTL decides how long an entry stays in the cache.
+
+
+  3. INSTALLING REDIS
+  ----------------------------------------------------------------------
+
+      Default is Redis 6. We want 7.
+
+      dnf module disable redis -y
+      dnf module enable redis:7 -y
+      dnf install redis -y
+
+      ALLOW OTHER SERVERS
+          vim /etc/redis/redis.conf
+
+              bind            127.0.0.1  ->  0.0.0.0
+              protected-mode  yes        ->  no
+
+      systemctl enable redis
+      systemctl start redis
+      netstat -lntp
+
+      port    6379
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. What is Redis and why is it fast?
+
+          An in-memory key-value store. It keeps data in RAM, and
+          reading from RAM is far faster than reading from a disk.
+          It is mostly used as a cache in front of a database.
+
+
+  [+] Q2. How does caching work?
+
+          The application asks the cache first.
+          Found (cache hit): return it straight away.
+          Not found (cache miss): get it from the database, return
+          it, and store a copy in the cache for next time.
+
+          Result: the database is hit far less often.
+
+
+  [+] Q3. What happens to the data if Redis restarts?
+
+          It lives in memory, so it can be lost. That is acceptable
+          for a cache, because the real data is still in the
+          database and the cache simply fills up again.
+
+          This is why Redis is not used as the only copy of
+          important data.
+
+
+  [+] Q4. What is TTL in a cache?
+
+          How long an entry stays before it is removed. Without it
+          the cache would keep serving old data forever after the
+          database changed.
+
+
+  [+] Q5. Where was Redis used in your project?
+
+          In Roboshop, the user and cart components connect to it.
+          The cart is a good fit: it changes often, must be fast,
+          and does not need to be kept forever.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      Redis = RAM + key-value + cache
+      Two changes in redis.conf: bind 0.0.0.0, protected-mode no
+      Port 6379
+========================================================================

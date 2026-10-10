@@ -1,0 +1,43 @@
+1. Infra creation -> one time activity
+2. tools setup
+
+1. create feature branch
+
+end-to-end test cases
+
+CR process
+===========
+create CR -> cr-1234
+date
+time
+change description
+version
+scan results
+	sonar-scan
+	trivy scan
+	library-scan
+test cases reports -> 60%
+	unit-tests
+	functional-test-cases
+	end-to-end test cases
+	testing-team sign off email
+roll back plan
+	we are doing microservices deployment through helm, if the application/pods are not comming to running we are automaitcally doing rollback through helm and fail the pipeline
+approvals -> 
+
+we are developing and maintaining different pipelines based on programming language and deployment platform, for example we have nodejsEKSPipeline, javaEKSPipeline, pythonEKSpipeline
+
+for every language we are managing 2 pipelines, one feature branch pipeline whenever developers commits into feature brach we will trigger this pipeline through webhook. we are doing all scans like sonar, library, trivy, unit test cases and quality gates setup for every scan, if we find critical and high alerts we are failing the pipeline. we are building the image and pushing image into ECR...
+
+we want to make sure shift left process. we want clean, scanned and tested code should be deployed in all the environments.
+
+once feature is success, developers raise pr, we commit commit checks, after approval code comes to main branch
+
+then we automaitcally trigger main pipeline that deploys the application into development branch, here we consider commit id as version. we download the image from ECR, retag it and push to ECR then deploy into DEV. if it is successful then we are triggering functional-test-cases, if test cases are success, then we are creating jira for uat deployment...
+
+from jira, we are triggering uat, application will be deployed into uat, we trigger end to end automation test cases(30min). then we are updating jira as uat-passed...
+
+
+then application is ready for PROD, CR process will be followed by our support team, with in the deployment window support team updates jira with cr number, then trigger the pipeline
+
+our main pipeline makes sure cr is approved and with in the time window, then we trigger to prod. helm does auto rollback if pods are not coming to running in 5min, then fail the pipeline. if success we tag the commit id with verion and update jira as done... PROD deployment completed

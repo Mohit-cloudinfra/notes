@@ -1,0 +1,75 @@
+devops-practice
+ami-09c813fb71547fc4f
+RHEL-9-DevOps-Practice
+ec2-user DevOps321
+
+Linux Server -> DB server(Software Server)
+
+SQL -> Structured Query Language
+RDBMS -> relational database management system
+	mysql, oracle, postgress, mssql etc.
+table and columns
+
+users
+	Primary Key -> ID
+
+payments
+	Primary key -> ID
+	foreign key -> User ID
+
+user name -> root
+default port -> 3306
+mysql_secure_installation --set-root-pass ExpenseApp@1
+
+mysql -h 172.31.18.160 -u root -pExpenseApp@1
+
+server ==> mysql-server
+client ==> mysql
+
+We are going to use nodejs as our backend language, version number 20
+
+system users
+============
+human accounts -> username and password
+non-human accounts -> username but no password
+
+curl -o /tmp/backend.zip https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+
+/tmp -> OS stores temp files here, these are not really important
+
+NodeJS
+=====
+extension -> .js
+libraries == dependencies
+
+package.json ==> this is called build file where developers mention dependencies and application details
+npm -> node package manager -> build tool
+
+NodeJS			Java		Python				.NET
+.js				.java		.py					.net/.aspx
+package.json	pom.xml		requirements.txt	*.csproj
+npm				maven		pip					nuget
+
+npm install -> reads package.json and download the dependencies from internet
+
+dnf install nginx -> systemctl start nginx
+
+systemctl -> more flexible to start/stop/enable/restart/status
+
+.service files -> /etc/systemd/system -> *.service
+
+systemctl start nginx -> /etc/systemd/system/nginx.service
+
+Public IP vs Private IP
+========================
+Actual Name vs Sweet Name
+
+External and Internal
+=====================
+
+
+How much Purpose
+
+mysql -h 172.31.18.160 -uroot -pExpenseApp@1 < /app/schema/backend.sql
+
+

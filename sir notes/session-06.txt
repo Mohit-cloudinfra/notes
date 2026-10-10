@@ -1,0 +1,101 @@
+Process management
+==================
+DM -> he creates some task in his to-do list and assign to TL
+TL -> he creates some task in his to-do list and assign to SE
+SE -> he creates some task in his to-do list and assign to JE
+Fresher -> he creates some task in his to-do list and complete the task
+
+Parent -> Child
+Who is parent for TL -> DM
+
+root process
+0 -> PID
+1 -> PID
+
+PID		PPID
+2		0
+3		1
+
+ps -> process started by current user
+
+whatever the task you give to Linux. first it will create one PID then work on it, give the results and complete the process
+
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 01:52 ?        00:00:01 /usr/lib/systemd/systemd --switched-root --system --deserialize=32
+root           2       0  0 01:52 ?        00:00:00 [kthreadd]
+root           3       2  0 01:52 ?        00:00:00 [rcu_gp]
+root           4       2  0 01:52 ?        00:00:00 [rcu_par_gp]
+root           5       2  0 01:52 ?        00:00:00 [slub_flushwq]
+
+
+1. background process
+2. foreground process -> blocks the screen, we can't do anything
+
+PLSQL -> 30min
+
+each time a process is created -> CPU, RAM and HD consumed
+
+get all the logs server logs, app logs, DB logs, heap dump,etc...
+
+kill the process and restart services
+
+5% 10% 20% 80%
+
+3 tier architecture
+===================
+Desktop applications
+
+consumes more resources
+install, upgrade, repairs
+data is stored in local computer
+you should install antivirus
+what if laptop crashes?
+can't access from remote
+
+applications are move to web
+
+1 tier -> 2 tier -> 3 tier
+
+road side hotel
+===============
+single person
+
+max 5 persons
+what if 20 persons suddenly came
+
+Hotel
+======
+cashier -> cash management
+cook -> only to cook, queue management and order management
+15 members
+
+50 members
+
+Restaurant
+========
+Captain -> welcomes us
+Table -> Waiter -> takes order
+Chef -> Prepares the order
+Waiter -> Onions, lemon, keera, etc decorate
+Customer
+
+Raw food items -> Chef cooks them -> Decorates them -> customer eats them
+
+Database Server -> Application servers can access the data -> handovers the data to webserver -> Webserver decorates them with HTML, CSS and JS -> Show to user
+
+username and passoword
+
+select * from user where username="sivakumar" and password="siva123"
+if found -> 1
+if not found -> 0
+
+1. maitainance issue
+2. queue management
+3. security problem
+
+
+devops-practice
+ami-09c813fb71547fc4f
+RHEL-9 -> enterprise, community
+RHEL-9-DevOps-Practice
+ec2-user DevOps321

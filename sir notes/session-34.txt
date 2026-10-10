@@ -1,0 +1,109 @@
+state and remote state
+
+data.tf
+ec2.tf
+locals.tf
+variables.tf
+
+resource "aws_instance" "frontend" {
+
+}
+
+locals
+
+local-exec
+remote-exec
+
+1. workspaces
+2. tfvars
+3. seperate repos
+
+workspaces
+==========
+if we want to create multiple environments we can make use of terraform workspaces. terraform will give us special variable called terraform.workspace
+
+terraform.workspace=dev
+terraform.workspace=default
+terraform.workspace=prod
+
+terraform workspace select dev/prod
+
+dev -> t3.micro
+uat -> t3.small
+prod -> t3.medium
+
+advantages
+=========
+1. same code
+2. consistent environments
+
+disadvantages
+=========
+since code is same, we should be very careful, because it applies to prod also.
+
+tfvars
+======
+advantages
+=========
+1. same code
+2. consistent environments
+
+disadvantages
+=========
+since code is same, we should be very careful, because it applies to prod also.
+
+I am in prod
+I applied dev values
+
+1. command line
+2. tfvars
+3. env variable
+4. default values
+5. prompt
+
+- dev
+- prod
+
+isolation -> non-prod and prod
+different accounts for different environments
+different repository
+
+aws configure
+terraform workspace select dev
+
+terraform-ec2-dev
+terraform-ec2-prod
+
+disadvantages
+==============
+repeat code
+
+advantages
+==============
+clear isolation
+blast radius is zero
+seperate states
+
+
+Terraform Modules
+=================
+functions -> a repeated task, it will be executed whenever we call. it will take inputs and give outputs
+
+a.sh
+common.sh
+
+a -> function common.sh
+
+1. enforce best standards
+2. code reuse
+3. easy maintainance
+
+branch names -> dev, uat and prod
+feature and main
+code and configuration
+
+tfvars/
+	dev.tfvars
+	uat.tfvars
+	prod.tfvars
+

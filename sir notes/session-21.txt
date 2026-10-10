@@ -1,0 +1,73 @@
+prjaasffzfxcufpe
+
+Disadvantages
+=============
+1. no idempotency
+2. No error handling
+3. Little complex
+4. Large scale servers handling is tough
+5. Distribution specific, homogenous
+
+1. copy mongo repo, mongodb.sh
+2. execute them
+
+Configuration management
+======================
+provisioning server -> baseline it according to our needs
+
+1. Installing programming language
+2. Creating system users and folders
+3. Installing some system packages
+4. Downloading code
+5. Installing dependencies
+6. Creating systemctl services
+7. Enable and starting the services
+
+CRUD
+
+Push vs Pull
+============
+HYD -> Delhi
+
+1. Person in Delhi go to DTDC office everyday and check for letter
+2. Person stays home, DTDC delivers letter whenever it arrive
+
+protocol
+port
+username
+password
+IP
+
+Linux commands == Ansible modules/collections
+
+Linux Server STATE-1 -> STATE change STATE-2
+
+YAML -> Yet another markup language
+
+DTO -> data transfer objects
+============================
+
+name -> sivakumar
+acc no
+amount
+date
+branch
+denomination
+
+forms and templates
+
+Markup languages
+================
+HTML, XML
+
+<Register>
+	<Name>Sivakumar</Name>
+	<Mobile>12345678</Mobile>
+	<Email>info@joindevops.com</Email>
+</Register>
+
+JSON
+
+YAML
+
+

@@ -1,0 +1,40 @@
+Crontab
+========
+scheduler in linux server, we can schedule the scripts to run periodically
+
+cp source_dir dest_dir
+backup source_dir dest_dir 20
+
+1. user should pass source_dir dest_dir, default is 14 days, but user can override
+2. verify the directories exist and root user too
+3. find the files
+4. archieve them and place into dest_dir
+5. check archieve is success or not
+6. if success you can delete from source_dir
+
+udvxeilgkoufsbbt
+
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-bundle.crt
+logfile        /var/log/msmtp.log
+
+account        gmail
+host           smtp.gmail.com
+port           587
+from           m.sivakmrreddy@gmail.com
+user           m.sivakmrreddy@gmail.com
+password       udvxeilgkoufsbbt
+
+account default : gmail
+
+{
+echo "To: info@joindevops.com"
+echo "Subject: Shell script test"
+echo "Content-Type: text/html"
+echo ""
+echo "test from shell"
+} | msmtp "info@joindevops.com"
+
+disk utilsation, trigger email if du is more than 70

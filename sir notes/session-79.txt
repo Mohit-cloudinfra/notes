@@ -1,0 +1,78 @@
+Github Actions
+==============
+1. no need to maintain CI server
+2. Native support to Github
+
+cons
+=====
+1. we will not have full control
+2. code must be in github
+3. even we setup github action in github enterprise, it is dependent on internet for actions and marketplace
+4. if there is a problem in github side, our pipelines will not work
+
+1. faster deployments
+2. no defects
+
+pipline {
+
+	agent{
+	
+	}
+	options{
+	
+	}
+	parameters{
+	
+	}
+	environment{
+	
+	}
+	stages{
+		stage(){
+		
+		}
+	}
+	post {
+	
+	}
+}
+
+.github/workflows
+
+Jenkins					Github Actions
+========				==============
+Pipeline				Worklflow
+Triggers				Triggers
+Stage					Job
+Agent					runs-on
+Steps					Steps
+Parameters				inputs
+Credentials				secrets
+Plugins					Actions
+
+Context
+=======
+1. github -> ${{ github }}
+2. env
+3. secrets
+4. variables
+5. inputs ${{ inputs.key-name }}
+6. steps
+7. job
+8. runner
+
+project
+component
+environment
+
+maven
+=====
+java build tool
+pom.xml
+	group-id: com.icicibank
+	artifact: savings-bank
+	version: 1.0
+	
+sonar-scanner: sonar-8.X
+
+mvn sonar

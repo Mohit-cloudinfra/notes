@@ -1,0 +1,265 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@54.80.196.107                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Tue Jan 13 18:30:33 2026 from 106.195.65.196
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ ec2-user@ip-172-31-35-1 ~ ]$ dnf install python3 gcc python3-devel -y
+Error: This command has to be run with superuser privileges (under the root user on most systems).
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ ec2-user@ip-172-31-35-1 ~ ]$ useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd: Permission denied.
+useradd: cannot lock /etc/passwd; try again later.
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ ec2-user@ip-172-31-35-1 ~ ]$ sdo su -
+-bash: sdo: command not found
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ ec2-user@ip-172-31-35-1 ~ ]$ sudo su -
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 ~ ]# dnf install python3 gcc python3-devel -y
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                             86 kB/s | 4.5 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                                87 kB/s | 4.1 kB     00:00
+Red Hat Enterprise Linux 9 Client Configuration                                                                                44 kB/s | 1.5 kB     00:00
+Package python3-3.9.25-2.el9_7.x86_64 is already installed.
+Package gcc-11.5.0-11.el9.x86_64 is already installed.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                                      Architecture             Version                             Repository                                    Size
+==============================================================================================================================================================
+Installing:
+ python3-devel                                x86_64                   3.9.25-7.el9_8.3                    rhel-9-appstream-rhui-rpms                   252 k
+Upgrading:
+ cpp                                          x86_64                   11.5.0-14.el9                       rhel-9-appstream-rhui-rpms                    11 M
+ gcc                                          x86_64                   11.5.0-14.el9                       rhel-9-appstream-rhui-rpms                    32 M
+ libgcc                                       x86_64                   11.5.0-14.el9                       rhel-9-baseos-rhui-rpms                       85 k
+ libgomp                                      x86_64                   11.5.0-14.el9                       rhel-9-baseos-rhui-rpms                      258 k
+ python-unversioned-command                   noarch                   3.9.25-7.el9_8.3                    rhel-9-appstream-rhui-rpms                    15 k
+ python3                                      x86_64                   3.9.25-7.el9_8.3                    rhel-9-baseos-rhui-rpms                       32 k
+ python3-libs                                 x86_64                   3.9.25-7.el9_8.3                    rhel-9-baseos-rhui-rpms                      8.1 M
+
+Transaction Summary
+==============================================================================================================================================================
+Install  1 Package
+Upgrade  7 Packages
+
+Total download size: 52 M
+Downloading Packages:
+(1/8): python3-devel-3.9.25-7.el9_8.3.x86_64.rpm                                                                              5.5 MB/s | 252 kB     00:00
+(2/8): python-unversioned-command-3.9.25-7.el9_8.3.noarch.rpm                                                                 2.2 MB/s |  15 kB     00:00
+(3/8): libgcc-11.5.0-14.el9.x86_64.rpm                                                                                         11 MB/s |  85 kB     00:00
+(4/8): libgomp-11.5.0-14.el9.x86_64.rpm                                                                                        23 MB/s | 258 kB     00:00
+(5/8): python3-3.9.25-7.el9_8.3.x86_64.rpm                                                                                    4.8 MB/s |  32 kB     00:00
+(6/8): cpp-11.5.0-14.el9.x86_64.rpm                                                                                            54 MB/s |  11 MB     00:00
+(7/8): python3-libs-3.9.25-7.el9_8.3.x86_64.rpm                                                                                55 MB/s | 8.1 MB     00:00
+(8/8): gcc-11.5.0-14.el9.x86_64.rpm                                                                                            77 MB/s |  32 MB     00:00
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                         113 MB/s |  52 MB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Upgrading        : python3-libs-3.9.25-7.el9_8.3.x86_64                                                                                                1/15
+  Upgrading        : python3-3.9.25-7.el9_8.3.x86_64                                                                                                     2/15
+  Upgrading        : python-unversioned-command-3.9.25-7.el9_8.3.noarch                                                                                  3/15
+  Upgrading        : libgomp-11.5.0-14.el9.x86_64                                                                                                        4/15
+  Upgrading        : libgcc-11.5.0-14.el9.x86_64                                                                                                         5/15
+  Running scriptlet: libgcc-11.5.0-14.el9.x86_64                                                                                                         5/15
+  Upgrading        : cpp-11.5.0-14.el9.x86_64                                                                                                            6/15
+  Upgrading        : gcc-11.5.0-14.el9.x86_64                                                                                                            7/15
+  Installing       : python3-devel-3.9.25-7.el9_8.3.x86_64                                                                                               8/15
+  Cleanup          : gcc-11.5.0-11.el9.x86_64                                                                                                            9/15
+  Cleanup          : python-unversioned-command-3.9.25-2.el9_7.noarch                                                                                   10/15
+  Cleanup          : python3-3.9.25-2.el9_7.x86_64                                                                                                      11/15
+  Cleanup          : python3-libs-3.9.25-2.el9_7.x86_64                                                                                                 12/15
+  Cleanup          : cpp-11.5.0-11.el9.x86_64                                                                                                           13/15
+  Cleanup          : libgcc-11.5.0-11.el9.x86_64                                                                                                        14/15
+  Running scriptlet: libgcc-11.5.0-11.el9.x86_64                                                                                                        14/15
+  Cleanup          : libgomp-11.5.0-11.el9.x86_64                                                                                                       15/15
+  Running scriptlet: libgomp-11.5.0-11.el9.x86_64                                                                                                       15/15
+  Verifying        : python3-devel-3.9.25-7.el9_8.3.x86_64                                                                                               1/15
+  Verifying        : cpp-11.5.0-14.el9.x86_64                                                                                                            2/15
+  Verifying        : cpp-11.5.0-11.el9.x86_64                                                                                                            3/15
+  Verifying        : gcc-11.5.0-14.el9.x86_64                                                                                                            4/15
+  Verifying        : gcc-11.5.0-11.el9.x86_64                                                                                                            5/15
+  Verifying        : python-unversioned-command-3.9.25-7.el9_8.3.noarch                                                                                  6/15
+  Verifying        : python-unversioned-command-3.9.25-2.el9_7.noarch                                                                                    7/15
+  Verifying        : libgcc-11.5.0-14.el9.x86_64                                                                                                         8/15
+  Verifying        : libgcc-11.5.0-11.el9.x86_64                                                                                                         9/15
+  Verifying        : libgomp-11.5.0-14.el9.x86_64                                                                                                       10/15
+  Verifying        : libgomp-11.5.0-11.el9.x86_64                                                                                                       11/15
+  Verifying        : python3-3.9.25-7.el9_8.3.x86_64                                                                                                    12/15
+  Verifying        : python3-3.9.25-2.el9_7.x86_64                                                                                                      13/15
+  Verifying        : python3-libs-3.9.25-7.el9_8.3.x86_64                                                                                               14/15
+  Verifying        : python3-libs-3.9.25-2.el9_7.x86_64                                                                                                 15/15
+
+Upgraded:
+  cpp-11.5.0-14.el9.x86_64                             gcc-11.5.0-14.el9.x86_64          libgcc-11.5.0-14.el9.x86_64            libgomp-11.5.0-14.el9.x86_64
+  python-unversioned-command-3.9.25-7.el9_8.3.noarch   python3-3.9.25-7.el9_8.3.x86_64   python3-libs-3.9.25-7.el9_8.3.x86_64
+Installed:
+  python3-devel-3.9.25-7.el9_8.3.x86_64
+
+Complete!
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 ~ ]# useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 ~ ]# mkdir /app
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 ~ ]# curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
+cd /app
+unzip /tmp/payment.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  3151  100  3151    0     0  21290      0 --:--:-- --:--:-- --:--:-- 21435
+Archive:  /tmp/payment.zip
+  inflating: payment.ini
+  inflating: payment.py
+  inflating: rabbitmq.py
+  inflating: requirements.txt
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]# cd /app
+pip3 install -r requirements.txt
+Collecting uwsgi
+  Downloading uwsgi-2.0.31.tar.gz (822 kB)
+     |████████████████████████████████| 822 kB 6.5 MB/s
+  Preparing metadata (setup.py) ... done
+Collecting Flask
+  Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+     |████████████████████████████████| 103 kB 59.6 MB/s
+Requirement already satisfied: requests in /usr/lib/python3.9/site-packages (from -r requirements.txt (line 3)) (2.25.1)
+Collecting pika
+  Downloading pika-1.4.4-py3-none-any.whl (165 kB)
+     |████████████████████████████████| 165 kB 69.8 MB/s
+Collecting prometheus_client
+  Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+     |████████████████████████████████| 64 kB 5.3 MB/s
+Collecting opentracing
+  Downloading opentracing-2.4.0.tar.gz (46 kB)
+     |████████████████████████████████| 46 kB 5.8 MB/s
+  Preparing metadata (setup.py) ... done
+Collecting instana
+  Downloading instana-3.19.1-py3-none-any.whl (201 kB)
+     |████████████████████████████████| 201 kB 68.3 MB/s
+Collecting werkzeug>=3.1.0
+  Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+     |████████████████████████████████| 228 kB 69.1 MB/s
+Collecting click>=8.1.3
+  Downloading click-8.1.8-py3-none-any.whl (98 kB)
+     |████████████████████████████████| 98 kB 12.6 MB/s
+Collecting blinker>=1.9.0
+  Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Collecting importlib-metadata>=3.6.0
+  Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+Collecting jinja2>=3.1.2
+  Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+     |████████████████████████████████| 134 kB 67.8 MB/s
+Collecting itsdangerous>=2.2.0
+  Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Collecting markupsafe>=2.1.1
+  Downloading markupsafe-3.0.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (20 kB)
+Requirement already satisfied: chardet<5,>=3.0.2 in /usr/lib/python3.9/site-packages (from requests->-r requirements.txt (line 3)) (4.0.0)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/lib/python3.9/site-packages (from requests->-r requirements.txt (line 3)) (1.26.5)
+Requirement already satisfied: idna<3,>=2.5 in /usr/lib/python3.9/site-packages (from requests->-r requirements.txt (line 3)) (2.10)
+Collecting pyyaml>=6.0.2
+  Downloading pyyaml-6.0.3-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (750 kB)
+     |████████████████████████████████| 750 kB 51.1 MB/s
+Collecting typing-extensions>=4.12.2
+  Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+     |████████████████████████████████| 45 kB 5.8 MB/s
+Collecting autowrapt>=1.0
+  Downloading autowrapt-2.0.0-py3-none-any.whl (7.9 kB)
+Collecting opentelemetry-api>=1.27.0
+  Downloading opentelemetry_api-1.41.1-py3-none-any.whl (69 kB)
+     |████████████████████████████████| 69 kB 11.6 MB/s
+Collecting opentelemetry-semantic-conventions>=0.48b0
+  Downloading opentelemetry_semantic_conventions-0.62b1-py3-none-any.whl (231 kB)
+     |████████████████████████████████| 231 kB 72.9 MB/s
+Collecting fysom>=2.1.2
+  Downloading fysom-2.1.6.tar.gz (19 kB)
+  Preparing metadata (setup.py) ... done
+Collecting wrapt>=2.0.0
+  Downloading wrapt-2.5.0-cp39-cp39-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (230 kB)
+     |████████████████████████████████| 230 kB 69.9 MB/s
+Collecting zipp>=3.20
+  Downloading zipp-3.23.1-py3-none-any.whl (10 kB)
+Using legacy 'setup.py install' for uwsgi, since package 'wheel' is not installed.
+Using legacy 'setup.py install' for opentracing, since package 'wheel' is not installed.
+Using legacy 'setup.py install' for fysom, since package 'wheel' is not installed.
+Installing collected packages: zipp, typing-extensions, importlib-metadata, wrapt, opentelemetry-api, markupsafe, werkzeug, pyyaml, opentelemetry-semantic-conventions, jinja2, itsdangerous, fysom, click, blinker, autowrapt, uwsgi, prometheus-client, pika, opentracing, instana, Flask
+    Running setup.py install for fysom ... done
+    Running setup.py install for uwsgi ... done
+    Running setup.py install for opentracing ... done
+Successfully installed Flask-3.1.3 autowrapt-2.0.0 blinker-1.9.0 click-8.1.8 fysom-2.1.6 importlib-metadata-8.7.1 instana-3.19.1 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.4 opentelemetry-api-1.41.1 opentelemetry-semantic-conventions-0.62b1 opentracing-2.4.0 pika-1.4.4 prometheus-client-0.26.0 pyyaml-6.0.3 typing-extensions-4.16.0 uwsgi-2.0.31 werkzeug-3.1.9 wrapt-2.5.0 zipp-3.23.1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]# vim /etc/systemd/system/payment.service
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]# systemctl daemon-reload
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]# systemctl enable payment
+systemctl start payment
+Created symlink /etc/systemd/system/multi-user.target.wants/payment.service → /etc/systemd/system/payment.service.
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]# cat /etc/systemd/system/payment.service
+[Unit]
+Description=Payment Service
+
+[Service]
+User=root
+WorkingDirectory=/app
+// highlight-start
+Environment=CART_HOST=cart.mohitsai.cloud
+Environment=CART_PORT=8080
+Environment=USER_HOST=user.mohitsai.cloud
+Environment=USER_PORT=8080
+Environment=AMQP_HOST=rabbitmq.mohitsai.cloud
+// highlight-end
+Environment=AMQP_USER=roboshop
+Environment=AMQP_PASS=roboshop123
+
+ExecStart=/usr/local/bin/uwsgi --ini payment.ini
+ExecStop=/bin/kill -9 $MAINPID
+SyslogIdentifier=payment
+
+[Install]
+WantedBy=multi-user.target
+
+54.80.196.107 | 172.31.35.1 | t3.micro | null
+[ root@ip-172-31-35-1 /app ]#

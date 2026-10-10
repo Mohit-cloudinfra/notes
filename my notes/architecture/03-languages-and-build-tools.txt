@@ -1,0 +1,145 @@
+========================================================================
+  ARCHITECTURE  >  LANGUAGES, DEPENDENCIES AND BUILD TOOLS
+========================================================================
+
+  IN ONE LINE
+  Every language has a file extension, a file that lists its
+  dependencies, and a build tool that downloads them.
+
+      libraries = dependencies
+      programming language = programming runtime
+
+
+  1. THE TABLE TO MEMORISE
+  ----------------------------------------------------------------------
+
+                      NodeJS         Java       Python             .NET
+                      ------------   --------   ----------------   ----------
+      extension       .js            .java      .py                .net/.aspx
+      dependency file package.json   pom.xml    requirements.txt   *.csproj
+      build tool      npm            maven      pip                nuget
+
+
+  2. NODEJS
+  ----------------------------------------------------------------------
+
+      package.json    the build file. Developers mention the
+                      dependencies and application details here
+      npm             node package manager, the build tool
+
+      npm install     reads package.json and downloads the
+                      dependencies from the internet
+
+      nodejs = node + npm   (installing nodejs gives you both)
+
+      Run it:   /bin/node /app/server.js
+
+
+  3. JAVA
+  ----------------------------------------------------------------------
+
+      Build tools:   Ant, Maven, Gradle
+
+      JDK   Java Development Kit
+      JRE   Java Runtime Environment
+
+          While DEVELOPING we need the JDK.
+          While RUNNING, the JRE is enough.
+          JDK = JRE + development utilities
+
+      Source code  ->  compile  ->  byte code
+          Java needs a separate compile step before it runs.
+          NodeJS compiles and runs in one go.
+
+      Output formats:  .ear   .war   .jar
+
+      maven = java + maven  (installing maven brings java with it)
+
+      mvn clean package
+          = clean previous builds
+          + install dependencies
+          + pack the application
+          A new directory called  target  is created with the .jar
+
+      Run it:   /bin/java -jar /app/shipping.jar
+
+
+  4. PYTHON
+  ----------------------------------------------------------------------
+
+      extension            .py
+      dependency file      requirements.txt
+      build tool           pip
+
+      Used in two ways:   1. OOPS      2. Scripting
+
+      pip3 install -r requirements.txt
+
+
+  5. GO   (dispatch component)
+  ----------------------------------------------------------------------
+
+      dnf install golang -y
+      go mod init dispatch
+      go get
+      go build
+
+      Run it:   /app/dispatch
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  You are not expected to write the code. You are expected to know
+  how each language is built and run, because that is your job.
+
+  [+] Q1. What is the difference between JDK, JRE and JVM?
+
+          JVM   the engine that actually runs Java byte code
+          JRE   JVM + the libraries needed to RUN a Java program
+          JDK   JRE + the compiler and tools needed to BUILD one
+
+          Build servers need the JDK. Servers that only run the
+          application need the JRE.
+
+
+  [+] Q2. What does  mvn clean package  do?
+
+          clean     deletes the old build output (the target folder)
+          package   downloads the dependencies listed in pom.xml,
+                    compiles the code, and packs it into a .jar
+                    inside target/
+
+
+  [+] Q3. What is package.json and what does npm install do?
+
+          package.json lists the application's details and every
+          library it depends on. npm install reads it and downloads
+          those libraries into a folder called node_modules.
+
+          The code will not start without node_modules.
+
+
+  [+] Q4. What is a build artifact?
+
+          The output of the build that actually gets deployed: a
+          .jar for Java, or the code plus its dependencies for
+          NodeJS and Python. You build it once and deploy the same
+          artifact to every environment.
+
+
+  [+] Q5. For each language, what is the dependency file and build
+          tool?
+
+              NodeJS    package.json        npm
+              Java      pom.xml             maven
+              Python    requirements.txt    pip
+              .NET      *.csproj            nuget
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      npm install            mvn clean package
+      pip3 install -r requirements.txt
+      JDK to build, JRE to run.
+========================================================================

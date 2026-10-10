@@ -1,0 +1,174 @@
+InitContainers
+How can they fetch secrets
+
+Networking -> VPC CNI
+
+PDG
+TopologyConstraints
+
+Deployment, hpa
+
+min -> 2nodes
+min replicas -> 2
+
+node-1 in us-east-1a -> 2 pods
+node-2 in us-east-1b
+
+spread pods across the nodes in HA manner -> topologySpreadConstraint
+
+upgrade
+drain
+delete pod
+autoscaling down
+
+there should be always a minimum number of replicas running in voluntary disruption cases -> PDB
+
+min available = total pods - maximum pods on one node/total pods
+
+3 nodes
+5 pods
+
+2:2:1
+
+5-2/5 = 60%
+3 nodes
+5 pods
+2:2:1 -> 60%
+
+node-1 drain -> success
+node-2 drain -> success
+node-3 drain -> success
+
+2 pods 2 nodes
+
+node-1 ->1 pod -> 2 pods
+node-2 ->2nd pod -> 2 pods
+
+node-1 drain -> fail
+
+min 3 nodes 1:1:1 -> topologySpreadConstraint
+
+2 zones ->
+2 pods -> 1 pod 1st zone, 2nd pod another zone
+3 pods -> 2 pods 1st zone, 3rd pod 2nd zone -> maxSkew -> 1pod
+
+4 nodes
+zone-1 -> 2 nodes
+zone-2 -> 2 nodes
+
+4 replicas
+
+2 pods in zone-1 -> 1st pod in node-1 and 2nd pod in node-2
+2 pods in zone-2 -> 3rdt pod in node-3 and 4th pod in node-4
+
+7 pods 2 nodes
+max pods -> 4 
+node-1 -> 4
+node-2 -> 3 -> down
+
+4/7 -> 50. != 60
+
+3 nodes 5 pods
+2:2:1
+
+k8 architecture
+================
+
+control plane
+============
+1. api server -> entrypoint for everything, checks authentication and authorization, call another components
+
+2. scheduler -> schedules the pod on available node, node resources, node selectors, affinity, anti affinity, taints and toleration, topologySpreadConstraint, etc.. it always checks pending pods can be scheduled or not
+
+3. control manager
+	replica/deployment controller -> always checks desired number of replicas running or not
+	Node controller:  desired number of nodes are always up
+	EndpointSlice controller: always populates pod ips to service endpoints
+	ServiceAccount controller: Create default ServiceAccounts for new namespaces.
+	
+4. etcd -> memory for k8s cluster, manifest files, config maps, secrets, etc... key-value pair database
+
+5. cloud-controller-manager -> cloud specific api handle
+
+node components
+===========
+kubelet -> always in contact with api-server, it is like agent running in every node. node health status report sends to control plane, responsible to run the pods in node
+
+kube-proxy -> manages networking rules to bring traffic to pods, iptables management
+
+Container runtime -> containerd is the run time...
+
+Addons 
+======
+
+
+namespaces
+pod
+service
+configmap
+secrets
+pv, pvc, sc
+taints and tolerations
+affinity and anti affinity
+replicaset
+deployment
+statefulset
+deamonset
+rbac
+ingress
+volumes
+network policies
+pdb and topologySpreadConstraint
+upgrade cluster
+blue green deployments
+hpa
+helm charts
+
+blue -> 1.34
+green -> 1.35
+
+8 nodes
+2 nodes
+
+taints and toleration and affinity -> 2 nodes
+topologySpreadConstraint -> topologyKey is host, topologyKey zone and host
+
+
+
+GIT
+====
+1. repo creation
+2. adding to staging area, commit to local repo
+3. push to central repo
+
+git init
+git branch -M main -> create and move to main
+git remote add origin <url> -> connect to central repo
+
+git pull
+
+
+branches
+========
+dev sit/uat/qa prod
+
+main -> prod ->
+create another branch, do the changes, test it and then push to main
+PR -> when you bring change from another branch to main branch
+
+
+merge
+=====
+1. you got extra commit, it is special commit it has 2 parents, merge commit
+2. it is preserving history
+
+rebase
+=====
+
+git branch -M main -> creating main and main branch
+git checkout -b karam-dosa -> create new branch karam-dosa and move inside to it
+
+it will not preserve any history
+it is linear history
+seems like main branch moved forward
+it is rewriting commits

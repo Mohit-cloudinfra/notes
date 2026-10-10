@@ -1,0 +1,44 @@
+1. Check SG rules
+2. Ansible Roles service files. check port number and host_url/ip
+3. Ansible Roles host URL's
+4. nginx config
+
+CDN -> Cloudfront
+
+US -> India
+latency increase, un necessary traffic/bandwidth
+
+application -> DB
+application -> Cache -> DB
+
+browser -> origin server
+
+CDN == AWS Cloudfront
+
+a network of storage servers(AWS Edge locations) across the globe used to cache the content. There will be an origin server, first application hits edge location, if data is not there then it gets data from origin and save it in edge location so that subsequent requests get data from edge location
+
+GET POST UPDATE DELETE
+
+GET -> can be cached -> product details(images, description, faq, rating, reviews)
+TTL -> Time to live in cache
+POST UPDATE DELETE -> generally Shouldn't be cached
+.js .css images
+
+invalidation
+===========
+when new deployment/release happens usually we should invalidate all the caching content, it deletes the data from all the edge servers. content will be downloaded again from origin to edge locations
+
+https://frontend-dev.daws88s.online/media/stan.png
+https://frontend-dev.daws88s.online/media/graph.png
+
+/media/* -> we can cache
+
+US Domain provider -> CDN -> ALB/Reverse proxy -> Actual web server
+
+laptop -> Company VPN(Forward) -> Bastion Host
+* client aware
+* content filtering
+* content monitoring
+* anonymous access
+
+

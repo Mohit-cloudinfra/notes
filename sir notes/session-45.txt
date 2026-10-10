@@ -1,0 +1,49 @@
+HTTPS SSL TLS
+
+30 locks with same key..
+
+AWS certification -> certificate -> ID and website to validate
+
+private key = public key + other elements
+
+declaration -> self declaration
+
+attestation notary
+
+CA(Certificate Authority) -> joindevops.com -> provide TLS certificate
+
+Manfacture -> UAE -> India(Main distributor) -> Wholesale -> Retail/Local Seller -> End user
+
+Certificate Authority -> only few CA browsers and OS trust
+
+Intermediate Certificate Authorities (Reseller of Root CA)
+
+Root CA -> Intermediate CAS -> Certificate
+
+Self signed certificates
+=======================
+We will create public key and private key for our website. We generate CSR
+public key signed by private key + company info + validity + domain information
+
+openssl req -new -key private.pem -config san.cnf -out csr.pem
+
+1. client hello
+2. server ack and sends the certificate
+3. browser validates common name inside certificate and client entered website are same
+certificate = public key + details
+4. if same browser generates a random word and encrypt with public key
+5. server decrypts that key with private key and send answer to the browser
+6. if the answer matches, then browser confirms it is connecting to proper server.
+7. from now onwards, every data between browser and server will be encrypted with that key.
+
+Nginx -> website
+Nginx -> Certificate+PublicKey
+
+SSL termination
+
+daws88s.online
+*.daws88s.online
+www.daws88s.online
+
+
+https://frontend-dev.daws88s.online

@@ -1,0 +1,49 @@
+Iam Role
+Iam policy -> it can get the SSM parameter of mysql password
+Attach policy to Role
+instance_profile
+attach to mysql instance
+
+roboshop -> Roboshop
+dev -> Dev
+mysql -> Mysql
+
+join
+
+Deliver Manager/Project Manger/Team Lead -> features should be delivered on time
+Client Business Analyst
+IT Business Analyst -> Architects+managers+team leads -> technical requirements
+
+DM -> frontend -> frontend team lead -> frontend team members
+   -> backend -> backend team
+   -> db -> db team
+   -> reports team -> reports team -> reports team member
+   
+they will check he is available or not and is he occupied or not?
+
+Load Balancer == DM/Team Lead
+Target Group == Team == a group of instances
+Rule = LB Rules
+Listener == 80/443
+Health check
+Team member == ec2 instance
+4 instances -> query for running instances -> round robin -> 1-1, 2-2, 3-3, 
+
+click on categories -> catalogue.daws88s.online
+click on user submit -> user.daws88s.online -> post -> {"user":"sivakumar", "password":"siva123"}
+
+catalogue.daws88s.online -> forward that cataloug group
+
+8hr -> 6hr
+12hr, 4hr
+
+DM -> HR -> they will recruit new person and add to team
+
+HR == AutoScaling
+JD == Launch template -> AMI, SG, NAME, etc
+
+4 instances -> Avg CPU utilisation -> >80%
+
+launch another instance using launch template, add to target group
+if avg cpu utlisation is reduced autoscaling terminate the instance
+notice period

@@ -1,0 +1,180 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@3.81.1.112                                 │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Tue Jan 13 18:30:33 2026 from 106.195.65.196
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ ec2-user@ip-172-31-45-245 ~ ]$ sudo su -
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# vim /etc/yum.repos.d/mongo.repo
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# cat /etc/yum.repos.d/mongo.repo
+[mongodb-org-7.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/9/mongodb-org/7.0/x86_64/
+enabled=1
+gpgcheck=0
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# dnf install mongodb-org -y
+Extra Packages for Enterprise Linux 9 - x86_64                                                                                 86 kB/s |  28 kB     00:00
+Extra Packages for Enterprise Linux 9 - x86_64                                                                                 60 MB/s |  20 MB     00:00
+Extra Packages for Enterprise Linux 9 openh264 (From Cisco) - x86_64                                                          3.1 kB/s | 993  B     00:00
+MongoDB Repository                                                                                                            865 kB/s | 108 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                             54 kB/s | 4.5 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - AppStream from RHUI (RPMs)                                                            125 MB/s | 113 MB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                                29 kB/s | 4.1 kB     00:00
+Red Hat Enterprise Linux 9 for x86_64 - BaseOS from RHUI (RPMs)                                                               134 MB/s | 154 MB     00:01
+Red Hat Enterprise Linux 9 Client Configuration                                                                                31 kB/s | 1.5 kB     00:00
+Red Hat Enterprise Linux 9 Client Configuration                                                                                35 kB/s | 2.6 kB     00:00
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                                              Architecture               Version                            Repository                           Size
+==============================================================================================================================================================
+Installing:
+ mongodb-org                                          x86_64                     7.0.43-1.el9                       mongodb-org-7.0                     9.3 k
+Installing dependencies:
+ mongodb-database-tools                               x86_64                     100.19.1-1                         mongodb-org-7.0                      35 M
+ mongodb-mongosh                                      x86_64                     2.13.0-1.el8                       mongodb-org-7.0                      64 M
+ mongodb-org-database                                 x86_64                     7.0.43-1.el9                       mongodb-org-7.0                     9.4 k
+ mongodb-org-database-tools-extra                     x86_64                     7.0.43-1.el9                       mongodb-org-7.0                      14 k
+ mongodb-org-mongos                                   x86_64                     7.0.43-1.el9                       mongodb-org-7.0                      25 M
+ mongodb-org-server                                   x86_64                     7.0.43-1.el9                       mongodb-org-7.0                      36 M
+ mongodb-org-tools                                    x86_64                     7.0.43-1.el9                       mongodb-org-7.0                     9.3 k
+
+Transaction Summary
+==============================================================================================================================================================
+Install  8 Packages
+
+Total download size: 159 M
+Installed size: 704 M
+Downloading Packages:
+(1/8): mongodb-org-7.0.43-1.el9.x86_64.rpm                                                                                     56 kB/s | 9.3 kB     00:00
+(2/8): mongodb-org-database-7.0.43-1.el9.x86_64.rpm                                                                           217 kB/s | 9.4 kB     00:00
+(3/8): mongodb-org-database-tools-extra-7.0.43-1.el9.x86_64.rpm                                                               385 kB/s |  14 kB     00:00
+(4/8): mongodb-database-tools-100.19.1-1.x86_64.rpm                                                                            61 MB/s |  35 MB     00:00
+(5/8): mongodb-mongosh-2.13.0.x86_64.rpm                                                                                       80 MB/s |  64 MB     00:00
+(6/8): mongodb-org-tools-7.0.43-1.el9.x86_64.rpm                                                                              171 kB/s | 9.3 kB     00:00
+(7/8): mongodb-org-mongos-7.0.43-1.el9.x86_64.rpm                                                                              35 MB/s |  25 MB     00:00
+(8/8): mongodb-org-server-7.0.43-1.el9.x86_64.rpm                                                                              59 MB/s |  36 MB     00:00
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                         135 MB/s | 159 MB     00:01
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Installing       : mongodb-org-database-tools-extra-7.0.43-1.el9.x86_64                                                                                 1/8
+  Running scriptlet: mongodb-org-server-7.0.43-1.el9.x86_64                                                                                               2/8
+  Installing       : mongodb-org-server-7.0.43-1.el9.x86_64                                                                                               2/8
+  Running scriptlet: mongodb-org-server-7.0.43-1.el9.x86_64                                                                                               2/8
+Created symlink /etc/systemd/system/multi-user.target.wants/mongod.service → /usr/lib/systemd/system/mongod.service.
+
+  Installing       : mongodb-org-mongos-7.0.43-1.el9.x86_64                                                                                               3/8
+  Installing       : mongodb-org-database-7.0.43-1.el9.x86_64                                                                                             4/8
+  Installing       : mongodb-mongosh-2.13.0-1.el8.x86_64                                                                                                  5/8
+  Running scriptlet: mongodb-database-tools-100.19.1-1.x86_64                                                                                             6/8
+  Installing       : mongodb-database-tools-100.19.1-1.x86_64                                                                                             6/8
+  Running scriptlet: mongodb-database-tools-100.19.1-1.x86_64                                                                                             6/8
+  Installing       : mongodb-org-tools-7.0.43-1.el9.x86_64                                                                                                7/8
+  Installing       : mongodb-org-7.0.43-1.el9.x86_64                                                                                                      8/8
+  Running scriptlet: mongodb-org-7.0.43-1.el9.x86_64                                                                                                      8/8
+  Verifying        : mongodb-database-tools-100.19.1-1.x86_64                                                                                             1/8
+  Verifying        : mongodb-mongosh-2.13.0-1.el8.x86_64                                                                                                  2/8
+  Verifying        : mongodb-org-7.0.43-1.el9.x86_64                                                                                                      3/8
+  Verifying        : mongodb-org-database-7.0.43-1.el9.x86_64                                                                                             4/8
+  Verifying        : mongodb-org-database-tools-extra-7.0.43-1.el9.x86_64                                                                                 5/8
+  Verifying        : mongodb-org-mongos-7.0.43-1.el9.x86_64                                                                                               6/8
+  Verifying        : mongodb-org-server-7.0.43-1.el9.x86_64                                                                                               7/8
+  Verifying        : mongodb-org-tools-7.0.43-1.el9.x86_64                                                                                                8/8
+
+Installed:
+  mongodb-database-tools-100.19.1-1.x86_64         mongodb-mongosh-2.13.0-1.el8.x86_64                          mongodb-org-7.0.43-1.el9.x86_64
+  mongodb-org-database-7.0.43-1.el9.x86_64         mongodb-org-database-tools-extra-7.0.43-1.el9.x86_64         mongodb-org-mongos-7.0.43-1.el9.x86_64
+  mongodb-org-server-7.0.43-1.el9.x86_64           mongodb-org-tools-7.0.43-1.el9.x86_64
+
+Complete!
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# systemctl enable mongod
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# systemctl start mongod
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# systemctl status mongod
+● mongod.service - MongoDB Database Server
+     Loaded: loaded (/usr/lib/systemd/system/mongod.service; enabled; preset: disabled)
+     Active: active (running) since Wed 2026-10-07 13:06:34 UTC; 13s ago
+       Docs: https://docs.mongodb.org/manual
+   Main PID: 3444 (mongod)
+     Memory: 159.4M (peak: 161.1M)
+        CPU: 756ms
+     CGroup: /system.slice/mongod.service
+             └─3444 /usr/bin/mongod -f /etc/mongod.conf
+
+Oct 07 13:06:34 ip-172-31-45-245.ec2.internal systemd[1]: Started MongoDB Database Server.
+Oct 07 13:06:34 ip-172-31-45-245.ec2.internal snoopy[3444]: [uid:991 sid:3444 tty:(none) cwd:/ filename:/usr/bin/mongod]: /usr/bin/mongod -f /etc/mongod.conf
+Oct 07 13:06:35 ip-172-31-45-245.ec2.internal mongod[3444]: {"t":{"$date":"2026-10-07T13:06:35.304Z"},"s":"I",  "c":"CONTROL",  "id":7484500, "ctx"…to false"}
+Hint: Some lines were ellipsized, use -l to show in full.
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# ps -ef|grep mongo
+mongod      3444       1  0 13:06 ?        00:00:01 /usr/bin/mongod -f /etc/mongod.conf
+root        4413    1845  0 13:09 pts/0    00:00:00 grep --color=auto mongo
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1261/sshd: /usr/sbi
+tcp        0      0 127.0.0.1:27017         0.0.0.0:*               LISTEN      3444/mongod
+tcp6       0      0 :::22                   :::*                    LISTEN      1261/sshd: /usr/sbi
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# vim /etc/mongod.conf
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# systemctl restart mongod
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:27017           0.0.0.0:*               LISTEN      6254/mongod
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1261/sshd: /usr/sbi
+tcp6       0      0 :::22                   :::*                    LISTEN      1261/sshd: /usr/sbi
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]# cat /app/db/master-data.js
+cat: /app/db/master-data.js: No such file or directory
+
+3.81.1.112 | 172.31.45.245 | t3.micro | null
+[ root@ip-172-31-45-245 ~ ]#

@@ -1,0 +1,253 @@
+    ┌──────────────────────────────────────────────────────────────────────┐
+    │                 • MobaXterm Personal Edition v26.3 •                 │
+    │               (SSH client, X server and network tools)               │
+    │                                                                      │
+    │ ⮞ SSH session to ec2-user@34.207.76.171                              │
+    │   • Direct SSH      :  ✓                                             │
+    │   • SSH compression :  ✓                                             │
+    │   • SSH-browser     :  ✓                                             │
+    │   • X11-forwarding  :  ✗  (disabled or not supported by server)      │
+    │                                                                      │
+    │ ⮞ For more info, ctrl+click on help or visit our website.            │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+██████╗ ██╗  ██╗███████╗██╗          █████╗
+██╔══██╗██║  ██║██╔════╝██║         ██╔══██╗
+██████╔╝███████║█████╗  ██║         ╚██████║
+██╔══██╗██╔══██║██╔══╝  ██║          ╚═══██║
+██║  ██║██║  ██║███████╗███████╗     █████╔╝
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚════╝
+
+Disclaimer:
+
+This image is designed for only for the lab purpose
+of learning DevOps and not recommended at all to use
+in production or any company environments.
+
+Last login: Wed Oct  7 13:02:15 2026 from 223.196.174.142
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ ec2-user@ip-172-31-36-84 ~ ]$ sudo su -
+Last login: Wed Oct  7 13:18:39 UTC 2026 on pts/0
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# dnf module disable nginx -y
+Last metadata expiration check: 0:13:17 ago on Wed Oct  7 13:48:21 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                               Architecture                         Version                               Repository                             Size
+==============================================================================================================================================================
+Disabling modules:
+ nginx
+
+Transaction Summary
+==============================================================================================================================================================
+
+Complete!
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# dnf module enable nginx:1.24 -y
+Last metadata expiration check: 0:14:35 ago on Wed Oct  7 13:48:21 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                               Architecture                         Version                               Repository                             Size
+==============================================================================================================================================================
+Enabling module streams:
+ nginx                                                                      1.24
+
+Transaction Summary
+==============================================================================================================================================================
+
+Complete!
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# dnf install nginx -y
+Last metadata expiration check: 0:14:47 ago on Wed Oct  7 13:48:21 2026.
+Dependencies resolved.
+==============================================================================================================================================================
+ Package                         Architecture        Version                                                    Repository                               Size
+==============================================================================================================================================================
+Installing:
+ nginx                           x86_64              1:1.24.0-7.module+el9.8.0+24846+e7eec568.5                 rhel-9-appstream-rhui-rpms               41 k
+Installing dependencies:
+ nginx-core                      x86_64              1:1.24.0-7.module+el9.8.0+24846+e7eec568.5                 rhel-9-appstream-rhui-rpms              592 k
+ nginx-filesystem                noarch              1:1.24.0-7.module+el9.8.0+24846+e7eec568.5                 rhel-9-appstream-rhui-rpms               16 k
+ redhat-logos-httpd              noarch              90.6-1.el9                                                 rhel-9-appstream-rhui-rpms               15 k
+
+Transaction Summary
+==============================================================================================================================================================
+Install  4 Packages
+
+Total download size: 664 k
+Installed size: 1.8 M
+Downloading Packages:
+(1/4): nginx-1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64.rpm                                                              968 kB/s |  41 kB     00:00
+(2/4): nginx-filesystem-1.24.0-7.module+el9.8.0+24846+e7eec568.5.noarch.rpm                                                   1.7 MB/s |  16 kB     00:00
+(3/4): nginx-core-1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64.rpm                                                         8.7 MB/s | 592 kB     00:00
+(4/4): redhat-logos-httpd-90.6-1.el9.noarch.rpm                                                                               220 kB/s |  15 kB     00:00
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                         5.1 MB/s | 664 kB     00:00
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                      1/1
+  Running scriptlet: nginx-filesystem-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.noarch                                                                   1/4
+  Installing       : nginx-filesystem-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.noarch                                                                   1/4
+  Installing       : nginx-core-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                                                                         2/4
+  Installing       : redhat-logos-httpd-90.6-1.el9.noarch                                                                                                 3/4
+  Installing       : nginx-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                                                                              4/4
+  Running scriptlet: nginx-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                                                                              4/4
+  Verifying        : redhat-logos-httpd-90.6-1.el9.noarch                                                                                                 1/4
+  Verifying        : nginx-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                                                                              2/4
+  Verifying        : nginx-core-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                                                                         3/4
+  Verifying        : nginx-filesystem-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.noarch                                                                   4/4
+
+Installed:
+  nginx-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64                          nginx-core-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.x86_64
+  nginx-filesystem-1:1.24.0-7.module+el9.8.0+24846+e7eec568.5.noarch               redhat-logos-httpd-90.6-1.el9.noarch
+
+Complete!
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# systemctl enable nginx
+Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# systemctl start nginx
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# rm -rf /usr/share/nginx/html/*
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1087k  100 1087k    0     0  5227k      0 --:--:-- --:--:-- --:--:-- 5227k
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 ~ ]# cd /usr/share/nginx/html
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# unzip /tmp/frontend.zip
+Archive:  /tmp/frontend.zip
+  inflating: cart.html
+   creating: css/
+  inflating: css/auto-complete.css
+  inflating: css/style.css
+  inflating: empty.html
+  inflating: eum.html
+   creating: images/
+  inflating: images/EPE.png
+  inflating: images/STAN-1.png
+  inflating: images/HPTD.png
+  inflating: images/UHJ.png
+  inflating: images/EMM.png
+  inflating: images/RMC.png
+  inflating: images/Aplha.png
+  inflating: images/SHCE.png
+  inflating: images/CNA.png
+  inflating: images/placeholder.png
+  inflating: images/Watson.png
+  inflating: images/Ewooid.png
+  inflating: images/RED.png
+  inflating: index.html
+   creating: js/
+  inflating: js/controller.js
+  inflating: js/auto-complete.js
+  inflating: login.html
+   creating: media/
+  inflating: media/stan.png
+  inflating: media/graph.png
+  inflating: media/instana_icon_square.png
+  inflating: payment.html
+  inflating: product.html
+  inflating: search.html
+  inflating: shipping.html
+  inflating: splash.html
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# vim /etc/nginx/nginx.conf
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# cat /etc/nginx/nginx.conf
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log notice;
+pid /run/nginx.pid;
+
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    keepalive_timeout   65;
+    types_hash_max_size 4096;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        include /etc/nginx/default.d/*.conf;
+
+        error_page 404 /404.html;
+        location = /404.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+        }
+
+        location /images/ {
+          expires 5s;
+          root   /usr/share/nginx/html;
+          try_files $uri /images/placeholder.jpg;
+        }
+        location /api/catalogue/ { proxy_pass http://catalogue.mohitsai.cloud:8080/; }
+        location /api/user/ { proxy_pass http://user.mohitsai.cloud:8080/; }
+        location /api/cart/ { proxy_pass http://cart.mohitsai.cloud:8080/; }
+        location /api/shipping/ { proxy_pass http://shipping.mohitsai.cloud:8080/; }
+        location /api/payment/ { proxy_pass http://payment.mohitsai.cloud:8080/; }
+
+        location /health {
+          stub_status on;
+          access_log off;
+        }
+
+    }
+}
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# systemctl restart nginx
+Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# ^C
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]# nginx -t
+nginx: [emerg] host not found in upstream "user.mohitsai.cloud" in /etc/nginx/nginx.conf:51
+nginx: configuration file /etc/nginx/nginx.conf test failed
+
+34.207.76.171 | 172.31.36.84 | t3.micro | null
+[ root@ip-172-31-36-84 /usr/share/nginx/html ]#

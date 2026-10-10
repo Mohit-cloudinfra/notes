@@ -1,0 +1,178 @@
+========================================================================
+  LINUX  >  READING AND SEARCHING TEXT
+            head, tail, pipe, grep, cut, awk
+========================================================================
+
+  IN ONE LINE
+  Small commands, each doing one job, joined with a pipe so the
+  output of one becomes the input of the next.
+
+
+  1. head AND tail
+  ----------------------------------------------------------------------
+
+      head a.txt              top 10 lines (default)
+      tail a.txt              bottom 10 lines (default)
+      head -n 3 a.txt         top 3 lines
+      tail -n 3 a.txt         bottom 3 lines
+
+
+  2. PIPING   |
+  ----------------------------------------------------------------------
+
+      One operation's OUTPUT becomes the other operation's INPUT.
+
+          [ command 1 ] --output-->  [ command 2 ] --output--> [ ... ]
+                          input                      input
+
+      I WANT LINES 3 TO 15
+          head -n 15 a.txt | tail -n 13
+
+          head gives lines 1-15, tail keeps the last 13 of those.
+          (3 to 15 is 13 lines: 15 - 3 + 1)
+
+      PIPING INTO grep
+          cat a.txt | grep user
+          ps -ef | grep nginx
+
+
+  3. WATCHING LOGS LIVE
+  ----------------------------------------------------------------------
+
+      Linux logs are stored in  /var/log/
+
+          sudo su -
+          cd /var/log/
+          ls -l
+          tail -f dnf.log
+
+      -f means FOLLOW: new lines appear on screen as they are written.
+
+
+  4. grep   (search inside a file, like Ctrl+F)
+  ----------------------------------------------------------------------
+
+      grep <word> <file>          lines containing the word
+      grep -n <word> <file>       also show the line numbers
+      grep -i <word> <file>       case insensitive
+      grep -n -i <word> <file>    both
+      grep -c <word> <file>       just the count of matching lines
+      grep -v <word> <file>       lines that do NOT match
+
+      START AND END OF LINE
+          ^word       line STARTS with word
+          word$       line ENDS with word
+
+          grep -n 'architecture$' session-02.txt
+              -> line numbers of lines ending with "architecture"
+
+
+  5. cut   (split a line and pick pieces)
+  ----------------------------------------------------------------------
+
+      cut -d "<delimiter>" -f<field-number>
+
+      link = https://raw.githubusercontent.com/daws-88s/notes/refs/
+             heads/main/session-02.txt
+
+      echo $link | cut -d "/" -f1        https:
+      echo $link | cut -d "/" -f2        (empty, between the two //)
+      echo $link | cut -d "/" -f3        raw.githubusercontent.com
+      echo $link | cut -d "/" -f1-3      https://raw.githubusercontent.com
+
+      ON /etc/passwd  (Linux user information, split by : )
+          cat /etc/passwd
+          cut -d ":" -f1 /etc/passwd         user names only
+          cut -d ":" -f1,3 /etc/passwd       user name and user id
+
+
+  6. awk   (cut with brains)
+  ----------------------------------------------------------------------
+
+      awk -F "<delimiter>" '{print $<field>}' <file>
+
+      $1, $2, $3 ...    first, second, third piece
+      $NF               the LAST piece, however many there are
+
+      echo $link | awk -F "/" '{print $NF}'
+          -> session-02.txt        (cut cannot do "last one")
+
+      awk -F ":" '{print $1, $3}' /etc/passwd
+          -> user name and user id
+
+      WITH A CONDITION
+          Take a working copy first:
+              cp /etc/passwd users
+
+          Users which are NOT system users (id 1000 and above):
+              awk -F ":" '$3>=1000 {print $1, $3}' users
+
+          All system users (their shell is /sbin/nologin):
+              awk -F ":" '$7=="/sbin/nologin" {print $1, $3}' users
+              awk -F ":" '$NF=="/sbin/nologin" {print $1, $3}' users
+
+
+  [+] INTERVIEW
+  ----------------------------------------------------------------------
+
+  [+] Q1. How do you watch a log file live?
+
+              tail -f /var/log/messages
+
+          New lines appear as they are written. Ctrl+c to stop.
+
+
+  [+] Q2. How do you find errors in a large log file?
+
+              grep -i error app.log              all error lines
+              grep -i -n error app.log           with line numbers
+              grep -i -c error app.log           how many
+              tail -n 100 app.log | grep -i error
+                                                 only in the last
+                                                 100 lines
+
+          -i matters. Logs write Error, ERROR and error.
+
+
+  [+] Q3. What is a pipe?
+
+          It sends the output of the command on the left as the
+          input of the command on the right, so small commands can
+          be joined into one.
+
+              ps -ef | grep nginx
+
+
+  [+] Q4. Print lines 3 to 15 of a file.
+
+              head -n 15 a.txt | tail -n 13
+
+          head keeps the first 15, tail keeps the last 13 of those.
+
+
+  [+] Q5. What is the difference between cut and awk?
+
+          cut picks fields by number with one delimiter. Simple.
+          awk does the same, and can also pick the LAST field ($NF)
+          and filter with a condition.
+
+              cut -d ":" -f1 /etc/passwd
+              awk -F ":" '$3>=1000 {print $1}' /etc/passwd
+
+
+  [+] Q6. List all the normal (human) users on a server.
+
+              awk -F ":" '$3>=1000 {print $1}' /etc/passwd
+
+          The third field in /etc/passwd is the user id. System
+          users are below 1000, normal users are 1000 and above.
+
+
+  REMEMBER
+  ----------------------------------------------------------------------
+      tail -f      = follow a log live
+      grep         = find lines
+      cut          = pick fields by number
+      awk          = pick fields, with $NF for last and conditions
+      |            = output of left is input of right
+========================================================================

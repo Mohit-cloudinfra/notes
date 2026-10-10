@@ -1,0 +1,126 @@
+Computer
+Client server architecture
+Authentication mechanisms
+Firewall
+
+Mobile vs Laptop vs Desktop vs Server == Washing Machine == AC == Computer
+
+CPU
+RAM
+ROM ======> IP Enabled device
+OS
+Processor
+
+Windows vs Mac vs Linux
+========================
+Secure -> SSH
+No graphics
+	Low power
+	Low bandwidth
+	Low ram
+	fast
+heavy performance
+free
+run for years no need of restart
+anti virus not required
+opensource
+
+hardware and software are tightly coupled
+
+Authentication mechanisms
+========================
+1. what you can remember
+2. RSA Tokens, OTP, Authenticators -> What you have
+3. What you are -> fingerprints, retina, palm, etc...
+
+Public Key and Private Key Mechanism
+=================================
+SSH Keys
+box == server == node
+
+ssh-keygen -f daws-88s
+
+-> public key
+-> private key
+
+ssh-keygen -f daws-88s
+-> private key
+
+Firewall
+==========
+incoming traffic -> inbound -> don't trust anyone
+outgoing traffic -> outbound -> allow everyone to exit
+
+NASA, DRDO -> check outbound traffic too
+
+AWS accounts
+=============
+1. credit/debit cards
+2. international transactions enable
+3. same address as in bank
+4. PAN card mandatory
+5. try to use same first name and lastname
+
+6months -> 100$, 100$
+18000 INR
+
+Auto-pay enable by default, disable it in UPI
+
+Regions and Zones
+=================
+Hyderabad -> Zones east, west, north and south -> atleast 2 
+
+Regions and Availability Zones(AZ)
+
+us-east-1 -> N.Virgina
+
+192.165.89.1
+0.0.0.0/0 -> every IP in the internet
+
+compute or storage
+
+protocol -> set of rules
+
+http vs SSH(only employees)
+
+git bash == SSH client == mini linux
+
+C:\Users\siva -> back slash windows
+/c/Users/siva -> linux format -> pwd
+
+pwd -> present working directory
+
+ssh-keygen -f daws-88s
+
+Windows -> Hello == hello ==> case insensitive
+Linux -> Hello != hello ==> case sensitive
+
+ls -l -> files listing
+
+54.80.53.154
+
+ssh -i <private-key> user-name@IP
+
+which protocol? which port? which server? username and pasword
+
+http -> 80
+https -> 443
+
+SSH -> 22
+
+ec2-user
+
+ssh -i daws-88s ec2-user@54.80.53.154
+
+AWS account creation
+client server architecture
+ssh keys create
+firewall create
+ec2 instance launch
+connect
+
+Next topic
+===========
+Linux commands
+
+sonethig architecture something
